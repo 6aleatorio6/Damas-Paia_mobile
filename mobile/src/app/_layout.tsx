@@ -10,8 +10,6 @@ export const clientQuery = new QueryClient({
 });
 
 export default function LayoutRaiz() {
-  console.log('sas');
-
   return (
     <SafeAreaView className="flex-1 bg-transparent">
       <QueryClientProvider client={clientQuery}>

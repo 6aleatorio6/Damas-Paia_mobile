@@ -1,16 +1,33 @@
 import AuthModal from '@/components/authMolde';
 import ButtonForm from '@/components/ButtonForm';
 import InputText from '@/components/InputText';
-import { Link } from 'expo-router';
+import { useApi } from '@/lib/axiosApi';
+import { storeAuth } from '@/lib/logicAuth';
+import { AxiosError } from 'axios';
+import { Link, router } from 'expo-router';
 
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 export default function Login() {
+  const login = storeAuth((s) => s.login);
+
   const useAllValues = useState({
     nome: '',
     senha: '',
   });
+
+  const { mutate, isPending } = useApi('mutate', (axios) => ({
+    notlogoutIfNotAuthorized: true,
+    async mutationFn() {
+      const { data } = await axios.post('/auth/login', useAllValues[0]);
+
+      login(data.token);
+    },
+    onError(error, variables, context) {
+      if (error instanceof AxiosError) console.log(error.response?.data);
+    },
+  }));
 
   return (
     <AuthModal>
@@ -19,7 +36,13 @@ export default function Login() {
         <InputText placeholder="senha" field="senha" valState={useAllValues} />
       </View>
       <View className="flex-col items-end">
-        <ButtonForm className="bg-green-600 w-full">ENTRAR</ButtonForm>
+        <ButtonForm
+          onPress={mutate}
+          disabled={isPending}
+          className="bg-green-600 w-full"
+        >
+          ENTRAR
+        </ButtonForm>
         <Text className="text-base mt-2 text-white  justify-end">
           Não tem conta?{' '}
           <Link className="underline" href={'/(auth)/cadastro'}>

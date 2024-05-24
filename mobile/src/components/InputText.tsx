@@ -1,6 +1,6 @@
 import { styled } from 'nativewind';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { Text, TextInput, TextInputProps, View } from 'react-native';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Text, TextInput, TextInputProps } from 'react-native';
 
 interface Props extends TextInputProps {
   valState: [any, Dispatch<SetStateAction<any>>];
@@ -10,10 +10,12 @@ function TextInputStyled({ field, valState, ...props }: Props) {
   const [allValues, setAllValues] = valState;
   const [value, setValue] = useState(allValues[field] || '');
 
-  setAllValues((v: { [K: string]: string }) => {
-    v[field] = value;
-    return v;
-  });
+  useEffect(() => {
+    setAllValues((v: { [K: string]: string }) => {
+      v[field] = value;
+      return v;
+    });
+  }, [field, setAllValues, value]);
 
   return (
     <>

@@ -12,7 +12,6 @@ import {
 } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
-import { Alert } from 'react-native';
 
 const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.108:3000';
 

@@ -1,7 +1,8 @@
 import { router, Tabs } from 'expo-router';
 
 import { LucideIcon, PlayIcon } from 'lucide-react-native';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 
 interface IconProps {
   focused?: boolean;
@@ -42,13 +43,13 @@ export default function TabButtonFloat({
 function ButtonFloat({ size, href }: IconProps) {
   return (
     <View className="relative flex-1 bottom-5">
-      <TouchableOpacity
-        className="absolute  bg-blue-500 rounded-full px-5 py-4 flex-row justify-center items-center "
+      <Pressable
+        className="absolute  bg-blue-500 rounded-full px-6 py-4 flex-row justify-center items-center "
         onPress={() => router.navigate(href)}
       >
         <Text className="font-bold text-white text-2xl">INICIAR</Text>
         <PlayIcon color="white" size={30} />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

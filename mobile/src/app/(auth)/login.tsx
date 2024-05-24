@@ -1,10 +1,11 @@
 import AuthModal from '@/components/authMolde';
 import ButtonForm from '@/components/ButtonForm';
 import InputText from '@/components/InputText';
+
 import { useApi } from '@/lib/axiosApi';
 import { storeAuth } from '@/lib/logicAuth';
-import { AxiosError } from 'axios';
-import { Link, router } from 'expo-router';
+
+import { Link } from 'expo-router';
 
 import { useState } from 'react';
 import { Text, View } from 'react-native';
@@ -24,16 +25,18 @@ export default function Login() {
 
       login(data.token);
     },
-    onError(error, variables, context) {
-      if (error instanceof AxiosError) console.log(error.response?.data);
-    },
   }));
 
   return (
     <AuthModal>
       <View className="pb-5">
         <InputText placeholder="nome" field="nome" valState={useAllValues} />
-        <InputText placeholder="senha" field="senha" valState={useAllValues} />
+        <InputText
+          placeholder="senha"
+          field="senha"
+          secureTextEntry
+          valState={useAllValues}
+        />
       </View>
       <View className="flex-col items-end">
         <ButtonForm

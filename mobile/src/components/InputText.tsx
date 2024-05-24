@@ -12,7 +12,7 @@ function TextInputStyled({ field, valState, ...props }: Props) {
 
   useEffect(() => {
     setAllValues((v: { [K: string]: string }) => {
-      v[field] = value;
+      v[field] = value.trim();
       return v;
     });
   }, [field, setAllValues, value]);

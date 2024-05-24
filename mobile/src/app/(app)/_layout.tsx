@@ -14,7 +14,7 @@ export default function LayoutHome() {
   return (
     <Tabs
       screenOptions={() => ({
-        // headerShown: false,
+        headerShown: false,
         tabBarActiveTintColor: '#3B82F6',
         tabBarInactiveTintColor: 'black',
 

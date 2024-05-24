@@ -42,12 +42,12 @@ export default function TabButtonFloat({
 
 function ButtonFloat({ size, href }: IconProps) {
   return (
-    <View className="relative flex-1 bottom-5">
+    <View className="flex-1 bottom-5">
       <Pressable
-        className="absolute  bg-blue-500 rounded-full px-6 py-4 flex-row justify-center items-center "
+        className="  bg-blue-500 rounded-full h-16 w-full   flex-row justify-center  items-center  "
         onPress={() => router.navigate(href)}
       >
-        <Text className="font-bold text-white text-2xl">INICIAR</Text>
+        <Text className="font-bold text-white text-2xl  ">INICIAR</Text>
         <PlayIcon color="white" size={30} />
       </Pressable>
     </View>

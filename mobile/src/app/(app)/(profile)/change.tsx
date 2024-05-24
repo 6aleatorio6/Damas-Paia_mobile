@@ -31,22 +31,22 @@ export default function ChangeProfile() {
   }));
 
   return (
-    <View className="px-20 pt-20 ">
+    <View className="px-10 pt-20 ">
       <Text className="text-2xl font-bold mb-5">EDITAR PERFIL</Text>
-      <View className="mb-5">
+      <View className="mb-6 ">
         <InputText
           field="nome"
           placeholder="Novo nome"
           valState={stateValues}
           textName="text-black "
-          className="text-black "
+          className="text-black mb-3"
         />
         <InputText
           field="senha"
           placeholder="Nova senha"
           valState={stateValues}
           secureTextEntry
-          className="text-black "
+          className="text-black  "
           textName="text-black "
         />
       </View>

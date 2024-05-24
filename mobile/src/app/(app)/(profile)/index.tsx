@@ -2,23 +2,14 @@ import ButtonForm from '@/components/ButtonForm';
 import ButtonLink from '@/components/ButtonLink';
 import { useApi } from '@/lib/axiosApi';
 import { storeAuth } from '@/lib/logicAuth';
+import useProfile from '@/lib/query/useProfile';
 import { CircleUserRound } from 'lucide-react-native';
 import { Text, View, Image } from 'react-native';
 
 export default function IndexProfile() {
   const loggout = storeAuth((s) => s.logout);
 
-  const { data, isLoading } = useApi<{ nome: string; avatar: unknown }>(
-    'query',
-    (axios) => ({
-      queryKey: ['profile'],
-      async queryFn() {
-        const res = await axios.get('/user');
-
-        return res.data;
-      },
-    }),
-  );
+  const { data, isLoading } = useProfile();
 
   const { mutate } = useApi('mutate', (axios) => ({
     async mutationFn() {

@@ -17,9 +17,9 @@ import { Alert } from 'react-native';
 
 const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.108:3000';
 
-interface Result {
-  mutate: UseMutationResult;
-  query: UseQueryResult;
+interface Result<D> {
+  mutate: UseMutationResult<D>;
+  query: UseQueryResult<D>;
 }
 
 export type UseOptions<T, D, E, V> = (T extends 'mutate'
@@ -49,7 +49,7 @@ export function useApi<
     type === 'mutate'
       ? useMutation(config as UseOptions<'mutate', D, E, V>)
       : useQuery(config as UseOptions<'query', D, E, V>)
-  ) as Result[T];
+  ) as Result<D>[T];
 
   const isUnauthorized =
     isAxiosError(result.error) && result.error.response?.status === 401;

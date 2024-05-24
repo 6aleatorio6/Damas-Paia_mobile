@@ -1,8 +1,14 @@
+import ButtonForm from '@/components/ButtonForm';
+import ButtonLink from '@/components/ButtonLink';
 import { useApi } from '@/lib/axiosApi';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { storeAuth } from '@/lib/logicAuth';
+import { CircleUserRound } from 'lucide-react-native';
+import { Text, View, Image } from 'react-native';
 
 export default function IndexProfile() {
-  const { data, isPending } = useApi<{ nome: string; avatar: unknown }>(
+  const loggout = storeAuth((s) => s.logout);
+
+  const { data, isLoading } = useApi<{ nome: string; avatar: unknown }>(
     'query',
     (axios) => ({
       queryKey: ['profile'],
@@ -14,22 +20,44 @@ export default function IndexProfile() {
     }),
   );
 
-  console.log(data);
+  const { mutate } = useApi('mutate', (axios) => ({
+    async mutationFn() {
+      return axios.delete('/user');
+    },
+    onSuccess() {
+      loggout();
+    },
+  }));
 
-  if (isPending) return <Text>Loading...</Text>;
+  const avatar = data?.avatar;
+
+  if (isLoading) return <Text className="m-auto">Loading...</Text>;
 
   return (
     <View className="flex-1 items-center justify-center">
-      <Image source={require('@/assets/icon.png')} className="w-10 h-10" />
-      <Text className="text-xl font-bold mt-4">John Doe</Text>
-      <TouchableOpacity
-        className="bg-blue-500 px-4 py-2 mt-4 rounded"
-        onPress={() => {
-          // handle button change logic here
-        }}
-      >
-        <Text className="text-white font-bold">Change</Text>
-      </TouchableOpacity>
+      <View className="space-y-3">
+        <View className="flex-row   items-center ">
+          {avatar ? (
+            <Image source={avatar} className="w-10 h-10" />
+          ) : (
+            <CircleUserRound size={70} color={'black'} />
+          )}
+          <Text className="text-3xl text-center font-bold mx-3">
+            {data?.nome}
+          </Text>
+        </View>
+        <ButtonLink href="/(app)/(profile)/change" className="bg-blue-500 px-4">
+          <Text className="text-white text-2xl font-bold">EDITAR</Text>
+        </ButtonLink>
+
+        <ButtonForm onPress={mutate} className="bg-red-500 px-4">
+          DELETAR CONTA
+        </ButtonForm>
+
+        <ButtonForm onPress={loggout} className="bg-grau-500 px-4">
+          SAIR DA CONTA
+        </ButtonForm>
+      </View>
     </View>
   );
 }

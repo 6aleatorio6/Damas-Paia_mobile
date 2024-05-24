@@ -7,7 +7,7 @@ interface ButtonProps extends PropsWithChildren<TouchableOpacityProps> {
   href: string;
 }
 
-function Button({ href, children, ...props }: ButtonProps) {
+function ButtonLink({ href, children, ...props }: ButtonProps) {
   return (
     <TouchableOpacity {...props} onPress={() => router.navigate(href)}>
       {children}
@@ -16,6 +16,6 @@ function Button({ href, children, ...props }: ButtonProps) {
 }
 
 export default styled(
-  Button,
+  ButtonLink,
   ' flex-row items-center justify-center bg-gray-500 py-3 space-x-3 rounded-lg',
 );

@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import ButtonLink from '@/components/ButtonLink';
 import { LogInIcon, UserPlusIcon } from 'lucide-react-native';
 import { ImageBackground, Text, View } from 'react-native';
 
@@ -15,16 +15,16 @@ export default function Index() {
         Bem-vindo ao Damas Paia 2.0
       </Text>
 
-      <View className="w-4/5 mb-20 space-y-4">
-        <Button href="/(auth)/cadastro" className="bg-blue-600">
+      <View className="w-10/12 mb-20 space-y-4">
+        <ButtonLink href="/(auth)/cadastro" className="bg-blue-600">
           <Text className="text-white text-2xl text-center ">CADASTRAR</Text>
           <UserPlusIcon color="white" size={24} />
-        </Button>
+        </ButtonLink>
 
-        <Button href="/(auth)/login">
+        <ButtonLink href="/(auth)/login">
           <Text className="text-white text-2xl text-center ">ENTRAR</Text>
           <LogInIcon color="white" size={24} />
-        </Button>
+        </ButtonLink>
       </View>
     </ImageBackground>
   );

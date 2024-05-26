@@ -14,6 +14,9 @@ interface Auth {
   logout: () => void;
 }
 
+/**
+ * Armazena informações de autenticação do usuário, como o token de autenticação e o tema do aplicativo.
+ */
 export const storeProfile = create<Auth>()(
   persist(
     (set, get) => ({

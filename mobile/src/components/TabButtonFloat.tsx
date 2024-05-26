@@ -19,7 +19,9 @@ interface Props {
   Icon: LucideIcon;
 }
 
-// NÃO PODE SER CHAMADA COMO COMPONENT! TEM QUE CHAMAR COMO FUNÇÃO!
+/**
+ * NÃO PODE SER CHAMADO COMO COMPONENTE! TEM QUE CHAMAR COMO FUNÇÃO!
+ */
 export default function TabButtonFloat({
   size,
   href,

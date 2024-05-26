@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 import axios, { isAxiosError, type Axios } from 'axios';
-import { storeAuth } from './logicAuth';
 import {
   useMutation,
   useQuery,
@@ -27,6 +26,13 @@ export type UseOptions<T, D, E, V> = (T extends 'mutate'
   ? UseMutationOptions<D, E, V>
   : UseQueryOptions<D, E, V>) & { notlogoutIfNotAuthorized?: boolean };
 
+/**
+ * Hook personalizado para realizar chamadas à API.
+ *
+ * @param type Escolha se vai usar 'mutate' ou 'query' do React Query.
+ * @param cbConfig Uma função que recebe uma instância do Axios e retorna as configurações do React Query.
+ * @returns O retorno do React Query.
+ */
 export function useApi<
   D,
   T extends 'mutate' | 'query' = 'query',

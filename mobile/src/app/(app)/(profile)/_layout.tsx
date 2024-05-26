@@ -1,10 +1,11 @@
+import StackDark from '@/components/StackPaia';
 import { Stack } from 'expo-router';
 
 export default function Layout() {
   return (
-    <Stack>
+    <StackDark>
       <Stack.Screen name="index" options={{ title: 'MEU PERFIL' }} />
       <Stack.Screen name="change" options={{ title: 'EDITAR' }} />
-    </Stack>
+    </StackDark>
   );
 }

@@ -1,10 +1,10 @@
 import { Stack } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LayoutAuth() {
   return (
-    <View className="flex-1">
+    <SafeAreaView className="flex-1">
       <Stack
         screenOptions={{
           header: (props) => {
@@ -22,6 +22,6 @@ export default function LayoutAuth() {
           },
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }

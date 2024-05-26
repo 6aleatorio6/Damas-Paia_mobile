@@ -11,10 +11,8 @@ export const clientQuery = new QueryClient({
 
 export default function LayoutRaiz() {
   return (
-    <SafeAreaView className="h-screen min-h-full ">
-      <QueryClientProvider client={clientQuery}>
-        <Slot />
-      </QueryClientProvider>
-    </SafeAreaView>
+    <QueryClientProvider client={clientQuery}>
+      <Slot />
+    </QueryClientProvider>
   );
 }

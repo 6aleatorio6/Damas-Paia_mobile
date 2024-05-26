@@ -3,7 +3,7 @@ import ButtonForm from '@/components/ButtonForm';
 import InputText from '@/components/InputText';
 
 import { useApi } from '@/lib/axiosApi';
-import { storeAuth } from '@/lib/logicAuth';
+import { storeProfile } from '@/lib/store/profile';
 
 import { Link } from 'expo-router';
 
@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 export default function Login() {
-  const login = storeAuth((s) => s.login);
+  const login = storeProfile((s) => s.login);
 
   const useAllValues = useState({
     nome: '',

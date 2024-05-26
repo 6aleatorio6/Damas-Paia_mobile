@@ -1,58 +1,71 @@
 import TabButton from '@/components/TabButton';
 import TabButtonFloat from '@/components/TabButtonFloat';
-import { storeAuth } from '@/lib/logicAuth';
+import { storeProfile } from '@/lib/store/profile';
+import useTheme from '@/lib/useTheme';
 import { Redirect, Tabs } from 'expo-router';
 import { CircleUserRound, Frown, Home } from 'lucide-react-native';
+import { useEffect } from 'react';
+import { View } from 'react-native';
 
 export default function LayoutHome() {
-  const token = storeAuth((s) => s.token);
+  const { setTheme, getColor } = useTheme();
+  const token = storeProfile((s) => s.token);
+
+  useEffect(() => {
+    setTheme('dark');
+  }, []);
 
   if (!token) return <Redirect href={'/(auth)'} />;
 
   const iconSize = 1.4;
 
   return (
-    <Tabs
-      screenOptions={() => ({
-        headerShown: false,
-        tabBarActiveTintColor: '#3B82F6',
-        tabBarInactiveTintColor: 'black',
+    <View className="h-screen min-h-full">
+      <Tabs
+        screenOptions={() => ({
+          headerShown: false,
+          tabBarActiveTintColor: getColor(['blueGray:800', 'amber:100']),
+          tabBarInactiveTintColor: getColor(['blueGray:800', 'amber:100']),
 
-        // styles
-        tabBarItemStyle: {
-          marginTop: 5,
-          height: 50,
-        },
-        tabBarStyle: {
-          height: 65,
-          // display: usePathname() !== '/' ? 'none' : undefined,
-        },
-        tabBarLabelStyle: {
-          fontSize: 11,
-        },
-      })}
-    >
-      {TabButton({
-        Icon: Frown,
-        size: iconSize,
-        name: '(home)',
-        title: 'Frases',
-      })}
+          headerBackgroundContainerStyle: { backgroundColor: '' },
 
-      {TabButtonFloat({
-        Icon: Home,
-        size: iconSize,
-        name: 'pareamento',
-        href: '(app)/pareamento',
-        title: 'Jogar',
-      })}
+          // styles
+          tabBarItemStyle: {
+            marginTop: 5,
+            height: 50,
+          },
+          tabBarStyle: {
+            height: 65,
+            backgroundColor: getColor(['blueGray:800', 'amber:100']),
+            // display: usePathname() !== '/' ? 'none' : undefined,
+          },
+          tabBarLabelStyle: {
+            fontSize: 11,
+          },
+        })}
+      >
+        {TabButton({
+          Icon: Frown,
+          size: iconSize,
+          name: '(home)',
+          title: 'Frases',
+        })}
 
-      {TabButton({
-        Icon: CircleUserRound,
-        size: iconSize,
-        name: '(profile)',
-        title: 'Meu Perfil',
-      })}
-    </Tabs>
+        {TabButtonFloat({
+          Icon: Home,
+          size: iconSize,
+          name: 'pareamento',
+          href: '(app)/pareamento',
+          title: 'Jogar',
+        })}
+
+        {TabButton({
+          Icon: CircleUserRound,
+          size: iconSize,
+          name: '(profile)',
+          title: 'Meu Perfil',
+        })}
+      </Tabs>
+    </View>
   );
 }

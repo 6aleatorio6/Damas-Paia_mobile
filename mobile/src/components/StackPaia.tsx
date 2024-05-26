@@ -8,13 +8,20 @@ export default function StackPaia({ children }: PropsWithChildren) {
   return (
     <Stack
       screenOptions={{
+        statusBarColor: getColor(['gray:100', 'gray:800']),
+        statusBarStyle: 'light',
         headerStyle: {
-          backgroundColor: getColor(['lightBlue:100', 'black']),
+          backgroundColor: getColor(['gray:100', 'gray:800']),
+        },
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: '400',
+          fontSize: 25,
         },
         contentStyle: {
-          backgroundColor: getColor(['lightBlue:100', 'black']),
+          backgroundColor: getColor(['white', 'gray:900']),
         },
-        headerTintColor: getColor(['lightBlue:100', 'black']),
+        headerTintColor: getColor(['gray:900', 'white']),
       }}
     >
       {children}

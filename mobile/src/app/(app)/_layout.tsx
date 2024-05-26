@@ -5,9 +5,9 @@ import useTheme from '@/lib/useTheme';
 import { Redirect, Tabs } from 'expo-router';
 import { CircleUserRound, Frown, Home } from 'lucide-react-native';
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function LayoutHome() {
+export default function LayoutApp() {
   const { setTheme, getColor } = useTheme();
   const token = storeProfile((s) => s.token);
 
@@ -25,10 +25,8 @@ export default function LayoutHome() {
       <Tabs
         screenOptions={() => ({
           headerShown: false,
-          tabBarActiveTintColor: getColor(['blueGray:800', 'amber:100']),
-          tabBarInactiveTintColor: getColor(['blueGray:800', 'amber:100']),
-
-          headerBackgroundContainerStyle: { backgroundColor: '' },
+          tabBarActiveTintColor: getColor(['blue:500', 'blue:500']),
+          tabBarInactiveTintColor: getColor(['gray:300', 'gray:300']),
 
           // styles
           tabBarItemStyle: {
@@ -37,8 +35,9 @@ export default function LayoutHome() {
           },
           tabBarStyle: {
             height: 65,
-            backgroundColor: getColor(['blueGray:800', 'amber:100']),
-            // display: usePathname() !== '/' ? 'none' : undefined,
+            backgroundColor: getColor(['gray:100', 'gray:800']),
+            position: 'absolute',
+            borderColor: getColor(['gray:200', 'gray:700']),
           },
           tabBarLabelStyle: {
             fontSize: 11,

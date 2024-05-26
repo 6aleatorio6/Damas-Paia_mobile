@@ -5,7 +5,7 @@ export default function Layout() {
   return (
     <StackDark>
       <Stack.Screen name="index" options={{ title: 'MEU PERFIL' }} />
-      <Stack.Screen name="change" options={{ title: 'EDITAR' }} />
+      <Stack.Screen name="change" options={{ title: 'EDITAR PERFIL' }} />
     </StackDark>
   );
 }

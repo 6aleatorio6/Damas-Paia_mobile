@@ -31,13 +31,15 @@ export default function ChangeProfile() {
 
   return (
     <View className="px-10 pt-20 ">
-      <Text className="text-2xl font-bold mb-5">EDITAR PERFIL</Text>
+      <Text className="text-2xl font-bold mb-5 dark:text-white">
+        EDITAR DADOS
+      </Text>
       <View className="mb-6 ">
         <InputText
           field="nome"
           placeholder="Novo nome"
           valState={stateValues}
-          textName="text-black "
+          textName="dark:text-white"
           className="text-black mb-3"
         />
         <InputText
@@ -46,10 +48,16 @@ export default function ChangeProfile() {
           valState={stateValues}
           secureTextEntry
           className="text-black  "
-          textName="text-black "
+          textName="dark:text-white"
         />
       </View>
-      <ButtonForm onPress={mutate}>Salvar alterações</ButtonForm>
+      <ButtonForm
+        className="dark:bg-gray-400 "
+        textName="dark:text-white"
+        onPress={mutate}
+      >
+        SALVAR
+      </ButtonForm>
       {isPending && <Text className="text-center">Carregando...</Text>}
       {isError && <Text className="text-center">Erro ao salvar</Text>}
     </View>

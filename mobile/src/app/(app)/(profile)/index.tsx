@@ -3,11 +3,13 @@ import ButtonLink from '@/components/ButtonLink';
 import { useApi } from '@/lib/axiosApi';
 import useProfile from '@/lib/query/useProfile';
 import { storeProfile } from '@/lib/store/profile';
+import useTheme from '@/lib/useTheme';
 import { CircleUserRound } from 'lucide-react-native';
 import { Text, View, Image } from 'react-native';
 
 export default function IndexProfile() {
   const loggout = storeProfile((s) => s.logout);
+  const { getColor } = useTheme();
 
   const { data, isLoading } = useProfile();
 
@@ -31,14 +33,14 @@ export default function IndexProfile() {
           {avatar ? (
             <Image source={avatar} className="w-10 h-10" />
           ) : (
-            <CircleUserRound size={70} color={'black'} />
+            <CircleUserRound size={70} color={getColor(['black', 'white'])} />
           )}
-          <Text className="text-3xl text-center font-bold mx-3">
+          <Text className="text-3xl dark:text-white text-center font-bold mx-3">
             {data?.nome}
           </Text>
         </View>
         <ButtonLink href="/(app)/(profile)/change" className="bg-blue-500 px-4">
-          <Text className="text-white text-2xl font-bold">EDITAR</Text>
+          <Text className="dark:text-white text-2xl font-bold">EDITAR</Text>
         </ButtonLink>
 
         <ButtonForm onPress={mutate} className="bg-red-500 px-4">

@@ -9,10 +9,11 @@ import { Alert } from 'react-native';
 export default function onError(error: unknown) {
   if (!(error instanceof AxiosError)) throw error;
 
-  let data = error.response?.data as {
-    error: string;
-    message: string | string[];
-  };
+  let data =
+    (error.response?.data as {
+      error: string;
+      message: string | string[];
+    }) || {};
 
   if (Array.isArray(data.message)) data.message = data.message.join(';\n \n');
 

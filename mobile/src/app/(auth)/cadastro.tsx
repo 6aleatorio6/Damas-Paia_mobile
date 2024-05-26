@@ -17,7 +17,7 @@ export default function Cadastro() {
     senha: '',
   });
 
-  const { mutate, isPending } = useApi('mutate', (axios) => {
+  const { mutate, isPending, isError, isIdle } = useApi('mutate', (axios) => {
     return {
       async mutationFn() {
         return axios.post('/user', useAllValues[0]);
@@ -46,13 +46,10 @@ export default function Cadastro() {
         />
       </View>
       <View className="flex-col items-end">
-        <ButtonForm
-          onPress={mutate}
-          disabled={isPending}
-          className="bg-green-600 w-full"
-        >
+        <ButtonForm onPress={mutate} className="bg-green-600 w-full">
           CADASTRAR
         </ButtonForm>
+
         <Text className="text-base mt-2  text-white mx-3">
           Já tem conta?{' '}
           <Link className="underline text-end" href={'/(auth)/login'}>

@@ -18,7 +18,7 @@ export default function Login() {
     senha: '',
   });
 
-  const { mutate, isPending } = useApi('mutate', (axios) => ({
+  const { mutate, isPending, isIdle } = useApi('mutate', (axios) => ({
     notlogoutIfNotAuthorized: true,
     async mutationFn() {
       const { data } = await axios.post('/auth/login', useAllValues[0]);
@@ -39,13 +39,10 @@ export default function Login() {
         />
       </View>
       <View className="flex-col items-end">
-        <ButtonForm
-          onPress={mutate}
-          disabled={isPending}
-          className="bg-green-600 w-full"
-        >
+        <ButtonForm onPress={mutate} className="bg-green-600 w-full">
           ENTRAR
         </ButtonForm>
+
         <Text className="text-base mt-2 text-white  justify-end">
           Não tem conta?{' '}
           <Link className="underline" href={'/(auth)/cadastro'}>

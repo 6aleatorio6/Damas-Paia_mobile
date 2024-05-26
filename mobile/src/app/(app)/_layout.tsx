@@ -25,8 +25,8 @@ export default function LayoutApp() {
       <Tabs
         screenOptions={() => ({
           headerShown: false,
-          tabBarActiveTintColor: getColor(['blue:500', 'blue:500']),
-          tabBarInactiveTintColor: getColor(['gray:300', 'gray:300']),
+          tabBarActiveTintColor: getColor(['blue-500', 'blue-500']),
+          tabBarInactiveTintColor: getColor(['gray-300', 'gray-300']),
 
           // styles
           tabBarItemStyle: {
@@ -35,9 +35,9 @@ export default function LayoutApp() {
           },
           tabBarStyle: {
             height: 65,
-            backgroundColor: getColor(['gray:100', 'gray:800']),
+            backgroundColor: getColor(['gray-100', 'gray-800']),
             position: 'absolute',
-            borderColor: getColor(['gray:200', 'gray:700']),
+            borderColor: getColor(['gray-200', 'gray-700']),
           },
           tabBarLabelStyle: {
             fontSize: 11,

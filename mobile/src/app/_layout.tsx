@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Slot } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const clientQuery = new QueryClient({
   defaultOptions: {

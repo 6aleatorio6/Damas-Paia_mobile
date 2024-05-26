@@ -13,6 +13,7 @@ export default function LayoutHome() {
 
   useEffect(() => {
     setTheme('dark');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!token) return <Redirect href={'/(auth)'} />;
@@ -20,7 +21,7 @@ export default function LayoutHome() {
   const iconSize = 1.4;
 
   return (
-    <View className="h-screen min-h-full">
+    <SafeAreaView className="h-full  min-h-[95vh]">
       <Tabs
         screenOptions={() => ({
           headerShown: false,
@@ -66,6 +67,6 @@ export default function LayoutHome() {
           title: 'Meu Perfil',
         })}
       </Tabs>
-    </View>
+    </SafeAreaView>
   );
 }

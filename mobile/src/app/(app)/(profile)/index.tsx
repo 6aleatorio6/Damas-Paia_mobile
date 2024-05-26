@@ -1,13 +1,13 @@
 import ButtonForm from '@/components/ButtonForm';
 import ButtonLink from '@/components/ButtonLink';
 import { useApi } from '@/lib/axiosApi';
-import { storeAuth } from '@/lib/logicAuth';
 import useProfile from '@/lib/query/useProfile';
+import { storeProfile } from '@/lib/store/profile';
 import { CircleUserRound } from 'lucide-react-native';
 import { Text, View, Image } from 'react-native';
 
 export default function IndexProfile() {
-  const loggout = storeAuth((s) => s.logout);
+  const loggout = storeProfile((s) => s.logout);
 
   const { data, isLoading } = useProfile();
 

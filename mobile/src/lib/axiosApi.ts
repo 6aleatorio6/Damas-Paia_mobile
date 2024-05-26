@@ -14,6 +14,7 @@ import { router } from 'expo-router';
 import { useEffect } from 'react';
 import onError from './alertError';
 import { Alert } from 'react-native';
+import { storeProfile } from './store/profile';
 
 const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.108:3000';
 
@@ -32,14 +33,14 @@ export function useApi<
   E = unknown,
   V = unknown,
 >(type: T, cbConfig: (axios: Axios) => UseOptions<T, D, E, V>) {
-  const loggout = storeAuth((s) => s.logout);
+  const loggout = storeProfile((s) => s.logout);
   const config = {
     onError,
     ...cbConfig(
       axios.create({
         baseURL,
         headers: {
-          Authorization: `Bearer ${storeAuth((s) => s.token)}`,
+          Authorization: `Bearer ${storeProfile((s) => s.token)}`,
         },
       }),
     ),
@@ -62,9 +63,15 @@ export function useApi<
         router.replace('/(auth)');
       }
 
-      Alert.alert('Sessão expirada', 'Faça login novamente', undefined, {
-        onDismiss: sair,
-      });
+      Alert.alert(
+        'Sessão expirada',
+        'Faça login novamente',
+        [{ onPress: sair }],
+        {
+          cancelable: true,
+          onDismiss: sair,
+        },
+      );
     }
   }, [isUnauthorized]);
 

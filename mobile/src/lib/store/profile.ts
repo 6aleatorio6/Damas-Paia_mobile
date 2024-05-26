@@ -5,18 +5,28 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface Auth {
   token: null | string;
+  theme: 'dark' | 'light';
+
+  setTheme: (theme: 'dark' | 'light') => void;
 
   login: (token: string) => void;
+
   logout: () => void;
 }
-export const storeAuth = create<Auth>()(
+
+export const storeProfile = create<Auth>()(
   persist(
     (set, get) => ({
       token: null,
+      theme: 'dark',
 
-      async login(token: string) {
+      setTheme(theme) {
+        set(() => ({ theme }));
+      },
+
+      login(token: string) {
         set(() => ({ token: token }));
-        router.replace('/(app)/(home)');
+        router.replace('/(app)');
       },
 
       logout() {

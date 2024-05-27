@@ -21,14 +21,38 @@ export const MaterialTopTabs = withLayoutContext<
 >(Navigator);
 
 export default function TabLayout() {
+  const { getColor } = useTheme();
+
   return (
     <>
       <HeaderProfile />
-      <MaterialTopTabs>
-        <MaterialTopTabs.Screen name="config" options={{ title: 'Tab One' }} />
+      <MaterialTopTabs
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor: getColor(['white', 'gray-900']),
+            borderColor: getColor(['white', 'white']),
+            // height: 60,
+          },
+          tabBarLabelStyle: {
+            fontWeight: '400',
+            fontSize: 18,
+            color: getColor(['gray-900', 'white']),
+          },
+          tabBarIndicatorStyle: {
+            borderColor: getColor(['gray-900', 'white']),
+          },
+          tabBarContentContainerStyle: {
+            flex: 1,
+          },
+        }}
+      >
         <MaterialTopTabs.Screen
           name="myFrases"
-          options={{ title: 'Tab Two' }}
+          options={{ title: 'MINHAS FRASES' }}
+        />
+        <MaterialTopTabs.Screen
+          name="config"
+          options={{ title: 'CONFIGURAÇÔES' }}
         />
       </MaterialTopTabs>
     </>
@@ -44,7 +68,7 @@ function HeaderProfile() {
   if (isLoading) return <Text className="m-auto">Loading...</Text>;
 
   return (
-    <View className="flex-row   items-center ">
+    <View className="flex-row  items-center justify-center  h-[15%]">
       {avatar ? (
         <Image source={avatar} className="w-10 h-10" />
       ) : (
@@ -56,21 +80,3 @@ function HeaderProfile() {
     </View>
   );
 }
-
-// return (
-//   <View className="flex-1 items-center justify-center">
-//     <View className="space-y-3">
-//       <ButtonLink href="/(app)/(profile)/change" className="bg-blue-500 px-4">
-//         <Text className="dark:text-white text-2xl font-bold">EDITAR</Text>
-//       </ButtonLink>
-
-//       <ButtonForm onPress={mutate} className="bg-red-500 px-4">
-//         DELETAR CONTA
-//       </ButtonForm>
-
-//       <ButtonForm onPress={loggout} className="bg-grau-500 px-4">
-//         SAIR DA CONTA
-//       </ButtonForm>
-//     </View>
-//   </View>
-// );

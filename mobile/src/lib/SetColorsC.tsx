@@ -36,10 +36,10 @@ export function SetColorAtComp<T extends ComponentType, C extends ColorObj>(
 ) {
   type CompType = Exclude<T, Constructor<NativeMethods>>;
 
-  type Props = { ColorName: keyof C } & ComponentProps<T>;
+  type Props = { ColorName?: keyof C } & ComponentProps<T>;
   // componente
   return function ComponentWithColor({ ColorName, ...props }: Props) {
-    const classColorsArray = setColors[ColorName];
+    const classColorsArray = setColors[ColorName || 'pri'];
 
     const classColors = Array.isArray(classColorsArray)
       ? classColorsArray.join(' ')

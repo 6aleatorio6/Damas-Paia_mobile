@@ -1,5 +1,4 @@
-import { styled } from 'nativewind';
-import { View, ViewProps } from 'react-native';
+import { View } from 'react-native';
 import { TextPaia } from './themes';
 import { ReqFrase } from '@/lib/querysMutations/useFrases';
 

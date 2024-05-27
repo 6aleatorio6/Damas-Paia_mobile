@@ -9,7 +9,7 @@ import { Constructor } from 'react-native/types/private/Utilities';
  * - Sim, fiquei hrs nisso dnv
  * - Sim, ficou um pouco complexo
  * - Sim, talvez não compensou o tempo
- * - Mas concordamos que ficou foda
+ * - Mas concordamos que ficou foda, ou nao
  *
  * @description
  * Esta função recebe um componente e um objeto de temas e retorna um componente
@@ -35,7 +35,8 @@ export function SetColorAtComp<T extends ComponentType, C extends ColorObj>(
   setColors: C,
 ) {
   type CompType = Exclude<T, Constructor<NativeMethods>>;
-  type Props = { ColorName: keyof C } & ComponentProps<CompType>;
+
+  type Props = { ColorName: keyof C } & ComponentProps<T>;
   // componente
   return function ComponentWithColor({ ColorName, ...props }: Props) {
     const classColorsArray = setColors[ColorName];

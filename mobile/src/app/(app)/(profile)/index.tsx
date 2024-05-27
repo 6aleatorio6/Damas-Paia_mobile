@@ -1,7 +1,7 @@
 import ButtonForm from '@/components/ButtonForm';
 import ButtonLink from '@/components/ButtonLink';
 import { useApi } from '@/lib/axiosApi';
-import useProfile from '@/lib/query/useProfile';
+import useProfile from '@/lib/querysMutations/useProfile';
 import { storeProfile } from '@/lib/store/profile';
 import useTheme from '@/lib/useTheme';
 import { CircleUserRound } from 'lucide-react-native';

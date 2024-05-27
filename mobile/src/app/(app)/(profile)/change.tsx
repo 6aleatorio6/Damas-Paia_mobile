@@ -2,7 +2,7 @@ import { clientQuery } from '@/app/_layout';
 import ButtonForm from '@/components/ButtonForm';
 import InputText from '@/components/InputText';
 import { useApi } from '@/lib/axiosApi';
-import useProfile from '@/lib/query/useProfile';
+import useProfile from '@/lib/querysMutations/useProfile';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Text, View } from 'react-native';

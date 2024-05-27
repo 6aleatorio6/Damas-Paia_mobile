@@ -18,7 +18,7 @@ export default function Login() {
     senha: '',
   });
 
-  const { mutate, isPending, isIdle } = useApi('mutate', (axios) => ({
+  const { mutate } = useApi('mutate', (axios) => ({
     notlogoutIfNotAuthorized: true,
     async mutationFn() {
       const { data } = await axios.post('/auth/login', useAllValues[0]);

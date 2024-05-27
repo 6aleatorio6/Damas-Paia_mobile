@@ -17,7 +17,7 @@ export default function Cadastro() {
     senha: '',
   });
 
-  const { mutate, isPending, isError, isIdle } = useApi('mutate', (axios) => {
+  const { mutate } = useApi('mutate', (axios) => {
     return {
       async mutationFn() {
         return axios.post('/user', useAllValues[0]);

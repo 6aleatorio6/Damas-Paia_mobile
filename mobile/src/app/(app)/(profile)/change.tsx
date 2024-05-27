@@ -14,7 +14,7 @@ export default function ChangeProfile() {
   const user = useGetProfile().data;
 
   const stateValues = useState({
-    nome: user?.nome || '',
+    nome: '',
     senha: undefined,
   });
 

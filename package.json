@@ -5,10 +5,8 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "prepare": "husky"
   },
   "dependencies": {
     "expo": "^51.0.14",
@@ -27,6 +25,7 @@
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.0.0",
     "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.11",
     "prettier": "3.3.2",
     "typescript": "~5.3.3"
   },

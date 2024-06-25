@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { Text } from 'react-native';
 
 export default function IndexAuth() {
   return <Text>ola</Text>;

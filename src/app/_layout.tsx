@@ -1,7 +1,7 @@
-import { Slot } from "expo-router";
+import { Slot } from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: "(tabs)/index",
+  initialRouteName: '(tabs)/index',
 };
 
 export default () => <Slot />;

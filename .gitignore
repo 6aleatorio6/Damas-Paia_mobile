@@ -1,0 +1,9 @@
+node_modules
+.expo
+.vscode/launch.json
+
+.env
+.env.*
+
+android/
+ios/

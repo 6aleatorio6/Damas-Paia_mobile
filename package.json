@@ -2,6 +2,7 @@
   "name": "damas-paia2.0",
   "version": "1.0.0",
   "main": "expo-router/entry",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -23,10 +24,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@eslint/js": "^9.5.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/react": "~18.2.45",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.0.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.3",
     "husky": "^9.0.11",
     "prettier": "3.3.2",
     "typescript": "~5.3.3"

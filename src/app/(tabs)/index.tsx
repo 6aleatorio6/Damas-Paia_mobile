@@ -1,5 +1,14 @@
 import { Text } from 'react-native';
+import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function Indextabs() {
-  return <Text>ola</Text>;
+  const { text } = useStyles(stylesheet).styles;
+
+  return <Text style={text}>ola</Text>;
 }
+
+const stylesheet = createStyleSheet((theme) => ({
+  text: {
+    color: theme.primary,
+  },
+}));

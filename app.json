@@ -13,13 +13,15 @@
       "backgroundColor": "#1E1E1E"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.damaspaia"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icon.png",
         "backgroundColor": "#1E1E1E"
-      }
+      },
+      "package": "com.damaspaia"
     },
     "web": {
       "favicon": "./src/assets/icon.png"

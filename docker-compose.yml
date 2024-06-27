@@ -1,0 +1,12 @@
+services:
+  app:
+    container_name: damas_mobile
+    image: damas_mobile
+    build: .
+    volumes: 
+      - .:/app
+    ports: 
+      - "8081:8081"
+    privileged: true
+    tty: true
+    stdin_open: true

@@ -7,7 +7,7 @@ interface Props {
   fontSize?: number;
   backgroundColor: Colors;
   color: Colors;
-  onPress?: () => any;
+  onPress?: () => void;
 }
 export default function ButtonBig({ onPress, children, fontSize, backgroundColor, color }: Props) {
   const { button, text } = useStyles(stylesPaia).styles;

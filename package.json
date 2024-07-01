@@ -2,10 +2,9 @@
   "name": "damas-paia2.0",
   "version": "1.0.0",
   "main": "expo-router/entry",
-  "type": "module",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android",
+    "android": "emulator @AndroidPaia --no-audio --no-boot-anim --gpu host & expo run:android",
     "ios": "expo run:ios",
     "lint": "eslint .",
     "prepare": "husky"

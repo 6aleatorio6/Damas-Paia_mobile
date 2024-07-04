@@ -10,6 +10,9 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@tanstack/react-query": "^5.49.2",
+    "axios": "^1.7.2",
     "expo": "^51.0.14",
     "expo-constants": "~16.0.2",
     "expo-linking": "~6.3.1",
@@ -24,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@eslint/js": "^9.5.0",
+    "@tanstack/eslint-plugin-query": "^5.50.0",
     "@types/eslint__js": "^8.42.3",
     "@types/react": "~18.2.45",
     "@typescript-eslint/eslint-plugin": "^7.14.1",

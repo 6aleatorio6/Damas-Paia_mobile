@@ -1,9 +1,10 @@
+import { useAuth } from '@/libs/mutationOrQuery/authToken';
 import { Redirect, Tabs } from 'expo-router';
 
 export default function TabsLayout() {
-  const isLogged = false;
+  const { token } = useAuth();
 
-  if (!isLogged) return <Redirect href="(auth)" />;
+  if (!token) return <Redirect href="(auth)" />;
 
   return <Tabs />;
 }

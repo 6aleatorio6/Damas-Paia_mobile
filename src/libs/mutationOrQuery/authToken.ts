@@ -1,3 +1,4 @@
+import { queryClientPaia } from '@/app/_layout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,18 +11,21 @@ export function useAuth() {
     async queryFn() {
       return await AsyncStorage.getItem('token');
     },
-    staleTime: 1000 * 60 * 60 * 24 * 7, // 1 week
+    staleTime: 1000 * 60 * 60 * 24 * 7, // 1 week,
   });
 
   return {
-    token: authQuery,
+    token: authQuery.data,
     logout() {
       AsyncStorage.removeItem('token');
       authQuery.refetch();
     },
-    login(token: string) {
+    setToken(token: string, rerenderization = true) {
       AsyncStorage.setItem('token', token);
-      authQuery.refetch();
+
+      if (rerenderization) authQuery.refetch();
+
+      if (!rerenderization) queryClientPaia.setQueryData(['token'], token);
     },
   };
 }

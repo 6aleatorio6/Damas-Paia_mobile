@@ -7,23 +7,25 @@ interface Props {
   fontSize?: number;
   backgroundColor: Colors;
   color: Colors;
+  height?: number;
   onPress?: () => void;
 }
-export default function ButtonBig({ onPress, children, fontSize, backgroundColor, color }: Props) {
+export default function ButtonBig({ onPress, children, fontSize, backgroundColor, color, height }: Props) {
   const { button, text } = useStyles(stylesPaia).styles;
 
   return (
-    <TouchableOpacity style={button(backgroundColor)} onPress={onPress}>
+    <TouchableOpacity style={button(backgroundColor, height || 40)} onPress={onPress}>
       <Text style={text(fontSize, color)}>{children}</Text>
     </TouchableOpacity>
   );
 }
 
 const stylesPaia = createStyleSheet((theme, info) => ({
-  button: (color: Colors) => ({
+  button: (color: Colors, height: number) => ({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: theme.colors[color],
+    minHeight: height,
     borderRadius: 10,
   }),
   text: (size = 27, color: Colors) => ({

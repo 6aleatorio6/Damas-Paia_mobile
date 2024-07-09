@@ -1,82 +1,84 @@
 import useApi, { CbAxios } from '@/libs/useApi';
-import { StatusValidy, useValidador, ValidacoesDoCampo } from '@/libs/useValidador';
-import { UseMutationOptions } from '@tanstack/react-query';
-import {
-  ComponentProps,
-  ComponentType,
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useRef,
-  useState,
-} from 'react';
-import { TextInputProps, View } from 'react-native';
+import { useValidador, ValidacoesDoCampo } from '@/libs/useValidador';
+import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
+import { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react';
+import { Text, TextInput, TextInputProps, View, ViewProps } from 'react-native';
 
-interface ContextValues {
+const InfoForm = createContext<{
   isFormValidy: boolean;
-  mutation: object;
+  dispatchFormValidy: (action: [string, boolean]) => void;
   submit: () => void;
-}
-const FormContext = createContext<ContextValues | null>(null);
+  mutation: UseMutationResult<unknown, Error, Record<string, string>>;
+} | null>(null);
 
-export function FormInputValidator<C extends string, InProps extends InputComponentProps>(
-  submitOptions: CbAxios<UseMutationOptions<unknown, Error, Record<C, string>>>,
-  campos: Record<C, ValidacoesDoCampo>,
-  InputComponent: ComponentType<InProps | InputComponentProps>,
-  FormComponent: ComponentType<PropsWithChildren> = View,
-) {
-  const values = useRef({} as Record<C, string>).current;
-  const mutation = useApi('mutate', submitOptions);
+export class Form<C extends string> {
+  private values = useRef({} as Record<C, string>).current;
 
-  const contextValues: ContextValues = {
-    get isFormValidy() {
-      return !!Object.values(values).findIndex((errorInput) => !errorInput);
-    },
-    submit: () => mutation.mutate(values),
-    mutation,
+  constructor(
+    private submitOptions: CbAxios<UseMutationOptions<unknown, Error, Record<C, string>>>,
+    private campos: Record<C, ValidacoesDoCampo>,
+  ) {}
+
+  public Provider = (props: ViewProps) => {
+    const mutation = useApi('mutate', this.submitOptions);
+    const statusDosCampos = useRef({} as Record<string, boolean>).current;
+
+    const [isFormValidy, dispatchFormValidy] = useReducer(
+      (_state: boolean, [campo, statusDoCampo]: [string, boolean]) => {
+        statusDosCampos[campo] = statusDoCampo;
+
+        return !Object.values(statusDosCampos).includes(false);
+      },
+      false,
+    );
+
+    const info = {
+      isFormValidy,
+      dispatchFormValidy,
+      mutation,
+      submit: () => mutation.mutate(this.values),
+    };
+
+    return (
+      <InfoForm.Provider value={info}>
+        <View {...props} />
+      </InfoForm.Provider>
+    );
   };
 
-  return {
-    useContext: () => useContext(FormContext),
-    Form({ children, ...props }: ComponentProps<typeof FormComponent>) {
-      return (
-        <FormComponent {...props}>
-          <FormContext.Provider value={contextValues}>{children}</FormContext.Provider>
-        </FormComponent>
-      );
-    },
-    Input(props: Omit<InProps, 'error' | 'status' | 'input'> & { campo: C; defaultValue?: string }) {
-      const { campo, defaultValue, ...propsInput } = props;
-      const [value, setValue] = useState(values[campo] || defaultValue || '');
+  public static getContext = () => {
+    const context = useContext(InfoForm);
 
-      values[campo] = value;
+    if (!context) throw new Error('Context do form precisa ser chamada dentro do Form.Provider!');
 
-      const validacoesDesseCampo = campos[campo];
-      const { error, status } = useValidador(value, validacoesDesseCampo);
+    return context;
+  };
 
-      return (
-        <InputComponent
-          {...propsInput}
-          status={status}
-          error={error}
-          input={{
-            value,
-            onChangeText: setValue,
-            placeholder: campo,
-            editable: true,
-            selectTextOnFocus: true,
-          }}
+  public Input = ({ campo, defaultValue, ...props }: TextInputProps & { campo: C }) => {
+    const validacoesDesseCampo = this.campos[campo];
+
+    const [value, setValue] = useState(this.values[campo] || defaultValue || '');
+    const { error, status } = useValidador(value, validacoesDesseCampo);
+
+    const context = Form.getContext();
+
+    useEffect(() => context.dispatchFormValidy([campo, status === 'VALIDY']), [status]);
+
+    this.values[campo] = value;
+
+    return (
+      <View>
+        <Text>{error}</Text>
+        <Text>{status}</Text>
+        <TextInput
+          {...props}
+          value={value}
+          onChangeText={setValue}
+          placeholder={campo}
+          editable={true}
+          selectTextOnFocus={true}
         />
-      );
-    },
+      </View>
+    );
   };
 }
-
-export type InputComponentProps<P = {}> = P & {
-  error: string | null;
-  status: StatusValidy;
-  input: Pick<
-    TextInputProps,
-    'value' | 'onChangeText' | 'placeholder' | 'editable' | 'selectTextOnFocus' | 'defaultValue'
-  >;
-};

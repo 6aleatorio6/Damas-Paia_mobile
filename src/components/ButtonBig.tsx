@@ -32,7 +32,6 @@ const stylesPaia = createStyleSheet((theme, info) => ({
     color: theme.colors[color],
     textAlign: 'center',
     fontSize: size,
-    textTransform: 'uppercase',
     fontWeight: 'bold',
   }),
 }));

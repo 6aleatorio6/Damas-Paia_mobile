@@ -16,11 +16,11 @@ export default function IndexAuth() {
       </View>
       <Image source={require('@/assets/icon.png')} style={styleTheme.image('25%', '1/1')} />
       <View style={styles.buttons}>
-        <ButtonBig backgroundColor="primary" color="light">
-          Cadastrar
+        <ButtonBig backgroundColor="primary" color="textPri">
+          CADASTRAR
         </ButtonBig>
-        <ButtonBig backgroundColor="secondary" color="light">
-          Entrar
+        <ButtonBig backgroundColor="secondary" color="textPri">
+          ENTRAR
         </ButtonBig>
       </View>
     </View>
@@ -31,7 +31,7 @@ const stylesPaia = createStyleSheet((theme) => ({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: theme.colors.bodyBg,
+    backgroundColor: theme.colors.body,
     justifyContent: 'space-around',
   },
   buttons: {

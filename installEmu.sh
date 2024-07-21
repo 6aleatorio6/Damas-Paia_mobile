@@ -3,8 +3,15 @@
 # SCRIPT DE INSTAÇÂO DO EMULADOR PARA UBUNTU
 # ANDROID SUICIDIO NÂO FUNCIONA BEM EM CONTAINER
 
+# ENV 
 API_LEVEL=33
+DEVICE_ID=25 #Pixel 5
+ANDROID_HOME="${HOME}/Android/Sdk"
+JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
 
+
+sudo apt-get update
+sudo apt-get install -y openjdk-17-jdk 
 
 check_and_set_variable() {
     local var_name=$1
@@ -20,22 +27,19 @@ check_and_set_variable() {
     export "$var_name"="$var_value"
 }
 
-check_and_set_variable "ANDROID_HOME" "${HOME}/Android/Sdk"
-check_and_set_variable "JAVA_HOME" "/usr/lib/jvm/java-17-openjdk-amd64"
+check_and_set_variable "ANDROID_HOME" $ANDROID_HOME
+check_and_set_variable "JAVA_HOME" $JAVA_HOME
 check_and_set_variable "PATH" "$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin"
 
-
-sudo apt-get update
-
-# JAVA
-sudo apt-get install -y openjdk-17-jdk 
-
 # ANDROID SDK
-mkdir -p "${ANDROID_HOME}/cmdline-tools" && \
-wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip  -O "/tmp/tools.zip" && \
-unzip -q "/tmp/tools.zip" -d "${ANDROID_HOME}/cmdline-tools"  && \
-mv "${ANDROID_HOME}/cmdline-tools/cmdline-tools" "${ANDROID_HOME}/cmdline-tools/latest" && \
-rm "/tmp/tools.zip"
+local CMDLINE="${ANDROID_HOME}/cmdline-tools" 
+local TOOLS_ZIP_TEMP="${ANDROID_HOME}/tools.zip" 
+
+mkdir -p $PATH_CMDLINE
+wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip  -O $PATH_TOOLS_ZIP
+unzip -q $PATH_TOOLS_ZIP -d $PATH_CMDLINE  
+mv "${$PATH_CMDLINE}/cmdline-tools" "${PATH_CMDLINE}/latest" 
+rm $PATH_TOOLS_ZIP
 
 
 
@@ -45,7 +49,7 @@ echo Y | sdkmanager --verbose --no_https "emulator" \
     "system-images;android-${API_LEVEL};default;x86_64" "platforms;android-${API_LEVEL}" "platform-tools"
 
 
-echo no | avdmanager create avd -n AndroidPaia -k "system-images;android-${API_LEVEL};default;x86_64" -d 19 --force
+echo no | avdmanager create avd -n AndroidPaia -k "system-images;android-${API_LEVEL};default;x86_64" -d $DEVICE_ID --force
 
 npm install
 

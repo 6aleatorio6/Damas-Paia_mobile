@@ -16,9 +16,9 @@ export function useValidador(value: string, validacoes: ValidacoesDoCampo) {
         const error = await verify(value);
         errorRef.current = error || null;
 
-        if (!error) return setValidStatus('VALIDY');
+        if (error) return setValidStatus('ERROR');
 
-        setValidStatus('ERROR');
+        setValidStatus('VALIDY');
       }
     }, TIMEOUT_VALIDY);
 

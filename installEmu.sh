@@ -29,7 +29,7 @@ check_and_set_variable() {
 
 check_and_set_variable "ANDROID_HOME" $ANDROID_HOME
 check_and_set_variable "JAVA_HOME" $JAVA_HOME
-check_and_set_variable "PATH" "$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin"
+check_and_set_variable "PATH" "$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 
 # ANDROID SDK
 local CMDLINE="${ANDROID_HOME}/cmdline-tools" 

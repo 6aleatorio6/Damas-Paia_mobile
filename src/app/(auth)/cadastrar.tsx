@@ -1,27 +1,18 @@
-import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import FormMolde from '@/components/FormMolde';
-import { Input } from '@/components/Input';
+import Input from '@/components/FormInput';
 import Copyright from '@/components/Copyright';
+import ButtonSubmit from '@/components/FormSubmit';
 
-export default function IndexAuth() {
-  const { styles } = useStyles(stylesPaia);
-
+export default function CadastrarAuth() {
   return (
     <>
-      <FormMolde submitOptions={() => ({})}>
-        <Input field="email" />
+      <FormMolde title="CRIE SUA CONTA" submitOptions={() => ({})}>
+        <Input field="email" textContentType="emailAddress" />
+        <Input field="username" name="Nome de usuario" textContentType="nickname" />
+        <Input field="senha" textContentType="password" secureTextEntry />
+        <ButtonSubmit title="CADASTRAR" />
       </FormMolde>
       <Copyright />
     </>
   );
 }
-
-const stylesPaia = createStyleSheet((theme) => ({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: theme.colors.body,
-    justifyContent: 'space-between',
-    paddingBottom: '10%',
-  },
-}));

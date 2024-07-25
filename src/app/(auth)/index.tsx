@@ -1,7 +1,6 @@
 import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
 import { Image, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import Copyright from '@/components/Copyright';
 import { router } from 'expo-router';
 import { Colors } from '@/constants/colors';
 
@@ -9,20 +8,17 @@ export default function IndexAuth() {
   const { styles, theme } = useStyles(stylesPaia);
 
   return (
-    <>
-      <View style={styles.container}>
-        <Image source={require('@/assets/icon.png')} style={theme.styles.image(180, '1/1')} />
-        <View style={styles.buttons}>
-          <ButtonBig style={styles.button('primary')} onPress={() => router.navigate('/cadastrar')}>
-            CADASTRAR
-          </ButtonBig>
-          <ButtonBig style={styles.button('secondary')} onPress={() => router.navigate('/entrar')}>
-            ENTRAR
-          </ButtonBig>
-        </View>
+    <View style={styles.container}>
+      <Image source={require('@/assets/icon.png')} style={theme.styles.image(180, '1/1')} />
+      <View style={styles.buttons}>
+        <ButtonBig style={styles.button('primary')} onPress={() => router.navigate('/cadastrar')}>
+          CADASTRAR
+        </ButtonBig>
+        <ButtonBig style={styles.button('secondary')} onPress={() => router.navigate('/entrar')}>
+          ENTRAR
+        </ButtonBig>
       </View>
-      <Copyright />
-    </>
+    </View>
   );
 }
 

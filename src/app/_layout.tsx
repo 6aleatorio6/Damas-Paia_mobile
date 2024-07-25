@@ -12,7 +12,7 @@ export const queryClientPaia = new QueryClient();
 export default function LayoutRaiz() {
   return (
     <QueryClientProvider client={queryClientPaia}>
-      <SafeAreaView style={{ flex: 1, height: '100%' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'gray', height: '100%' }}>
         <Slot initialRouteName="(tabs)" />
       </SafeAreaView>
     </QueryClientProvider>

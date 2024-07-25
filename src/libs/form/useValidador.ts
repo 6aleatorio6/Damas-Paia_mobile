@@ -9,8 +9,13 @@ export function useValidador(value: string, validacoes: ValidacoesDoCampo) {
 
   useEffect(() => {
     if (!validacoes) return setValidStatus('OFF');
-    setValidStatus('LOADING');
+    if (!value) {
+      errorRef.current = 'Preencha este campo';
 
+      return setValidStatus('ERROR');
+    }
+
+    setValidStatus('LOADING');
     const timeoutId = setTimeout(async () => {
       for (const verify of validacoes) {
         const error = await verify(value);

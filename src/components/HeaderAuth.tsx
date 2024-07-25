@@ -29,6 +29,7 @@ export default function HeaderAuth(props: NativeStackHeaderProps) {
 const stylesPaia = createStyleSheet((theme) => ({
   container: {
     alignItems: 'center',
+    paddingTop: 5,
     backgroundColor: theme.colors.body,
   },
   subContainer: {
@@ -51,7 +52,7 @@ const stylesPaia = createStyleSheet((theme) => ({
   buttonBack: {
     position: 'absolute',
     start: 0,
-    padding: 15,
+    padding: 25,
     margin: 0,
     color: theme.colors.textPri,
   },

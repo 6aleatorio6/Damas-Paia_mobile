@@ -25,5 +25,5 @@ export const validsPaia = {
     (t) => !/^[a-zA-Z]/.test(t) && 'Deve começar com uma letra',
     (t) => !/^[a-zA-Z0-9._-]*$/.test(t) && 'apenas  (.), (_) e (-) são permitido',
   ],
-  senha: [(t) => (t.length < 4 || t.length > 40) && 'Entre 4 e 40 caracteres'],
+  password: [(t) => (t.length < 4 || t.length > 40) && 'Entre 4 e 40 caracteres'],
 } satisfies Record<string, ValidacoesDoCampo>;

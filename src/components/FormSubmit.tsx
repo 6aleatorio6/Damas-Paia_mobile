@@ -2,22 +2,27 @@ import { Text, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ButtonBig from './ButtonBig';
 import { useForm } from '@/libs/form/formHooks';
+import { AxiosError } from 'axios';
 
 export default function ButtonSubmit(props: { title: string }) {
   const { styles } = useStyles(stylesPaia);
-  const { isFormValidy, mutation } = useForm();
+  const { isFormValidy, mutation, valuesFields } = useForm();
 
   const isLoading = mutation.isPending && !mutation.isIdle;
   const disabled = !isFormValidy || isLoading;
 
+  let message = (mutation.error as AxiosError<{ message?: string | string[] }>)?.response?.data?.message;
+  if (!message) message = mutation.error?.message;
+  if (Array.isArray(message)) message = message.join('\n');
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer(disabled)}>
-        <ButtonBig disabled={disabled} onPress={() => mutation.mutate}>
+        <ButtonBig disabled={disabled} onPress={() => mutation.mutate(valuesFields)}>
           {isLoading ? 'aguarde...' : props.title}
         </ButtonBig>
       </View>
-      <Text style={styles.text}>{mutation.error?.message}</Text>
+      <Text style={styles.text}>{message}</Text>
     </View>
   );
 }

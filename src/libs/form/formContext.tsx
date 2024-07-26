@@ -1,7 +1,7 @@
 import { createContext, Dispatch, PropsWithChildren, SetStateAction, useRef, useState } from 'react';
 import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
 
-import useApi, { CbAxios } from '../useApi';
+import useApi, { CbAxios } from '../apiHooks/useApi';
 import { ValidacoesDoCampo } from './useValidador';
 import { validsPaia } from './validacoes';
 

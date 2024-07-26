@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { useAuth } from './mutationOrQuery/authToken';
+import { useAuth } from './authToken';
 
 export const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
+const apiTimeout = process.env.EXPO_PUBLIC_API_TIMEOUT || 10000;
 
-const axiosInstance = axios.create({ baseURL });
+const axiosInstance = axios.create({ baseURL, timeout: +apiTimeout });
 
 let useAuthHook: ReturnType<typeof useAuth>;
 

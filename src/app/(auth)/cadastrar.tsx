@@ -1,7 +1,7 @@
 import FormMolde from '@/components/FormMolde';
 import Input from '@/components/FormInput';
 import ButtonSubmit from '@/components/FormSubmit';
-import { useAuth } from '@/libs/mutationOrQuery/authToken';
+import { useAuth } from '@/libs/apiHooks/authToken';
 import { router } from 'expo-router';
 
 export default function CadastrarAuth() {

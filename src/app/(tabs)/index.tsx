@@ -9,6 +9,6 @@ export default function Indextabs() {
 
 const stylesheet = createStyleSheet((theme) => ({
   text: {
-    color: theme.primary,
+    color: theme.colors.body,
   },
 }));

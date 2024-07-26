@@ -3,7 +3,6 @@ node_modules
 .vscode/launch.json
 
 .env
-.env.*
 
 android/
 ios/

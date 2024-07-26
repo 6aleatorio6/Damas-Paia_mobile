@@ -8,9 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 export function useAuth() {
   const authQuery = useQuery({
     queryKey: ['token'],
-    async queryFn() {
-      return await AsyncStorage.getItem('token');
-    },
+    queryFn: () => AsyncStorage.getItem('token'),
     staleTime: 1000 * 60 * 60 * 24 * 7, // 1 week,
   });
 

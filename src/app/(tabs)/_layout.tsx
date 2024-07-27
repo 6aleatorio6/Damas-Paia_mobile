@@ -1,6 +1,6 @@
-import { useAuth } from '@/libs/mutationOrQuery/authToken';
+import { useAuth } from '@/libs/apiHooks/authToken';
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
-import { Home } from 'lucide-react-native';
+import { Home, UserCircle2Icon } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { useStyles } from 'react-native-unistyles';
 
@@ -23,8 +23,8 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarActiveTintColor: colors.textPri,
         tabBarInactiveTintColor: colors.textSec,
-        tabBarStyle: { backgroundColor: colors.bodySec, height: 60, paddingTop: 5 },
-        tabBarLabelStyle: { fontSize: 12, paddingBottom: 10 },
+        tabBarStyle: { backgroundColor: colors.bodySec, height: '12%', paddingTop: '2%' },
+        tabBarLabelStyle: { fontSize: 12, paddingBottom: '3%' },
 
         headerStyle: { backgroundColor: colors.bodySec },
         headerTitleAlign: 'center',
@@ -34,9 +34,11 @@ export default function TabsLayout() {
           fontSize: 30,
           textAlign: 'center',
         },
+        headerStatusBarHeight: 0,
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'INICIO', tabBarIcon: (p) => <Home {...p} /> }} />
+      <Tabs.Screen name="user" options={{ title: 'CONTA', tabBarIcon: (p) => <UserCircle2Icon {...p} /> }} />
     </Tabs>
   );
 }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse, isAxiosError } from 'axios';
 import { useAuth } from './authToken';
 
 export const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
@@ -9,8 +9,8 @@ const axiosInstance = axios.create({ baseURL, timeout: +apiTimeout });
 let useAuthHook: ReturnType<typeof useAuth>;
 
 // Middleware para interceptar as respostas de erro do servidor e caso seja 401, tentar fazer o refresh do token
-axiosInstance.interceptors.response.use(null, async (configAxios) => {
-  const isUnauthorized = configAxios.status === 401;
+axiosInstance.interceptors.response.use(null, async (configAxios: AxiosResponse) => {
+  const isUnauthorized = isAxiosError(configAxios) && configAxios.response?.status === 401;
   if (!isUnauthorized) return Promise.reject(configAxios);
 
   try {
@@ -19,14 +19,14 @@ axiosInstance.interceptors.response.use(null, async (configAxios) => {
     });
 
     // Atualiza o token no hook de autenticação e no axios
-    useAuthHook.setToken(response.data.token, false);
+    await useAuthHook.setToken(response.data.token, false);
     configAxios.config.headers.Authorization = `Bearer ${response.data.token}`;
 
     // Refaz a requisição com o token atualizado
-    return axiosInstance.request(configAxios.config);
+    return axios({ ...configAxios.config });
   } catch {
     // Não conseguiu fazer refresh do token, desloga o usuário
-    useAuthHook.logout();
+    await useAuthHook.logout();
     return Promise.reject(configAxios);
   }
 });

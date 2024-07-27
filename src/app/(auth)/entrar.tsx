@@ -14,8 +14,8 @@ export default function EntrarAuth() {
         async mutationFn(values) {
           const { data } = await axios.post('/auth/login', values);
 
-          setToken(data.token);
-          router.replace('/');
+          await setToken(data.token);
+          router.replace('(tabs)');
         },
       })}
       style={{ marginTop: '18%' }}

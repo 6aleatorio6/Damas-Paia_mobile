@@ -14,16 +14,16 @@ export function useAuth() {
 
   return {
     token: authQuery.data,
-    logout() {
-      AsyncStorage.removeItem('token');
-      authQuery.refetch();
+    async logout() {
+      await AsyncStorage.removeItem('token');
+      await authQuery.refetch();
     },
-    setToken(token: string, rerenderization = true) {
+    async setToken(token: string, rerenderization = true) {
       AsyncStorage.setItem('token', token);
 
-      if (rerenderization) authQuery.refetch();
+      if (rerenderization) await authQuery.refetch();
 
-      if (!rerenderization) queryClientPaia.setQueryData(['token'], token);
+      if (!rerenderization) await queryClientPaia.setQueryData(['token'], token);
     },
   };
 }

@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { Text, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function ButtonBig(props: Omit<TouchableOpacityProps, 'style'> & { style?: IButtonStyle }) {
@@ -13,11 +13,11 @@ export default function ButtonBig(props: Omit<TouchableOpacityProps, 'style'> & 
 }
 
 const stylesPaia = createStyleSheet(({ colors }) => ({
-  button: ({ backgroundColor = colors.primary, height = '100%' }: IButtonStyle) => ({
-    backgroundColor,
-    height,
+  button: ({ color, fontSize, ...styleButton }: IButtonStyle) => ({
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     borderRadius: 10,
+    ...styleButton,
   }),
   text: ({ color = colors.textPri, fontSize = 40 }: IButtonStyle) => ({
     color,
@@ -27,9 +27,7 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   }),
 }));
 
-export interface IButtonStyle {
-  backgroundColor?: string;
+export interface IButtonStyle extends Omit<ViewStyle, 'overflow' | 'transform'> {
   color?: string;
   fontSize?: number;
-  height?: number | `${number}%`;
 }

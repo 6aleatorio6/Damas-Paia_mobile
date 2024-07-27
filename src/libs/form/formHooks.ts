@@ -29,8 +29,10 @@ export function useInput(field: Fields) {
   useEffect(() => {
     context.statusFields[field] = isFieldValidy;
 
-    const [, setStatusForm] = context.formValidyState;
-    setStatusForm(!Object.values(context.statusFields).includes(false));
+    const [isFormValidyAntigo, setStatusForm] = context.formValidyState;
+    const isFormValidyAtual = !Object.values(context.statusFields).includes(false);
+
+    if (isFormValidyAtual !== isFormValidyAntigo) setStatusForm(isFormValidyAtual);
   }, [isFieldValidy]);
 
   const isLoadingApi = context.mutation.isPending;

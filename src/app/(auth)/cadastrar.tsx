@@ -1,25 +1,14 @@
 import FormMolde from '@/components/FormMolde';
 import Input from '@/components/FormInput';
 import ButtonSubmit from '@/components/FormSubmit';
-import { useAuth } from '@/libs/apiHooks/authToken';
-import { router } from 'expo-router';
+
+import { useCadastrar } from '@/libs/apiHooks/mutations';
 
 export default function CadastrarAuth() {
-  const { setToken } = useAuth();
+  const submitOptions = useCadastrar();
 
   return (
-    <FormMolde
-      title="CRIE SUA CONTA"
-      submitOptions={(axios) => ({
-        async mutationFn(values) {
-          await axios.post('/user', values);
-          const { data } = await axios.post('/auth/login', values);
-
-          await setToken(data.token);
-          router.replace('(tabs)');
-        },
-      })}
-    >
+    <FormMolde title="CRIE SUA CONTA" submitOptions={submitOptions}>
       <Input field="email" textContentType="emailAddress" />
       <Input field="username" name="Nome de usuario" textContentType="nickname" />
       <Input field="password" name="senha" textContentType="password" secureTextEntry />

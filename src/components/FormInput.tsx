@@ -2,6 +2,7 @@ import { Colors } from '@/constants/colors';
 import { Fields } from '@/libs/form/formContext';
 import { useInput } from '@/libs/form/formHooks';
 import { StatusValidy } from '@/libs/form/useValidador';
+import { useEffect } from 'react';
 import { Text, TextInput, TextInputProps, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
@@ -9,9 +10,13 @@ interface Props extends TextInputProps {
   field: Fields;
   name?: string;
 }
-export default function Input({ name, field, ...props }: Props) {
+export default function Input({ name, field, defaultValue, ...props }: Props) {
   const { styles, theme } = useStyles(stylesPaia);
   const { setValue, value, ...inpuContext } = useInput(field);
+
+  useEffect(() => {
+    if (defaultValue) setValue(defaultValue);
+  }, []);
 
   return (
     <View>

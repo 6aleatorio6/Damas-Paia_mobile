@@ -1,14 +1,16 @@
 import { FormProvider, FormProviderProps } from '@/libs/form/formContext';
-import { Text, View, ViewProps } from 'react-native';
+import { Text, TextStyle, View, ViewProps } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-export default function FormMolde(props: FormProviderProps & { title: string; style?: ViewProps['style'] }) {
+export default function FormMolde(
+  props: FormProviderProps & { title: string; style?: ViewProps['style']; titleStyle?: TextStyle },
+) {
   const { styles } = useStyles(stylesPaia);
 
   return (
     <FormProvider submitOptions={props.submitOptions} replaceValids={props.replaceValids}>
-      <View style={[styles.container, props.style]}>
-        <Text style={styles.title}>{props.title}</Text>
+      <View style={props.style || styles.container}>
+        <Text style={[styles.title, props.titleStyle]}>{props.title}</Text>
         {props.children}
       </View>
     </FormProvider>

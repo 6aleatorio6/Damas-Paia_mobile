@@ -1,10 +1,14 @@
 import { Text, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import ButtonBig from './ButtonBig';
+import ButtonBig, { IButtonStyle } from './ButtonBig';
 import { useForm } from '@/libs/form/formHooks';
 import { AxiosError } from 'axios';
 
-export default function ButtonSubmit(props: { title: string }) {
+export default function ButtonSubmit(props: {
+  title: string;
+  height?: number | string;
+  style?: IButtonStyle;
+}) {
   const { styles } = useStyles(stylesPaia);
   const { isFormValidy, mutation, valuesFields } = useForm();
 
@@ -16,9 +20,9 @@ export default function ButtonSubmit(props: { title: string }) {
   if (Array.isArray(message)) message = message.join('\n');
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container(props.height)}>
       <ButtonBig
-        style={styles.buttonContainer(disabled)}
+        style={{ ...(props.style || {}), ...styles.buttonContainer(disabled) }}
         disabled={disabled}
         onPress={() => mutation.mutate(valuesFields)}
       >
@@ -30,10 +34,10 @@ export default function ButtonSubmit(props: { title: string }) {
 }
 
 const stylesPaia = createStyleSheet((theme) => ({
-  container: {
+  container: (height: any = '14%') => ({
     marginTop: '5%',
-    height: '14%',
-  },
+    height,
+  }),
   text: {
     color: theme.colors.danger,
     fontSize: 15,
@@ -41,7 +45,6 @@ const stylesPaia = createStyleSheet((theme) => ({
     paddingVertical: 5,
   },
   buttonContainer: (disabled) => ({
-    height: '95%',
     opacity: disabled ? 0.4 : 1,
   }),
 }));

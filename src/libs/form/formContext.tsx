@@ -37,7 +37,8 @@ interface Context {
   formValidyState: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
+export type SubmitOptions = CbAxios<UseMutationOptions<unknown, Error, RecordField>>;
 export interface FormProviderProps extends PropsWithChildren {
-  submitOptions: CbAxios<UseMutationOptions<unknown, Error, RecordField>>;
+  submitOptions: SubmitOptions;
   replaceValids?: Partial<RecordField<ValidacoesDoCampo>>;
 }

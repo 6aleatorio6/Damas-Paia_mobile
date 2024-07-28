@@ -17,11 +17,13 @@ export default function ButtonSubmit(props: { title: string }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer(disabled)}>
-        <ButtonBig disabled={disabled} onPress={() => mutation.mutate(valuesFields)}>
-          {isLoading ? 'aguarde...' : props.title}
-        </ButtonBig>
-      </View>
+      <ButtonBig
+        style={styles.buttonContainer(disabled)}
+        disabled={disabled}
+        onPress={() => mutation.mutate(valuesFields)}
+      >
+        {isLoading ? 'aguarde...' : props.title}
+      </ButtonBig>
       <Text style={styles.text}>{message}</Text>
     </View>
   );

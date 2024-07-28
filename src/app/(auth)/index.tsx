@@ -1,4 +1,4 @@
-import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
+import ButtonBig from '@/components/ButtonBig';
 import { Image, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { router } from 'expo-router';
@@ -35,11 +35,11 @@ const stylesPaia = createStyleSheet((theme) => ({
     justifyContent: 'space-between',
     width: '80%',
     height: '28%',
+    marginBottom: '10%',
   },
-  button: (backColor: Colors) =>
-    ({
-      color: theme.colors.textPri,
-      backgroundColor: theme.colors[backColor],
-      height: '44%',
-    }) satisfies IButtonStyle,
+  button: (backColor: Colors) => ({
+    color: theme.colors.textPri,
+    backgroundColor: theme.colors[backColor],
+    height: '44%',
+  }),
 }));

@@ -11,6 +11,7 @@ export default function TabsLayout() {
 
   // AUTH
   const { token } = useAuth();
+
   useEffect(() => {
     if (token !== undefined) SplashScreen.hideAsync();
   }, [token]);
@@ -38,7 +39,10 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'INICIO', tabBarIcon: (p) => <Home {...p} /> }} />
-      <Tabs.Screen name="user" options={{ title: 'CONTA', tabBarIcon: (p) => <UserCircle2Icon {...p} /> }} />
+      <Tabs.Screen
+        name="(user)"
+        options={{ title: 'CONTA', tabBarIcon: (p) => <UserCircle2Icon {...p} />, headerShown: false }}
+      />
     </Tabs>
   );
 }

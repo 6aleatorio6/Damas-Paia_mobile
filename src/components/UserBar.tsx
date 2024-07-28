@@ -1,6 +1,7 @@
 import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
 import { useAuth } from '@/libs/apiHooks/authToken';
 import { useGetUser } from '@/libs/apiHooks/querys';
+import { router } from 'expo-router';
 import { LogOut, UserCircle2 } from 'lucide-react-native';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
@@ -10,7 +11,7 @@ export default function UserBar() {
   const { data, isLoading, isError } = useGetUser();
   const { logout } = useAuth();
 
-  if (isLoading) return <Text>Carregando</Text>;
+  if (isLoading) return <Text>Carregando </Text>;
   if (isError) return <Text>Erro</Text>;
 
   return (
@@ -18,7 +19,9 @@ export default function UserBar() {
       <UserCircle2 size={65} color={theme.colors.textPri} />
       <View style={styles.meioPerfil}>
         <Text style={styles.username}>{data?.username}</Text>
-        <ButtonBig style={styles.editButton}>Editar</ButtonBig>
+        <ButtonBig style={styles.editButton} onPress={() => router.navigate('/(tabs)/(user)/editar')}>
+          Editar
+        </ButtonBig>
       </View>
       <TouchableOpacity onPress={() => logout()}>
         <View style={styles.logoutIcon}>

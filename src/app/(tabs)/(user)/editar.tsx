@@ -1,7 +1,8 @@
-import ButtonBig from '@/components/ButtonBig';
+import ButtonSubmit from '@/components/ButtonSubmit';
 import Input from '@/components/FormInput';
 import FormMolde from '@/components/FormMolde';
-import ButtonSubmit from '@/components/FormSubmit';
+import FormSubmit from '@/components/FormSubmit';
+import { editarFormOptions, useDeleteUser } from '@/libs/apiHooks/mutations';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import { validsPaia } from '@/libs/form/validacoes';
 import { ScrollView, View } from 'react-native';
@@ -10,6 +11,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 export default function Indextabs() {
   const { styles } = useStyles(stylesPaia);
   const { data } = useGetUser();
+  const optionsDelete = useDeleteUser();
 
   return (
     <ScrollView>
@@ -21,7 +23,7 @@ export default function Indextabs() {
           replaceValids={{
             username: [(t) => t === data?.username && 'altere seu nome', ...validsPaia.username],
           }}
-          submitOptions={(axios) => ({})}
+          submitOptions={editarFormOptions}
         >
           <Input
             field="username"
@@ -29,21 +31,20 @@ export default function Indextabs() {
             textContentType="nickname"
             defaultValue={data?.username}
           />
-          <ButtonSubmit style={styles.buttonSubmit} height={70} title="Entrar" />
+          <FormSubmit style={styles.buttonSubmit} height={70} title="SALVAR NOME" />
         </FormMolde>
 
         <FormMolde
           title="ALTERAR SENHA"
           style={styles.form}
           titleStyle={styles.textStyle}
-          submitOptions={(axios) => ({})}
+          submitOptions={editarFormOptions}
         >
-          <Input field="username" name="Nome de usuario" textContentType="nickname" />
           <Input field="password" name="senha" textContentType="password" secureTextEntry />
-          <ButtonSubmit style={styles.buttonSubmit} height={60} title="Entrar" />
+          <FormSubmit style={styles.buttonSubmit} height={70} title="SALVAR SENHA" />
         </FormMolde>
 
-        <ButtonBig style={styles.button}>EXCLUIR CONTA</ButtonBig>
+        <ButtonSubmit style={styles.buttonDelete} title="EXCLUIR CONTA" useApi={optionsDelete} />
       </View>
     </ScrollView>
   );
@@ -64,12 +65,14 @@ const stylesPaia = createStyleSheet((theme) => ({
   buttonSubmit: {
     backgroundColor: theme.colors.secondary,
     color: theme.colors.warning,
+    fontSize: 30,
   },
-  button: {
-    marginTop: '10%',
+  buttonDelete: {
+    marginVertical: '10%',
     backgroundColor: theme.colors.bodySec,
     color: theme.colors.danger,
     fontSize: 30,
+    height: 60,
     paddingVertical: 10,
   },
 }));

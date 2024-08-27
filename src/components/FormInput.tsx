@@ -1,22 +1,25 @@
 import { Colors } from '@/constants/colors';
-import { Fields } from '@/libs/form/formContext';
-import { useInput } from '@/libs/form/formHooks';
-import { StatusValidy } from '@/libs/form/useValidador';
-import { useEffect } from 'react';
+import { UseFormR, useInput } from '@/libs/form/formHooks';
 import { Text, TextInput, TextInputProps, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-interface Props extends TextInputProps {
-  field: Fields;
+interface Props<F extends string> extends TextInputProps {
+  form: UseFormR<F>;
+  field: F;
   name?: string;
 }
-export default function Input({ name, field, defaultValue, ...props }: Props) {
+export default function Input<F extends string>({ form, name, field, defaultValue, ...props }: Props<F>) {
   const { styles, theme } = useStyles(stylesPaia);
-  const { setValue, value, ...inpuContext } = useInput(field);
+  const { setValue, value, ...valid } = useInput(form, field, defaultValue);
 
-  useEffect(() => {
-    if (defaultValue) setValue(defaultValue);
-  }, []);
+  const statusEnum = {
+    LOADING: ['warning', 'carregando...'],
+    VALIDY: ['success', `${name || field} valido`],
+    ERROR: ['danger', valid.error],
+    OFF: ['bodySec', ''],
+  } as const;
+
+  const [color, mensagem] = statusEnum[valid.status];
 
   return (
     <View>
@@ -29,11 +32,7 @@ export default function Input({ name, field, defaultValue, ...props }: Props) {
         onChangeText={setValue}
         {...props}
       />
-      <Text style={styles.validy(inpuContext.status)}>
-        {inpuContext.status === 'LOADING' && 'carregando...'}
-        {inpuContext.status === 'VALIDY' && `${name || field} valido`}
-        {inpuContext.status === 'ERROR' && inpuContext.error}
-      </Text>
+      <Text style={styles.validy(color)}>{mensagem}</Text>
     </View>
   );
 }
@@ -54,18 +53,11 @@ const stylesPaia = createStyleSheet((theme) => ({
     textTransform: 'uppercase',
     fontSize: 14,
   },
-  validy: (status: StatusValidy) => {
-    const statusColor: Record<StatusValidy, Colors> = {
-      ERROR: 'danger',
-      LOADING: 'warning',
-      VALIDY: 'success',
-      OFF: 'bodySec',
-    };
-
+  validy: (color: Colors) => {
     return {
       paddingHorizontal: 8,
       paddingVertical: 2,
-      color: theme.colors[statusColor[status]],
+      color: theme.colors[color],
       textTransform: 'lowercase',
       fontSize: 14,
     };

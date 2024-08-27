@@ -1,8 +1,20 @@
-import { useForm } from '@/libs/form/formHooks';
+import { UseFormR } from '@/libs/form/formHooks';
 import ButtonSubmit, { ButtonSubmitProps } from './ButtonSubmit';
+import { UseMutationResult } from '@tanstack/react-query';
 
-export default function FormSubmit(props: Pick<ButtonSubmitProps, 'height' | 'style' | 'title'>) {
-  const { isFormValidy, mutation, valuesFields } = useForm();
+interface FormSubmitProps extends Pick<ButtonSubmitProps, 'height' | 'style' | 'title'> {
+  form: UseFormR<string>;
+  submit: UseMutationResult;
+}
+export default function FormSubmit(props: FormSubmitProps) {
+  const { valuesFields, formValidyState } = props.form;
 
-  return <ButtonSubmit {...props} disabled={!isFormValidy} mutateData={valuesFields} useApi={mutation} />;
+  return (
+    <ButtonSubmit
+      {...props}
+      disabled={!formValidyState[0]}
+      mutateData={valuesFields}
+      mutation={props.submit}
+    />
+  );
 }

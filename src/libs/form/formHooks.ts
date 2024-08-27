@@ -1,41 +1,52 @@
-import { useContext, useEffect, useState } from 'react';
-import { useValidador } from './useValidador';
-import { Fields, FormContext } from './formContext';
+import { useEffect, useRef, useState } from 'react';
+import { useValidador, ValidacoesDoCampo } from './useValidador';
+import { validsPaia } from './validacoes';
 
-// HOOKS
-export function useForm() {
-  const context = useContext(FormContext);
-  if (!context) throw new Error('provedor de contexto não encontrado, envolva em um FormProvider');
+type KeysValidsPaia = keyof typeof validsPaia;
 
-  const {
-    mutation,
-    formValidyState: [isFormValidy],
-    valuesFields,
-  } = context;
+export function useForm<K extends string>(
+  valids?: Record<K, ValidacoesDoCampo>,
+  mode: 'replace' | 'merge' = 'merge',
+) {
+  const valuesRef = useRef({} as Record<K, string>);
+  const statusRef = useRef({} as Record<K, boolean>);
+  const formValidyState = useState(false);
 
-  return { mutation, isFormValidy, valuesFields };
+  let validacoes: Record<K & KeysValidsPaia, ValidacoesDoCampo> = validsPaia;
+  if (valids) {
+    if (mode === 'merge') validacoes = { ...validsPaia, ...valids };
+    if (mode === 'replace') validacoes = valids;
+  }
+
+  return {
+    valuesFields: valuesRef.current,
+    statusFields: statusRef.current,
+    formValidyState,
+    validacoes,
+  };
 }
 
-export function useInput(field: Fields) {
-  const context = useContext(FormContext);
-  if (!context) throw new Error('provedor de contexto não encontrado, envolva em um FormProvider');
+export interface UseFormR<Fields extends string> {
+  valuesFields: Record<Fields, string>;
+  statusFields: Record<Fields, boolean>;
+  validacoes: Record<Fields, ValidacoesDoCampo>;
+  formValidyState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+}
+export function useInput<F extends UseFormR<K>, K extends string>(formData: F, field: K, dValue?: string) {
+  const [value, setValue] = useState(dValue || '');
+  const { status, error } = useValidador(value, formData.validacoes[field]);
 
-  const [value, setValue] = useState(context.valuesFields[field] || '');
-  const { status, error } = useValidador(value, context.validacoes[field]);
-
-  context.valuesFields[field] = value;
+  formData.valuesFields[field] = value;
 
   const isFieldValidy = status === 'VALIDY' || status === 'OFF';
   useEffect(() => {
-    context.statusFields[field] = isFieldValidy;
+    formData.statusFields[field] = isFieldValidy;
 
-    const [isFormValidyAntigo, setStatusForm] = context.formValidyState;
-    const isFormValidyAtual = !Object.values(context.statusFields).includes(false);
+    const [isFormValidyAntigo, setStatusForm] = formData.formValidyState;
+    const isFormValidyAtual = !Object.values(formData.statusFields).includes(false);
 
     if (isFormValidyAtual !== isFormValidyAntigo) setStatusForm(isFormValidyAtual);
   }, [isFieldValidy]);
 
-  const isLoadingApi = context.mutation.isPending;
-
-  return { value, setValue, status, error, isLoadingApi };
+  return { value, setValue, status, error };
 }

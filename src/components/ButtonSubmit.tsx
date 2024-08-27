@@ -3,41 +3,32 @@ import { Text, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ButtonBig, { IButtonStyle } from './ButtonBig';
 import { AxiosError } from 'axios';
-import useApi, { CbAxios } from '@/libs/apiHooks/useApi';
-import { UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
+import { UseMutationResult } from '@tanstack/react-query';
+import { formatError } from '@/libs/apiHooks/formatError';
 
 export interface ButtonSubmitProps {
   title: string;
   height?: number | string;
   style?: IButtonStyle;
   disabled?: boolean;
-  useApi: CbAxios<UseMutationOptions<any, any, any, any>> | UseMutationResult<any, any, any, any>;
+  mutation: UseMutationResult;
   mutateData?: any;
 }
+
 export default function ButtonSubmit(props: ButtonSubmitProps) {
   const { styles } = useStyles(stylesPaia);
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const resultApi = typeof props.useApi === 'object' ? props.useApi : useApi('mutate', props.useApi);
-  const { isPending, isIdle, error, mutate } = resultApi;
+  const { isPending, isIdle, error, mutate } = props.mutation;
 
   const isLoading = isPending && !isIdle;
   const disabled = props.disabled || isLoading;
-
-  let message = (error as AxiosError<{ message?: string | string[] }>)?.response?.data?.message;
-  if (!message) message = error?.message;
-  if (Array.isArray(message)) message = message.join('\n');
+  const styleButton = { ...(props.style || {}), ...styles.buttonContainer(disabled) };
 
   return (
     <View style={styles.container(props.height)}>
-      <ButtonBig
-        style={{ ...(props.style || {}), ...styles.buttonContainer(disabled) }}
-        disabled={disabled}
-        onPress={() => mutate(props.mutateData)}
-      >
+      <ButtonBig style={styleButton} disabled={disabled} onPress={() => mutate(props.mutateData)}>
         {isLoading ? 'aguarde...' : props.title}
       </ButtonBig>
-      <Text style={styles.text}>{message}</Text>
+      {error && <Text style={styles.text}>{formatError(error)}</Text>}
     </View>
   );
 }

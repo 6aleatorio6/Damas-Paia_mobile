@@ -1,9 +1,8 @@
 import { queryClientPaia } from '@/app/_layout';
-import ButtonSubmit from '@/components/ButtonSubmit';
 import Input from '@/components/FormInput';
 import FormMolde from '@/components/FormMolde';
 import FormSubmit from '@/components/FormSubmit';
-import { useAuth } from '@/libs/apiHooks/authToken';
+import { UserDelete } from '@/components/UserDelete';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import useApi from '@/libs/apiHooks/useApi';
 import { useForm } from '@/libs/form/formHooks';
@@ -13,14 +12,13 @@ import { Alert, ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function Indextabs() {
-  const { logout } = useAuth();
   const { styles } = useStyles(stylesPaia);
   const { data } = useGetUser();
 
+  const formSenha = useForm();
   const formName = useForm({
     username: [(t) => t === data?.username && 'altere seu nome', ...validsPaia.username],
   });
-  const formSenha = useForm();
 
   const mutationPut = useApi('mutate', (axios) => ({
     async mutationFn(values) {
@@ -30,25 +28,6 @@ export default function Indextabs() {
     onSuccess() {
       Alert.alert('Sucesso', 'Usuário editado com sucesso');
       router.navigate('/(tabs)/(user)');
-    },
-  }));
-
-  const mutationDelete = useApi('mutate', (axios) => ({
-    mutationFn: async () => {
-      Alert.alert('Tem certeza que deseja excluir sua conta?', 'Essa ação é irreversível', [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Excluir',
-          onPress: async () => {
-            await axios.delete('/user');
-            await logout();
-            await queryClientPaia.invalidateQueries();
-          },
-        },
-      ]);
     },
   }));
 
@@ -83,7 +62,7 @@ export default function Indextabs() {
           />
         </FormMolde>
 
-        <ButtonSubmit style={styles.buttonDelete} title="EXCLUIR CONTA" mutation={mutationDelete} />
+        <UserDelete />
       </View>
     </ScrollView>
   );
@@ -105,13 +84,5 @@ const stylesPaia = createStyleSheet((theme) => ({
     backgroundColor: theme.colors.secondary,
     color: theme.colors.warning,
     fontSize: 30,
-  },
-  buttonDelete: {
-    marginVertical: '10%',
-    backgroundColor: theme.colors.bodySec,
-    color: theme.colors.danger,
-    fontSize: 30,
-    height: 60,
-    paddingVertical: 10,
   },
 }));

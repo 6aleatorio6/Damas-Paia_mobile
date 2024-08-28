@@ -19,7 +19,7 @@ type ReqOptions = CbAxios<UseMutationOptions | UseQueryOptions>;
 type ReqResult = UseMutationResult | UseQueryResult;
 
 // Sobrecarga para quando o type for query mostrar o tipo do useQuery e o msm acontecer para o mutate
-export default function useApi<T, D = unknown, E = Error, V = void>(
+export default function useApi<T, D = unknown, E = Error, V = unknown>(
   type: T & ReqType,
   cbConfig: T extends 'mutate' ? CbAxios<UseMutationOptions<D, E, V>> : CbAxios<UseQueryOptions<D, E, V>>,
 ): T extends 'mutate' ? UseMutationResult<D, E, V> : UseQueryResult<D, E>;

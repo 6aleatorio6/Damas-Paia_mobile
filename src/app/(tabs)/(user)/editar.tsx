@@ -1,8 +1,8 @@
-import { queryClientPaia } from '@/app/_layout';
 import Input from '@/components/FormInput';
 import FormMolde from '@/components/FormMolde';
 import FormSubmit from '@/components/FormSubmit';
 import { UserDelete } from '@/components/UserDelete';
+import { queryClientPaia } from '@/libs/apiHooks/context/queryContext';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import useApi from '@/libs/apiHooks/useApi';
 import { useForm } from '@/libs/form/formHooks';

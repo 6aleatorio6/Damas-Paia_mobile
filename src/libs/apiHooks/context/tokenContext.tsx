@@ -28,6 +28,13 @@ export function AuthProvider(props: PropsWithChildren) {
     })();
   }, []);
 
+  return (
+    <authContext.Provider value={current}>
+      {status !== 'initial' && current.token && props.children}
+      {status !== 'initial' && !current.token && <Redirect href={'(token)'} />}
+    </authContext.Provider>
+  );
+}
 
 /**
  * Hook para gerenciar o token de autenticação

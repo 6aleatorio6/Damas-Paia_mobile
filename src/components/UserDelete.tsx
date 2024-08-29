@@ -2,8 +2,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ButtonSubmit from '@/components/ButtonSubmit';
 import useApi from '@/libs/apiHooks/useApi';
 import { Alert } from 'react-native';
-import { useAuth } from '@/libs/apiHooks/authToken';
-import { queryClientPaia } from '@/app/_layout';
+import { useAuth } from '@/libs/apiHooks/context/tokenContext';
 
 export function UserDelete() {
   const { logout } = useAuth();
@@ -21,7 +20,6 @@ export function UserDelete() {
           onPress: async () => {
             await axios.delete('/user');
             await logout();
-            await queryClientPaia.invalidateQueries();
           },
         },
       ]);

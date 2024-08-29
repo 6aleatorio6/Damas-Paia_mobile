@@ -3,7 +3,7 @@ import Input from '@/components/FormInput';
 import { useForm } from '@/libs/form/formHooks';
 import FormSubmit from '@/components/FormSubmit';
 import useApi from '@/libs/apiHooks/useApi';
-import { useAuth } from '@/libs/apiHooks/authToken';
+import { useAuth } from '@/libs/apiHooks/context/tokenContext';
 import { router } from 'expo-router';
 
 export default function CadastrarAuth() {

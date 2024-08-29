@@ -17,9 +17,9 @@ export default function LayoutRaiz() {
 
   return (
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.colors.primary }}>
-      <QueryClientProvider client={queryClientPaia}>
-        <Slot initialRouteName="(tabs)" />
-      </QueryClientProvider>
+        <AuthProvider>
+          <Slot initialRouteName="(tabs)" />
+        </AuthProvider>
     </SafeAreaView>
   );
 }

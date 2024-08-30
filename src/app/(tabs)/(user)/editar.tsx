@@ -46,7 +46,7 @@ export default function Indextabs() {
             form={formName}
             submit={mutationPut}
             style={styles.buttonSubmit}
-            height={70}
+            height={55}
             title="SALVAR NOME"
           />
         </FormMolde>
@@ -57,7 +57,7 @@ export default function Indextabs() {
             form={formSenha}
             submit={mutationPut}
             style={styles.buttonSubmit}
-            height={70}
+            height={55}
             title="SALVAR SENHA"
           />
         </FormMolde>
@@ -79,10 +79,11 @@ const stylesPaia = createStyleSheet((theme) => ({
   },
   textStyle: {
     fontSize: 20,
+    marginBottom: '2%',
   },
   buttonSubmit: {
     backgroundColor: theme.colors.secondary,
     color: theme.colors.warning,
-    fontSize: 30,
+    fontSize: 25,
   },
 }));

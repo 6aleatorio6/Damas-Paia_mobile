@@ -34,8 +34,8 @@ const stylesPaia = createStyleSheet((theme) => ({
     marginVertical: '10%',
     backgroundColor: theme.colors.bodySec,
     color: theme.colors.danger,
-    fontSize: 30,
-    height: 60,
+    fontSize: 25,
+    height: 55,
     paddingVertical: 10,
   },
 }));

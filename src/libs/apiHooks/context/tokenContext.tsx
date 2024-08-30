@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
 import { queryClientPaia } from './queryContext';
-import { Redirect } from 'expo-router';
+import { router } from 'expo-router';
 
 interface ITokenContext {
   refresh: () => void;
@@ -22,17 +22,13 @@ export function AuthProvider(props: PropsWithChildren) {
 
   useEffect(() => {
     (async () => {
-      const token = await AsyncStorage.getItem('token');
-      current.token = token;
+      current.token = await AsyncStorage.getItem('token');
       current.refresh();
     })();
   }, []);
 
   return (
-    <authContext.Provider value={current}>
-      {status !== 'initial' && current.token && props.children}
-      {status !== 'initial' && !current.token && <Redirect href={'(token)'} />}
-    </authContext.Provider>
+    <authContext.Provider value={current}>{status !== 'initial' && props.children}</authContext.Provider>
   );
 }
 

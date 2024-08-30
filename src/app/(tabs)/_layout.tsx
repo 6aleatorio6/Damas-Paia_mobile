@@ -1,14 +1,17 @@
-import { SplashScreen, Tabs } from 'expo-router';
+import { useAuth } from '@/libs/apiHooks/context/tokenContext';
+import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import { Home, UserCircle2Icon } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { useStyles } from 'react-native-unistyles';
 
 export default function TabsLayout() {
   const { colors } = useStyles().theme;
+  const { token } = useAuth();
 
   useEffect(() => {
     SplashScreen.hideAsync();
   }, []);
+  if (!token) return <Redirect href={'/(auth)'} />;
 
   return (
     <Tabs

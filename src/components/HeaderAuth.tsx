@@ -1,21 +1,16 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack/src/types';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import { ArrowLeftCircle } from 'lucide-react-native';
+import { ButtonLeftHeader } from './ButtonLeftHeader';
 
 const sizeAll = 1.1;
 
 export default function HeaderAuth(props: NativeStackHeaderProps) {
-  const { styles, theme } = useStyles(stylesPaia);
+  const { styles } = useStyles(stylesPaia);
 
-  const isBack = props.back && props.navigation.canGoBack();
   return (
     <View style={styles.container}>
-      {isBack && (
-        <TouchableOpacity style={styles.buttonBack} onPress={props.navigation.goBack}>
-          <ArrowLeftCircle size={36} color={theme.colors.textPri} />
-        </TouchableOpacity>
-      )}
+      <ButtonLeftHeader />
       <Text style={styles.text}>DAMAS</Text>
       <View style={styles.subContainer}>
         <Image source={require('@/assets/icon.png')} style={styles.logo} />

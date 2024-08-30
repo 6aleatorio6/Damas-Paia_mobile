@@ -19,8 +19,8 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarActiveTintColor: colors.textPri,
         tabBarInactiveTintColor: colors.textSec,
-        tabBarStyle: { backgroundColor: colors.bodySec, height: '12%', paddingTop: '2%' },
-        tabBarLabelStyle: { fontSize: 12, paddingBottom: '3%' },
+        tabBarStyle: { backgroundColor: colors.bodySec },
+        tabBarLabelStyle: { fontSize: 13 },
 
         headerStyle: { backgroundColor: colors.bodySec },
         headerTitleAlign: 'center',

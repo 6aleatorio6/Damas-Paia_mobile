@@ -1,32 +1,27 @@
-import { Slot, Stack } from 'expo-router';
-import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ButtonLeftHeader } from '@/components/ButtonLeftHeader';
+import { Stack, useNavigation } from 'expo-router';
 import { useStyles } from 'react-native-unistyles';
 
 export default function Layout() {
-  const { top } = useSafeAreaInsets();
-  const { theme } = useStyles();
+  const { setOptions } = useNavigation();
+  const { bodySec } = useStyles().theme.colors;
 
   return (
-    <View style={{ flex: 1, marginTop: top * -0.97 }}>
-      <Stack
-        screenOptions={{
-          animation: 'none',
-          contentStyle: { backgroundColor: 'transparent' },
-
-          headerStyle: { backgroundColor: theme.colors.bodySec },
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            color: theme.colors.textPri,
-            fontWeight: 'bold',
-            fontSize: 30,
-          },
-          headerTintColor: theme.colors.textPri,
-        }}
-      >
-        <Stack.Screen name="index" options={{ title: 'CONTA' }} />
-        <Stack.Screen name="editar" options={{ title: 'EDITAR CONTA' }} />
-      </Stack>
-    </View>
+    <Stack
+      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'paia' }, animation: 'fade' }}
+      screenListeners={{
+        state({ data: { state } }) {
+          if (state.index === 0) {
+            setOptions({ title: 'Conta', tabBarStyle: { backgroundColor: bodySec }, headerLeft: null });
+          } else {
+            setOptions({
+              title: 'Editar Conta',
+              tabBarStyle: { display: 'none' },
+              headerLeft: () => <ButtonLeftHeader backTo="(tabs)/(user)" />,
+            });
+          }
+        },
+      }}
+    />
   );
 }

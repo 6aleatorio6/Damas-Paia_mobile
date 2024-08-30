@@ -33,10 +33,10 @@ export default function TabsLayout() {
         headerStatusBarHeight: 0,
       }}
     >
-      <Tabs.Screen name="index" options={{ title: 'INICIO', tabBarIcon: (p) => <Home {...p} /> }} />
+      <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: (p) => <Home {...p} /> }} />
       <Tabs.Screen
         name="(user)"
-        options={{ title: 'CONTA', tabBarIcon: (p) => <UserCircle2Icon {...p} />, headerShown: false }}
+        options={{ title: 'Conta', tabBarIcon: (p) => <UserCircle2Icon {...p} /> }}
       />
     </Tabs>
   );

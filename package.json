@@ -7,7 +7,10 @@
     "start": "expo start",
     "android": "emulator @AndroidPaia --no-audio --no-boot-anim --gpu host & expo run:android",
     "ios": "expo run:ios",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --watch --coverage=false --changedSince=origin/main",
+    "testDebug": "jest -o --watch --coverage=false",
+    "testFinal": "jest"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.23.1",
@@ -46,5 +49,20 @@
     "jest-expo": "^51.0.4",
     "prettier": "3.3.2",
     "typescript": "~5.3.3"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx,js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/expo-env.d.ts",
+      "!**/.expo/**"
+    ]
   }
 }

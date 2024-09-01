@@ -17,7 +17,7 @@ export default function Layout() {
             setOptions({
               title: 'Editar Conta',
               tabBarStyle: { display: 'none' },
-              headerLeft: () => <ButtonLeftHeader backTo="(tabs)/(user)" />,
+              headerLeft: () => <ButtonLeftHeader backTo="/(tabs)/(user)" />,
             });
           }
         },

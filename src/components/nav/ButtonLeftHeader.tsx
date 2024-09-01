@@ -1,9 +1,9 @@
-import { router } from 'expo-router';
+import { Href, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import { ArrowLeftCircle } from 'lucide-react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-export function ButtonLeftHeader({ backTo }: { backTo?: string }) {
+export function ButtonLeftHeader({ backTo }: { backTo?: Href }) {
   const { styles, theme } = useStyles(stylesPaia);
 
   if (!router.canGoBack() && !backTo) return null;
@@ -21,7 +21,8 @@ const stylesPaia = createStyleSheet((theme) => ({
   buttonBack: {
     position: 'absolute',
     start: 0,
-    padding: 25,
+    paddingHorizontal: 15,
+    paddingVertical: 30,
     margin: 0,
     color: theme.colors.textPri,
   },

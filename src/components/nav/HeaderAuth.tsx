@@ -1,11 +1,10 @@
 import { Image, Text, View } from 'react-native';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack/src/types';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { ButtonLeftHeader } from './ButtonLeftHeader';
 
 const sizeAll = 1.1;
 
-export default function HeaderAuth(props: NativeStackHeaderProps) {
+export default function HeaderAuth() {
   const { styles } = useStyles(stylesPaia);
 
   return (

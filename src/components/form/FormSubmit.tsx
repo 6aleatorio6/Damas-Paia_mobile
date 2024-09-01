@@ -1,5 +1,5 @@
 import { UseFormR } from '@/libs/form/formHooks';
-import ButtonSubmit, { ButtonSubmitProps } from './ButtonSubmit';
+import ButtonSubmit, { ButtonSubmitProps } from '../ButtonSubmit';
 import { UseMutationResult } from '@tanstack/react-query';
 
 interface FormSubmitProps extends Pick<ButtonSubmitProps, 'height' | 'style' | 'title'> {

@@ -1,4 +1,4 @@
-import { ButtonLeftHeader } from '@/components/ButtonLeftHeader';
+import { ButtonLeftHeader } from '@/components/nav/ButtonLeftHeader';
 import { Stack, useNavigation } from 'expo-router';
 import { useStyles } from 'react-native-unistyles';
 

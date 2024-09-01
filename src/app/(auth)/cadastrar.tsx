@@ -1,7 +1,7 @@
-import FormMolde from '@/components/FormMolde';
-import Input from '@/components/FormInput';
+import FormMolde from '@/components/form/FormMolde';
+import Input from '@/components/form/FormInput';
 import { useForm } from '@/libs/form/formHooks';
-import FormSubmit from '@/components/FormSubmit';
+import FormSubmit from '@/components/form/FormSubmit';
 import useApi from '@/libs/apiHooks/useApi';
 import { useAuth } from '@/libs/apiHooks/context/tokenContext';
 import { router } from 'expo-router';

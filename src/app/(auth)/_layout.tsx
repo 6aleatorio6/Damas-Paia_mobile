@@ -1,4 +1,4 @@
-import HeaderAuth from '@/components/HeaderAuth';
+import HeaderAuth from '@/components/nav/HeaderAuth';
 import { Stack } from 'expo-router';
 import { useStyles } from 'react-native-unistyles';
 

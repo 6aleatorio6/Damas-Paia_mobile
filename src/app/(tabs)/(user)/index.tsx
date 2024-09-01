@@ -1,4 +1,4 @@
-import UserBar from '@/components/UserBar';
+import UserBar from '@/components/user/UserBar';
 import { View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 

@@ -64,6 +64,9 @@
       "!**/babel.config.js",
       "!**/expo-env.d.ts",
       "!**/.expo/**"
+    ],
+    "setupFilesAfterEnv": [
+      "./jest.setup.ts"
     ]
   }
 }

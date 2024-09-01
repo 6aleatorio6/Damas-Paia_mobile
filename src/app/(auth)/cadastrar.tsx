@@ -16,7 +16,7 @@ export default function CadastrarAuth() {
       const { data } = await axios.post('/auth/login', values);
 
       await setToken(data.token);
-      router.replace('(tabs)');
+      router.replace('/(tabs)');
     },
   }));
 

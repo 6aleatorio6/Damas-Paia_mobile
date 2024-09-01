@@ -1,4 +1,4 @@
-import 'unistyles';
+import '../../unistyles';
 import { Slot, SplashScreen } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStyles } from 'react-native-unistyles';

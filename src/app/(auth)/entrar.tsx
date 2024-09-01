@@ -15,7 +15,7 @@ export default function EntrarAuth() {
       const { data } = await axios.post('/auth/login', values);
 
       await setToken(data.token);
-      router.replace('(tabs)');
+      router.replace('/(tabs)');
     },
   }));
 
@@ -23,7 +23,7 @@ export default function EntrarAuth() {
     <FormMolde title="ENTRE NA SUA CONTA">
       <Input form={form} field="username" name="Nome de usuario" textContentType="nickname" />
       <Input form={form} field="password" name="senha" textContentType="password" secureTextEntry />
-      <FormSubmit title="Cadastrar" form={form} submit={mutation} />
+      <FormSubmit title="Entrar" form={form} submit={mutation} />
     </FormMolde>
   );
 }

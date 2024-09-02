@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
 
-const TIMEOUT_VALIDY = 500;
+const TIMEOUT_VALIDY = process.env.EXPO_PUBLIC_INPUT_VALIDY || 500;
 
 export function useValidador(value: string, validacoes: ValidacoesDoCampo) {
   const [validStatus, setValidStatus] = useState<StatusValidy>('OFF');
@@ -25,7 +25,7 @@ export function useValidador(value: string, validacoes: ValidacoesDoCampo) {
 
         setValidStatus('VALIDY');
       }
-    }, TIMEOUT_VALIDY);
+    }, +TIMEOUT_VALIDY);
 
     return () => clearTimeout(timeoutId);
   }, [value]);

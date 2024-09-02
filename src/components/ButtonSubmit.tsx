@@ -24,10 +24,19 @@ export default function ButtonSubmit(props: ButtonSubmitProps) {
 
   return (
     <View style={styles.container(props.height)}>
-      <ButtonBig style={styleButton} disabled={disabled} onPress={() => mutate(props.mutateData)}>
+      <ButtonBig
+        accessibilityRole="button"
+        style={styleButton}
+        disabled={disabled}
+        onPress={() => mutate(props.mutateData)}
+      >
         {isLoading ? 'aguarde...' : props.title}
       </ButtonBig>
-      {error && <Text style={styles.text}>{formatError(error)}</Text>}
+      {error && (
+        <Text accessibilityLabel="error" style={styles.text}>
+          {formatError(error)}
+        </Text>
+      )}
     </View>
   );
 }

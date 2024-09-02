@@ -71,6 +71,9 @@
     "testMatch": [
       "**/*-(spec|test).(ts|tsx|js|jsx)"
     ],
+    "moduleNameMapper": {
+      "tests/(.*)$": "<rootDir>/tests/$1"
+    },
     "setupFilesAfterEnv": [
       "./tests/jest.setup.ts"
     ]

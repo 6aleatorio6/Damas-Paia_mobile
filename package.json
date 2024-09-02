@@ -65,8 +65,11 @@
       "!**/expo-env.d.ts",
       "!**/.expo/**"
     ],
+    "testMatch": [
+      "**/*-(spec|test).(ts|tsx|js|jsx)"
+    ],
     "setupFilesAfterEnv": [
-      "./jest.setup.ts"
+      "./tests/jest.setup.ts"
     ]
   }
 }

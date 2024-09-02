@@ -19,4 +19,18 @@ describe('Auth - context', () => {
       expect(screen).toHaveSegments(['(tabs)']);
     });
   });
+
+  it('Deve render (auth) se tiver token salvo e remover o token', async () => {
+    jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue('token');
+    renderRouter('src/app');
+
+    await waitFor(() => {
+      expect(screen).toHaveSegments(['(tabs)']);
+    });
+
+    await screen.getByText('Sair').tap();
+    await waitFor(() => {
+      expect(screen).toHaveSegments(['(auth)']);
+    });
+  });
 });

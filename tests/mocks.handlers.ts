@@ -1,14 +1,14 @@
 import { delay, http, HttpResponse } from 'msw';
 
-const dbMock = new Map<string, { username: string; email: string; password: string; uuid: string }>();
+export const dbMock = new Map<string, { username: string; email: string; password: string; uuid: string }>();
 const gerateId = () => Math.random().toString(10);
 
 export const handlers = [
   http.all('*', () => delay(100)),
-  http.post('/user', ({ request }) => {
-    const { username, email, password } = (request.body as any) || {};
+  http.post('*/user', async ({ request }) => {
+    const { username, email, password } = ((await request.json()) as any) || {};
 
-    if (username && email && password) {
+    if (!username || !email || !password) {
       return HttpResponse.json({ message: 'Invalid body' }, { status: 400 });
     }
 
@@ -16,8 +16,8 @@ export const handlers = [
 
     return HttpResponse.json({}, { status: 201 });
   }),
-  http.post('/auth/login', ({ request }) => {
-    const { username, password } = (request.body as any) || {};
+  http.post('*/auth/login', async ({ request }) => {
+    const { username, password } = ((await request.json()) as any) || {};
     const user = dbMock.get(username);
 
     if (!user || user.password !== password) {
@@ -26,7 +26,7 @@ export const handlers = [
 
     return HttpResponse.json({ token: user.username }, { status: 200 });
   }),
-  http.get('/user', ({ cookies }) => {
+  http.get('*/user', ({ cookies }) => {
     const token = cookies['Authorization']?.replace('Bearer ', '');
     const user = dbMock.get(token);
 
@@ -36,7 +36,7 @@ export const handlers = [
 
     return HttpResponse.json(user, { status: 200 });
   }),
-  http.delete('/user', ({ cookies }) => {
+  http.delete('*/user', ({ cookies }) => {
     const token = cookies['Authorization']?.replace('Bearer ', '');
     const user = dbMock.get(token);
 
@@ -48,7 +48,7 @@ export const handlers = [
 
     return HttpResponse.json({}, { status: 204 });
   }),
-  http.put('/user', ({ request, cookies }) => {
+  http.put('*/user', async ({ request, cookies }) => {
     const token = cookies['Authorization']?.replace('Bearer ', '');
     const user = dbMock.get(token);
 
@@ -56,12 +56,11 @@ export const handlers = [
       return HttpResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    const { username, email, password } = (request.body as any) || {};
+    const { username, email, password } = ((await request.json()) as any) || {};
 
     if (username) user.username = username;
     if (email) user.email = email;
     if (password) user.password = password;
-    w;
 
     return HttpResponse.json({}, { status: 200 });
   }),

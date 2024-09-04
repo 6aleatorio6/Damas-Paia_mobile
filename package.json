@@ -69,7 +69,7 @@
       "!**/.expo/**"
     ],
     "testMatch": [
-      "**/*-(spec|test).(ts|tsx|js|jsx)"
+      "**/*-spec\\.[jt]s(x)?"
     ],
     "moduleNameMapper": {
       "tests/(.*)$": "<rootDir>/tests/$1"

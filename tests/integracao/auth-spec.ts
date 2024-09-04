@@ -1,49 +1,62 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { act, screen, userEvent, waitFor } from '@testing-library/react-native';
-import { UserEventInstance } from '@testing-library/react-native/build/user-event/setup';
-import { renderRouterPaia } from 'tests/utils';
+import { fireEvent, screen, userEvent, waitFor } from 'expo-router/testing-library';
+import { AsyncStorageMockSimulator, renderRouterPaia } from 'tests/utils';
 
 describe('Lógica de auth', () => {
-  describe('Verifica qual rota abre de acordo com a situação do token', () => {
+  describe('Roteamento baseado no token', () => {
     it('Deve renderizar a rota (auth) se não houver token salvo', async () => {
-      jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue(null);
+      AsyncStorageMockSimulator(); // Inicia o simulador para testes
+      jest.spyOn(AsyncStorage, 'getItem').mockResolvedValueOnce(null);
+
       await renderRouterPaia(['(auth)']);
+      await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalledWith('token'));
     });
 
     it('Deve renderizar a rota (tabs) se houver token salvo', async () => {
-      jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue('token');
+      AsyncStorageMockSimulator();
+      jest.spyOn(AsyncStorage, 'getItem').mockResolvedValueOnce('token');
+
       await renderRouterPaia(['(tabs)']);
+      await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalledWith('token'));
     });
   });
 
-  describe('Me cadastrando no app', () => {
-    let userE: UserEventInstance;
-    beforeEach(() => {
-      userE = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-      jest.spyOn(AsyncStorage, 'getItem').mockResolvedValue(null);
-      jest.useFakeTimers();
+  describe('Fluxo de autenticação', () => {
+    it('Deve criar e autenticar o usuário e salvar o token no AsyncStorage', async () => {
+      AsyncStorageMockSimulator();
+      await renderRouterPaia(['(auth)', 'cadastrar'], { initialUrl: 'cadastrar' });
+      const [iEmail, iNome, iSenha] = screen.getAllByPlaceholderText(/.*/);
+
+      // preenche os campos e esperando a validação
+      fireEvent.changeText(iEmail, 'paiaCabral@gmail.com');
+      fireEvent.changeText(iNome, 'paiaCabral');
+      fireEvent.changeText(iSenha, '123456');
+      await waitFor(() => expect(screen.getAllByText(/valido/i).length).toBe(3));
+
+      // após a validação, clica no botão de cadastrar e espera a navegação
+      await userEvent.press(screen.getByText(/cadastrar/i));
+      await waitFor(() => expect(screen).toHaveSegments(['(tabs)']));
+
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('token', 'paiaCabral');
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith('token');
     });
-    afterEach(async () => {
-      act(jest.runOnlyPendingTimers);
-      jest.useRealTimers();
-    });
 
-    it('Deve renderizar a rota (auth) se não houver token salvo', async () => {
-      await renderRouterPaia(['(auth)', 'cadastrar'], { initialUrl: '(auth)/cadastrar' });
+    it('Deve autenticar o usuário e salvar o token no AsyncStorage', async () => {
+      const userInfo = AsyncStorageMockSimulator('onlyDb');
+      await renderRouterPaia(['(auth)', 'entrar'], { initialUrl: 'entrar' });
+      const [iNome, iSenha] = screen.getAllByPlaceholderText(/.*/);
 
-      const button = screen.getByRole('button');
-      const [iEmail, iUsername, iSenha] = screen.getAllByPlaceholderText(/.*/g);
+      // preenche os campos e esperando a validação
+      fireEvent.changeText(iNome, userInfo.username);
+      fireEvent.changeText(iSenha, userInfo.password);
+      await waitFor(() => expect(screen.getAllByText(/valido/i).length).toBe(2));
 
-      await act(async () => {
-        await userE.type(iUsername, 'paia123');
-        await userE.type(iEmail, 'leo@gmail.com');
-        await userE.type(iSenha, '123456');
-        jest.runOnlyPendingTimers();
-      });
+      // após a validação, clica no botão de entrar e espera a navegação
+      await userEvent.press(screen.getByText(/entrar/i));
+      await waitFor(() => expect(screen).toHaveSegments(['(tabs)']));
 
-      await userE.press(button);
-      expect(screen.getByText('aguarde...')).toBeDefined();
-      await waitFor(() => expect(AsyncStorage.setItem).toHaveBeenLastCalledWith('token'));
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('token', userInfo.username);
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith('token');
     });
   });
 });

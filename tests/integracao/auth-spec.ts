@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fireEvent, screen, userEvent, waitFor } from 'expo-router/testing-library';
+import { fireEvent, screen, waitFor } from 'expo-router/testing-library';
 import { AsyncStorageMockSimulator, renderRouterPaia } from 'tests/utils';
 
 describe('Lógica de auth', () => {
@@ -34,7 +34,7 @@ describe('Lógica de auth', () => {
       await waitFor(() => expect(screen.getAllByText(/valido/i).length).toBe(3));
 
       // após a validação, clica no botão de cadastrar e espera a navegação
-      await userEvent.press(screen.getByText(/cadastrar/i));
+      fireEvent.press(screen.getByText(/cadastrar/i));
       await waitFor(() => expect(screen).toHaveSegments(['(tabs)']));
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('token', 'paiaCabral');
@@ -52,11 +52,23 @@ describe('Lógica de auth', () => {
       await waitFor(() => expect(screen.getAllByText(/valido/i).length).toBe(2));
 
       // após a validação, clica no botão de entrar e espera a navegação
-      await userEvent.press(screen.getByText(/entrar/i));
+      fireEvent.press(screen.getByText(/entrar/i));
       await waitFor(() => expect(screen).toHaveSegments(['(tabs)']));
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('token', userInfo.username);
       expect(AsyncStorage.getItem).toHaveBeenCalledWith('token');
+    });
+  });
+
+  describe('Fluxo de logout', () => {
+    it('Deve deslogar o usuário e remover o token do AsyncStorage', async () => {
+      AsyncStorageMockSimulator('dbAndStorage');
+      await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
+
+      fireEvent.press(await screen.findByText('SAIR'));
+
+      await waitFor(() => expect(screen).toHaveSegments(['(auth)']));
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith('token');
     });
   });
 });

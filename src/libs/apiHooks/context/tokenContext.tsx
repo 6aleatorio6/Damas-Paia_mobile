@@ -1,11 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
 import { queryClientPaia } from './queryContext';
-import { router } from 'expo-router';
 
 interface ITokenContext {
   refresh: () => void;
-  token: string | null;
+  tokenRef: { val: string | null };
 }
 const authContext = createContext<ITokenContext | null>(null);
 
@@ -18,17 +17,19 @@ const authContext = createContext<ITokenContext | null>(null);
 export function AuthProvider(props: PropsWithChildren) {
   // initial esperar o carregamento inicial do asyncStorage, boolean para a função de refresh
   const [status, setStatus] = useState<'initial' | boolean>('initial');
-  const { current } = useRef<ITokenContext>({ refresh: () => setStatus((x) => !x), token: null });
+  const { current } = useRef<ITokenContext['tokenRef']>({ val: null });
 
   useEffect(() => {
     (async () => {
-      current.token = await AsyncStorage.getItem('token');
-      current.refresh();
+      current.val = await AsyncStorage.getItem('token');
+      setStatus(!status);
     })();
   }, []);
 
   return (
-    <authContext.Provider value={current}>{status !== 'initial' && props.children}</authContext.Provider>
+    <authContext.Provider value={{ refresh: () => setStatus((x) => !x), tokenRef: current }}>
+      {status !== 'initial' && props.children}
+    </authContext.Provider>
   );
 }
 
@@ -38,18 +39,19 @@ export function AuthProvider(props: PropsWithChildren) {
 export function useAuth() {
   const authState = useContext(authContext);
   if (!authState) throw new Error('useAuth usado fora do AuthProvider');
+  const { refresh, tokenRef } = authState;
 
   return {
-    token: authState.token,
+    token: authState.tokenRef.val,
     async logout() {
-      authState.token = null;
+      tokenRef.val = null;
       await AsyncStorage.removeItem('token');
       await queryClientPaia.invalidateQueries();
-      authState.refresh();
+      refresh();
     },
     async setToken(token: string, rerenderization = true) {
       await AsyncStorage.setItem('token', token);
-      authState.token = token;
+      tokenRef.val = token;
 
       if (rerenderization) authState.refresh();
     },

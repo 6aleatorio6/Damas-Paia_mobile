@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteSegments, StaticRoutes } from 'expo-router';
 import { renderRouter, screen, waitFor } from 'expo-router/testing-library';
 import { dbMock } from './mocks.handlers';
+import { HttpResponse, HttpResponseResolver } from 'msw';
 
 export function renderRouterPaia(
   segments: RouteSegments<StaticRoutes>,
@@ -37,3 +38,23 @@ export function AsyncStorageMockSimulator(addUser?: 'onlyDb' | 'dbAndStorage') {
 
   return user;
 }
+
+/**
+ * Middleware para MSW que verifica se o usuário está logado e retorna
+ * o usuário no parâmetro da função de callback
+ */
+export const mswRouter = (cb: CbRouterUser): HttpResponseResolver => {
+  return (info) => {
+    const { request } = info;
+
+    const userName = request.headers.get('Authorization')?.split(' ')[1];
+    const user = dbMock.get(userName || '');
+    if (!user) {
+      const status = request.url.includes('refresh') ? 401 : 404;
+      return HttpResponse.json({ message: 'User not found' }, { status });
+    }
+
+    return cb(info, user);
+  };
+};
+type CbRouterUser = (i: Parameters<HttpResponseResolver>[0], user: User) => ReturnType<HttpResponseResolver>;

@@ -1,23 +1,21 @@
-import { delay, http, HttpResponse } from 'msw';
+import { http, HttpResponse } from 'msw';
+import { mswRouter } from './utils';
 
-export const dbMock = new Map<string, { username: string; email: string; password: string; uuid: string }>();
-const gerateId = () => Math.random().toString(10);
+export const dbMock = new Map<string, User>();
 
-export const handlers = [
-  http.all('*', () => delay(100)),
+const handlersPublic = [
   http.post('*/user', async ({ request }) => {
-    const { username, email, password } = ((await request.json()) as any) || {};
+    const { username, email, password } = ((await request.json()) as Record<string, string>) || {};
 
     if (!username || !email || !password) {
       return HttpResponse.json({ message: 'Invalid body' }, { status: 400 });
     }
 
-    dbMock.set(username, { username, email, password, uuid: gerateId() });
-
+    dbMock.set(username, { username, email, password, uuid: Math.random().toString(10) });
     return HttpResponse.json({}, { status: 201 });
   }),
   http.post('*/auth/login', async ({ request }) => {
-    const { username, password } = ((await request.json()) as any) || {};
+    const { username, password } = ((await request.json()) as Record<string, string>) || {};
     const user = dbMock.get(username);
 
     if (!user || user.password !== password) {
@@ -26,42 +24,36 @@ export const handlers = [
 
     return HttpResponse.json({ token: user.username }, { status: 200 });
   }),
-  http.get('*/user', ({ cookies }) => {
-    const token = cookies['Authorization']?.replace('Bearer ', '');
-    const user = dbMock.get(token);
-
-    if (!user) {
-      return HttpResponse.json({ message: 'User not found' }, { status: 404 });
-    }
-
-    return HttpResponse.json(user, { status: 200 });
-  }),
-  http.delete('*/user', ({ cookies }) => {
-    const token = cookies['Authorization']?.replace('Bearer ', '');
-    const user = dbMock.get(token);
-
-    if (!user) {
-      return HttpResponse.json({ message: 'User not found' }, { status: 404 });
-    }
-
-    dbMock.delete(user.username);
-
-    return HttpResponse.json({}, { status: 204 });
-  }),
-  http.put('*/user', async ({ request, cookies }) => {
-    const token = cookies['Authorization']?.replace('Bearer ', '');
-    const user = dbMock.get(token);
-
-    if (!user) {
-      return HttpResponse.json({ message: 'User not found' }, { status: 404 });
-    }
-
-    const { username, email, password } = ((await request.json()) as any) || {};
-
-    if (username) user.username = username;
-    if (email) user.email = email;
-    if (password) user.password = password;
-
-    return HttpResponse.json({}, { status: 200 });
-  }),
 ] as const;
+
+const handlersPrivate = [
+  http.get(
+    '*/auth/refresh',
+    mswRouter((_, user) => HttpResponse.json({ token: user.username })),
+  ),
+
+  http.get(
+    '*/user',
+    mswRouter((_, user) => HttpResponse.json(user)),
+  ),
+
+  http.delete(
+    '*/user',
+    mswRouter((_, user) => {
+      dbMock.delete(user.username);
+      return HttpResponse.json(null, { status: 204 });
+    }),
+  ),
+
+  http.put(
+    '*/user',
+    mswRouter(async (info, user) => {
+      const body = ((await info.request.json()) as Record<string, string>) || {};
+
+      dbMock.set(user.username, { ...user, ...body });
+      return HttpResponse.json(user, { status: 200 });
+    }),
+  ),
+] as const;
+
+export const handlers = [...handlersPublic, ...handlersPrivate] as const;

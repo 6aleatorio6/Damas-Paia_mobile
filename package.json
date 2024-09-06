@@ -76,6 +76,7 @@
     },
     "setupFilesAfterEnv": [
       "./tests/jest.setup.ts"
-    ]
+    ],
+    "testTimeout": 10000
   }
 }

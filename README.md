@@ -68,6 +68,20 @@ Devido ao uso do **Unistyles**, o Expo funciona apenas em modo `development buil
   npm run android
   ```
 
+## Testes de integração
+
+Para executar os testes de integração, utilize o comando abaixo:
+
+```bash
+npm run test
+```
+
+### Resultados dos Testes
+
+Abaixo está uma captura de tela dos testes do projeto:
+
+![Captura de tela dos testes](tests.print.png)
+
 ## Criador
 
 - **Autor:** Leonardo L. Felix

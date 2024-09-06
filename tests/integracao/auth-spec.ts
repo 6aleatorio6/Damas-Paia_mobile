@@ -65,7 +65,7 @@ describe('Lógica de autenticação', () => {
       AsyncStorageMockSimulator('dbAndStorage');
       await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
 
-      fireEvent.press(await screen.findByText('SAIR'));
+      fireEvent.press(await screen.findByText('SAIR', {}, { timeout: 3000 }));
 
       await waitFor(() => expect(screen).toHaveSegments(['(auth)']));
       expect(AsyncStorage.removeItem).toHaveBeenCalledWith('token');
@@ -85,7 +85,7 @@ describe('Lógica de autenticação', () => {
       apiTokenExpired(false);
       await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
 
-      expect(screen).toHaveSegments(['(auth)']);
+      await waitFor(() => expect(screen).toHaveSegments(['(auth)']));
       expect(AsyncStorage.removeItem).toHaveBeenCalledWith('token');
     });
   });

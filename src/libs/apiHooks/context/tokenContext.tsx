@@ -46,7 +46,7 @@ export function useAuth() {
     async logout() {
       tokenRef.val = null;
       await AsyncStorage.removeItem('token');
-      await queryClientPaia.invalidateQueries();
+      queryClientPaia.clear();
       refresh();
     },
     async setToken(token: string, rerenderization = true) {

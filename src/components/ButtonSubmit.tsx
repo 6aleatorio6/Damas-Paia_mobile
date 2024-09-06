@@ -5,16 +5,16 @@ import ButtonBig, { IButtonStyle } from './ButtonBig';
 import { UseMutationResult } from '@tanstack/react-query';
 import { formatError } from '@/libs/apiHooks/formatError';
 
-export interface ButtonSubmitProps {
+export interface ButtonSubmitProps<D = unknown> {
   title: string;
   height?: number | string;
   style?: IButtonStyle;
   disabled?: boolean;
-  mutation: UseMutationResult;
-  mutateData?: any;
+  mutation: UseMutationResult<unknown, Error, D>;
+  mutateData: D;
 }
 
-export default function ButtonSubmit(props: ButtonSubmitProps) {
+export default function ButtonSubmit<D>(props: ButtonSubmitProps<D>) {
   const { styles } = useStyles(stylesPaia);
   const { isPending, isIdle, error, mutate } = props.mutation;
 

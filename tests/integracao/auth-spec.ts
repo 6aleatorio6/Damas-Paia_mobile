@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, screen, waitFor } from 'expo-router/testing-library';
+import { http, HttpResponse } from 'msw';
+import { server } from 'tests/jest.setup';
+import { dbMock } from 'tests/mocks.handlers';
 import { AsyncStorageMockSimulator, renderRouterPaia } from 'tests/utils';
 
 describe('Lógica de auth', () => {
@@ -68,6 +71,39 @@ describe('Lógica de auth', () => {
       fireEvent.press(await screen.findByText('SAIR'));
 
       await waitFor(() => expect(screen).toHaveSegments(['(auth)']));
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith('token');
+    });
+  });
+
+  describe('Refresh', () => {
+    it('Deve fazer o refresh do token e manter o usuário logado', async () => {
+      const userInfo = AsyncStorageMockSimulator('dbAndStorage');
+      dbMock.set('tokenRenovado', userInfo); // precisa disso pq acabei usando o username como token
+
+      server.use(
+        http.get('*/user', ({ request }) => {
+          const token = request.headers.get('Authorization')?.split(' ')[1];
+          if (token !== 'tokenRenovado') return HttpResponse.json(null, { status: 401 });
+          return HttpResponse.json(userInfo);
+        }),
+        http.get('*/auth/refresh', () => HttpResponse.json({ token: 'tokenRenovado' })),
+      );
+
+      await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
+
+      expect(await screen.findByText('SAIR')).toBeTruthy();
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith('token', 'tokenRenovado');
+    });
+
+    it('Deve deslogar o usuário caso não consiga fazer o refresh do token', async () => {
+      AsyncStorageMockSimulator('dbAndStorage');
+
+      server.use(http.get('*/user', () => HttpResponse.json(null, { status: 401 })));
+      server.use(http.get('*/auth/refresh', () => HttpResponse.json(null, { status: 401 })));
+
+      await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
+
+      expect(screen).toHaveSegments(['(auth)']);
       expect(AsyncStorage.removeItem).toHaveBeenCalledWith('token');
     });
   });

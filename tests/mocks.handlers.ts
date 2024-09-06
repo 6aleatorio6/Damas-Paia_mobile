@@ -1,7 +1,9 @@
-import { http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 import { mswRouter } from './utils';
 
 export const dbMock = new Map<string, User>();
+
+const httpDelay = http.all('*', () => delay('real'));
 
 const handlersPublic = [
   http.post('*/user', async ({ request }) => {
@@ -56,4 +58,4 @@ const handlersPrivate = [
   ),
 ] as const;
 
-export const handlers = [...handlersPublic, ...handlersPrivate] as const;
+export const handlers = [httpDelay, ...handlersPublic, ...handlersPrivate] as const;

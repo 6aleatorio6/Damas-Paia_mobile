@@ -1,0 +1,27 @@
+{
+  "cli": {
+    "version": ">= 10.0.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000",
+        "EXPO_PUBLIC_API_TIMEOUT": "10000",
+        "EXPO_PUBLIC_INPUT_VALIDY": "500"
+      },
+      "android": {
+        "buildType": "apk",
+        "applicationArchivePath": "android/app/build/outputs/**/*.{apk,aab}"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
+  }
+}

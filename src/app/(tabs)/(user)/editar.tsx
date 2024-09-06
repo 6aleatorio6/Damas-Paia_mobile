@@ -4,7 +4,7 @@ import FormSubmit from '@/components/form/FormSubmit';
 import { UserDelete } from '@/components/user/UserDelete';
 import { queryClientPaia } from '@/libs/apiHooks/context/queryContext';
 import { useGetUser } from '@/libs/apiHooks/querys';
-import useApi from '@/libs/apiHooks/useApi';
+import { useGetUser } from '@/libs/apiHooks/reqs/querys';
 import { useForm } from '@/libs/form/formHooks';
 import { validsPaia } from '@/libs/form/validacoes';
 import { router } from 'expo-router';

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, isAxiosError } from 'axios';
-import { useAuth } from './context/tokenContext';
+import { useAuth } from './tokenContext';
 
 export const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
 const apiTimeout = process.env.EXPO_PUBLIC_API_TIMEOUT || 10000;

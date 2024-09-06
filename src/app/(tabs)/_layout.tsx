@@ -1,4 +1,4 @@
-import { useAuth } from '@/libs/apiHooks/context/tokenContext';
+import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import { Home, UserCircle2Icon } from 'lucide-react-native';
 import { useEffect } from 'react';

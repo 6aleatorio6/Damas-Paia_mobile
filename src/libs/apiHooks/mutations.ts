@@ -1,4 +1,4 @@
-import useApi, { Resto } from '../useApi';
+import useApi, { Resto } from './reactQuery/useApi';
 
 export const useUserPut = (resto?: Resto<'m'>) =>
   useApi('mutate', (axios) => ({

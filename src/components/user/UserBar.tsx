@@ -1,6 +1,6 @@
 import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
-import { useAuth } from '@/libs/apiHooks/context/tokenContext';
-import { useGetUser } from '@/libs/apiHooks/reqs/querys';
+import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
+import { useGetUser } from '@/libs/apiHooks/querys';
 import { router } from 'expo-router';
 import { LogOut, UserCircle2 } from 'lucide-react-native';
 import { Text, TouchableOpacity, View } from 'react-native';

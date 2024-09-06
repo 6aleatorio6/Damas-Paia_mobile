@@ -2,8 +2,8 @@ import FormMolde from '@/components/form/FormMolde';
 import Input from '@/components/form/FormInput';
 import { useForm } from '@/libs/form/formHooks';
 import FormSubmit from '@/components/form/FormSubmit';
-import useApi from '@/libs/apiHooks/useApi';
-import { useAuth } from '@/libs/apiHooks/context/tokenContext';
+import useApi from '@/libs/apiHooks/reactQuery/useApi';
+import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { router } from 'expo-router';
 
 export default function CadastrarAuth() {

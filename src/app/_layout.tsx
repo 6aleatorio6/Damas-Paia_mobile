@@ -2,8 +2,8 @@ import '../../unistyles';
 import { Slot, SplashScreen } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStyles } from 'react-native-unistyles';
-import { AuthProvider } from '@/libs/apiHooks/context/tokenContext';
-import { QueryPaiaProvider } from '@/libs/apiHooks/context/queryContext';
+import { AuthProvider } from '@/libs/apiHooks/auth/tokenContext';
+import { QueryPaiaProvider } from '@/libs/apiHooks/reactQuery/queryContext';
 
 SplashScreen.preventAutoHideAsync();
 

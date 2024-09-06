@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
-import { queryClientPaia } from './queryContext';
+import { queryClientPaia } from '../reactQuery/queryContext';
 
 interface ITokenContext {
   refresh: () => void;

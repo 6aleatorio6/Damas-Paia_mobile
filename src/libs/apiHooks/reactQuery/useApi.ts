@@ -9,7 +9,7 @@ import {
   UseQueryResult,
 } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
-import { useAxios } from './useAxios';
+import { useAxios } from '../auth/useAxios';
 
 //
 // tipos auxiliares

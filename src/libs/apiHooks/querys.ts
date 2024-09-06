@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import useApi from '../useApi';
+import useApi from './reactQuery/useApi';
 
 export const useGetUser = () =>
   useApi('query', (axios) => ({

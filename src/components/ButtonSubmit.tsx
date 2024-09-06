@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ButtonBig, { IButtonStyle } from './ButtonBig';
 import { UseMutationResult } from '@tanstack/react-query';
-import { formatError } from '@/libs/apiHooks/formatError';
+import { formatError } from '@/libs/apiHooks/auth/formatError';
 
 export interface ButtonSubmitProps<D = unknown> {
   title: string;

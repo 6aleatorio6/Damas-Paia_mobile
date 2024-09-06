@@ -1,8 +1,8 @@
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ButtonSubmit from '@/components/ButtonSubmit';
-import useApi from '@/libs/apiHooks/useApi';
+import useApi from '@/libs/apiHooks/reactQuery/useApi';
 import { Alert } from 'react-native';
-import { useAuth } from '@/libs/apiHooks/context/tokenContext';
+import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 
 export function UserDelete() {
   const { logout } = useAuth();

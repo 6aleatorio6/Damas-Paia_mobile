@@ -2,11 +2,17 @@ import { Href, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import { ArrowLeftCircle } from 'lucide-react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { useEffect, useState } from 'react';
 
 export function ButtonLeftHeader({ backTo }: { backTo?: Href }) {
   const { styles, theme } = useStyles(stylesPaia);
+  const [back, setBack] = useState(false);
 
-  if (!router.canGoBack() && !backTo) return null;
+  useEffect(() => {
+    setBack(router.canGoBack() || !!backTo);
+  }, []);
+
+  if (!back) return null;
 
   const navbackTo = backTo && (() => router.navigate(backTo));
 

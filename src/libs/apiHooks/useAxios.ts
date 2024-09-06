@@ -16,6 +16,7 @@ axiosInstance.interceptors.response.use(null, async (configAxios: AxiosResponse)
   try {
     const response = await axios.get(`${baseURL}/auth/refresh`, {
       headers: { Authorization: `Bearer ${useAuthHook.token}` },
+      timeout: +apiTimeout,
     });
 
     // Atualiza o token no hook de autenticação e no axios

@@ -4,7 +4,7 @@ import { UseMutationResult } from '@tanstack/react-query';
 
 interface FormSubmitProps extends Pick<ButtonSubmitProps, 'height' | 'style' | 'title'> {
   form: UseFormR<string>;
-  submit: UseMutationResult;
+  submit: UseMutationResult<any, Error, any>;
 }
 export default function FormSubmit(props: FormSubmitProps) {
   const { valuesFields, formValidyState } = props.form;

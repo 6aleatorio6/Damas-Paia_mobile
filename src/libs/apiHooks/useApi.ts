@@ -40,3 +40,7 @@ export default function useApi(type: ReqType, cbConfig: ReqOptions) {
 
   return result as ReqResult;
 }
+
+export type Resto<T extends 'm' | 'q'> = T extends 'm'
+  ? Omit<UseMutationOptions<any, any, any, any>, 'mutationFn'>
+  : Omit<UseQueryOptions<any, any, any, any>, 'queryFn'>;

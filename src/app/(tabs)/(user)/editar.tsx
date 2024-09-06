@@ -3,7 +3,7 @@ import FormMolde from '@/components/form/FormMolde';
 import FormSubmit from '@/components/form/FormSubmit';
 import { UserDelete } from '@/components/user/UserDelete';
 import { queryClientPaia } from '@/libs/apiHooks/context/queryContext';
-import { useGetUser } from '@/libs/apiHooks/querys';
+import { useUserPut } from '@/libs/apiHooks/reqs/mutations';
 import { useGetUser } from '@/libs/apiHooks/reqs/querys';
 import { useForm } from '@/libs/form/formHooks';
 import { validsPaia } from '@/libs/form/validacoes';
@@ -20,16 +20,14 @@ export default function Indextabs() {
     username: [(t) => t === data?.username && 'altere seu nome', ...validsPaia.username],
   });
 
-  const mutationPut = useApi('mutate', (axios) => ({
-    async mutationFn(values) {
-      await axios.put('/user', values);
-      await queryClientPaia.invalidateQueries({ queryKey: ['user'] });
-    },
-    onSuccess() {
-      Alert.alert('Sucesso', 'Usuário editado com sucesso');
-      router.navigate('/(tabs)/(user)');
-    },
-  }));
+  const onSuccess = () => {
+    queryClientPaia.invalidateQueries({ queryKey: ['user'] });
+    Alert.alert('Sucesso', 'Dados alterados com sucesso');
+    router.navigate('/(tabs)/(user)');
+  };
+
+  const nameMutation = useUserPut({ onSuccess });
+  const senhaMutation = useUserPut({ onSuccess });
 
   return (
     <ScrollView>
@@ -44,7 +42,7 @@ export default function Indextabs() {
           />
           <FormSubmit
             form={formName}
-            submit={mutationPut}
+            submit={nameMutation}
             style={styles.buttonSubmit}
             height={55}
             title="SALVAR NOME"
@@ -55,7 +53,7 @@ export default function Indextabs() {
           <Input form={formSenha} field="password" name="senha" textContentType="password" secureTextEntry />
           <FormSubmit
             form={formSenha}
-            submit={mutationPut}
+            submit={senhaMutation}
             style={styles.buttonSubmit}
             height={55}
             title="SALVAR SENHA"
@@ -84,6 +82,6 @@ const stylesPaia = createStyleSheet((theme) => ({
   buttonSubmit: {
     backgroundColor: theme.colors.secondary,
     color: theme.colors.warning,
-    fontSize: 25,
+    fontSize: 20,
   },
 }));

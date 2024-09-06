@@ -2,7 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteSegments, StaticRoutes } from 'expo-router';
 import { renderRouter, screen, waitFor } from 'expo-router/testing-library';
 import { dbMock } from './mocks.handlers';
-import { HttpResponse, HttpResponseResolver } from 'msw';
+import { http, HttpResponse, HttpResponseResolver } from 'msw';
+import { server } from './jest.setup';
 
 export function renderRouterPaia(
   segments: RouteSegments<StaticRoutes>,
@@ -38,6 +39,29 @@ export function AsyncStorageMockSimulator(addUser?: 'onlyDb' | 'dbAndStorage') {
 
   return user;
 }
+
+/**
+ *  Simula a rejeição do endpoint `/user` por token inválido 
+ *  e a renovação do token pelo endpoint `/auth/refresh` ou a falha na renovação
+ *
+ * @param refreshValid Indica se o token invalido deve ser renovado
+ */
+export const apiTokenExpired = async (refreshValid: boolean) => {
+  const userInfo = AsyncStorageMockSimulator('dbAndStorage');
+  dbMock.set('tokenRenovado', userInfo); // precisa disso pq acabei usando o username como token
+
+  server.use(
+    http.get('*/user', ({ request }) => {
+      const token = request.headers.get('Authorization')?.split(' ')[1];
+      return token === 'tokenRenovado'
+        ? HttpResponse.json(userInfo)
+        : HttpResponse.json(null, { status: 401 });
+    }),
+    http.get('*/auth/refresh', () =>
+      refreshValid ? HttpResponse.json({ token: 'tokenRenovado' }) : HttpResponse.json(null, { status: 401 }),
+    ),
+  );
+};
 
 /**
  * Middleware para MSW que verifica se o usuário está logado e retorna

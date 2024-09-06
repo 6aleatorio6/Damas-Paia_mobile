@@ -1,21 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fireEvent, screen, waitFor } from 'expo-router/testing-library';
-import { http, HttpResponse } from 'msw';
-import { server } from 'tests/jest.setup';
-import { dbMock } from 'tests/mocks.handlers';
-import { AsyncStorageMockSimulator, renderRouterPaia } from 'tests/utils';
+import { apiTokenExpired, AsyncStorageMockSimulator, renderRouterPaia } from 'tests/utils';
 
-describe('Lógica de auth', () => {
+describe('Lógica de autenticação', () => {
   describe('Roteamento baseado no token', () => {
-    it('Deve renderizar a rota (auth) se não houver token salvo', async () => {
-      AsyncStorageMockSimulator(); // Inicia o simulador para testes
+    it('Deve redirecionar para a tela de autenticação se não houver token salvo', async () => {
+      AsyncStorageMockSimulator(); // Inicializa o simulador de AsyncStorage
       jest.spyOn(AsyncStorage, 'getItem').mockResolvedValueOnce(null);
 
       await renderRouterPaia(['(auth)']);
       await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalledWith('token'));
     });
 
-    it('Deve renderizar a rota (tabs) se houver token salvo', async () => {
+    it('Deve redirecionar para a tela principal se houver token salvo', async () => {
       AsyncStorageMockSimulator();
       jest.spyOn(AsyncStorage, 'getItem').mockResolvedValueOnce('token');
 
@@ -25,18 +22,18 @@ describe('Lógica de auth', () => {
   });
 
   describe('Fluxo de autenticação', () => {
-    it('Deve criar e autenticar o usuário e salvar o token no AsyncStorage', async () => {
+    it('Deve criar um novo usuário, salvar o token no AsyncStorage e redirecionar para a tela principal', async () => {
       AsyncStorageMockSimulator();
       await renderRouterPaia(['(auth)', 'cadastrar'], { initialUrl: 'cadastrar' });
-      const [iEmail, iNome, iSenha] = screen.getAllByPlaceholderText(/.*/);
 
-      // preenche os campos e esperando a validação
+      // Preenche os campos e valida
+      const [iEmail, iNome, iSenha] = screen.getAllByPlaceholderText(/.*/);
       fireEvent.changeText(iEmail, 'paiaCabral@gmail.com');
       fireEvent.changeText(iNome, 'paiaCabral');
       fireEvent.changeText(iSenha, '123456');
       await waitFor(() => expect(screen.getAllByText(/valido/i).length).toBe(3));
 
-      // após a validação, clica no botão de cadastrar e espera a navegação
+      // Clica no botão de cadastrar e espera a navegação
       fireEvent.press(screen.getByText(/cadastrar/i));
       await waitFor(() => expect(screen).toHaveSegments(['(tabs)']));
 
@@ -44,17 +41,17 @@ describe('Lógica de auth', () => {
       expect(AsyncStorage.getItem).toHaveBeenCalledWith('token');
     });
 
-    it('Deve autenticar o usuário e salvar o token no AsyncStorage', async () => {
+    it('Deve autenticar um usuário existente, salvar o token no AsyncStorage e redirecionar para a tela principal', async () => {
       const userInfo = AsyncStorageMockSimulator('onlyDb');
       await renderRouterPaia(['(auth)', 'entrar'], { initialUrl: 'entrar' });
-      const [iNome, iSenha] = screen.getAllByPlaceholderText(/.*/);
 
-      // preenche os campos e esperando a validação
+      // Preenche os campos e valida
+      const [iNome, iSenha] = screen.getAllByPlaceholderText(/.*/);
       fireEvent.changeText(iNome, userInfo.username);
       fireEvent.changeText(iSenha, userInfo.password);
       await waitFor(() => expect(screen.getAllByText(/valido/i).length).toBe(2));
 
-      // após a validação, clica no botão de entrar e espera a navegação
+      // Clica no botão de entrar e espera a navegação
       fireEvent.press(screen.getByText(/entrar/i));
       await waitFor(() => expect(screen).toHaveSegments(['(tabs)']));
 
@@ -64,7 +61,7 @@ describe('Lógica de auth', () => {
   });
 
   describe('Fluxo de logout', () => {
-    it('Deve deslogar o usuário e remover o token do AsyncStorage', async () => {
+    it('Deve realizar o logout, remover o token do AsyncStorage e redirecionar para a tela de autenticação', async () => {
       AsyncStorageMockSimulator('dbAndStorage');
       await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
 
@@ -75,32 +72,17 @@ describe('Lógica de auth', () => {
     });
   });
 
-  describe('Refresh', () => {
-    it('Deve fazer o refresh do token e manter o usuário logado', async () => {
-      const userInfo = AsyncStorageMockSimulator('dbAndStorage');
-      dbMock.set('tokenRenovado', userInfo); // precisa disso pq acabei usando o username como token
-
-      server.use(
-        http.get('*/user', ({ request }) => {
-          const token = request.headers.get('Authorization')?.split(' ')[1];
-          if (token !== 'tokenRenovado') return HttpResponse.json(null, { status: 401 });
-          return HttpResponse.json(userInfo);
-        }),
-        http.get('*/auth/refresh', () => HttpResponse.json({ token: 'tokenRenovado' })),
-      );
-
+  describe('Renovação de token', () => {
+    it('Deve renovar o token expirado e refazer a requisição com o token atualizado, mantendo o usuário logado', async () => {
+      apiTokenExpired(true);
       await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
 
       expect(await screen.findByText('SAIR')).toBeTruthy();
       expect(AsyncStorage.setItem).toHaveBeenCalledWith('token', 'tokenRenovado');
     });
 
-    it('Deve deslogar o usuário caso não consiga fazer o refresh do token', async () => {
-      AsyncStorageMockSimulator('dbAndStorage');
-
-      server.use(http.get('*/user', () => HttpResponse.json(null, { status: 401 })));
-      server.use(http.get('*/auth/refresh', () => HttpResponse.json(null, { status: 401 })));
-
+    it('Deve deslogar o usuário e remover o token do AsyncStorage se a renovação do token falhar', async () => {
+      apiTokenExpired(false);
       await renderRouterPaia(['(tabs)', '(user)'], { initialUrl: '(user)' });
 
       expect(screen).toHaveSegments(['(auth)']);

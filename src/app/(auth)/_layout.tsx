@@ -9,8 +9,9 @@ export default function AuthLayout() {
     <Stack
       screenOptions={{
         header: HeaderAuth,
-        contentStyle: { backgroundColor: theme.colors.body },
         statusBarColor: theme.colors.primary,
+        contentStyle: { backgroundColor: theme.colors.body },
+        presentation: 'fullScreenModal',
       }}
     />
   );

@@ -1,39 +1,31 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import {
-  useMutation,
-  UseMutationOptions,
-  UseMutationResult,
-  useQuery,
-  UseQueryOptions,
-  UseQueryResult,
-} from '@tanstack/react-query';
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { AxiosInstance } from 'axios';
 import { useAxios } from '../auth/useAxios';
 
-//
-type ReqType = 'query' | 'mutate';
-type ReqIF<T, VQ, VM> = T extends 'query' ? VQ : T extends 'mutate' ? VM : never;
-
-//
-type ReqOptions<T, D, V> = ReqIF<T, UseQueryOptions<D>, UseMutationOptions<D, Error, V>>;
-type ReqResult<T, D, V> = ReqIF<T, UseQueryResult<D>, UseMutationResult<D, Error, V>>;
-
-//
-type ReqConfig<T, D, V> = (axios: AxiosInstance) => ReqOptions<T, D, V>;
-type reqHook<T, D, V> = (options: ReqOptions<T, D, V>) => ReqResult<T, D, V>;
+// o tipo C é para pegar as opções escolhidas no callback para omitir elas do hook
 
 /**
- *  Extensão do useAxios com React Query para lidar com requisições
- *
- *  AVISO: o type não pode mudar na execução, pois quebrara as regras de hook do react
+ *  Extensão do useAxios com React Query para lidar com requisições de mutação
  */
-export default function createReq<T extends ReqType, D, V>(type: T, cbConfig: ReqConfig<T, D, V>) {
-  return function useApi(options) {
+export function createMutation<D, V, C>(
+  cbConfig: (axios: AxiosInstance) => UseMutationOptions<D, Error, V> & C,
+) {
+  return function useApi(options: Omit<UseMutationOptions<D, Error, V>, keyof C>) {
     const axiosPaiado = useAxios();
     const config = cbConfig(axiosPaiado);
 
-    return type === 'mutate'
-      ? useMutation({ ...config, ...options } as UseMutationOptions)
-      : useQuery({ ...config, ...options } as UseQueryOptions);
-  } as reqHook<T, D, V>;
+    return useMutation({ ...config, ...options });
+  };
+}
+
+/**
+ *  Extensão do useAxios com React Query para lidar com requisições de query
+ */
+export function createQuery<D, C>(cbConfig: (axios: AxiosInstance) => UseQueryOptions<D, Error> & C) {
+  return function useApi(options: Omit<UseQueryOptions<D, Error>, keyof C>) {
+    const axiosPaiado = useAxios();
+    const config = cbConfig(axiosPaiado);
+
+    return useQuery({ ...config, ...options });
+  };
 }

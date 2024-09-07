@@ -1,32 +1,27 @@
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import ButtonSubmit from '@/components/ButtonSubmit';
-import useApi from '@/libs/apiHooks/reactQuery/useApi';
 import { Alert } from 'react-native';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
+import ButtonBig from '../ButtonBig';
+import { useUserDelete } from '@/libs/apiHooks/mutations';
 
 export function UserDelete() {
-  const { logout } = useAuth();
   const { styles } = useStyles(stylesPaia);
 
-  const mutation = useApi('mutate', (axios) => ({
-    mutationFn: async () => {
-      Alert.alert('Tem certeza que deseja excluir sua conta?', 'Essa ação é irreversível', [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Excluir',
-          onPress: async () => {
-            await axios.delete('/user');
-            await logout();
-          },
-        },
-      ]);
-    },
-  }));
+  const { logout } = useAuth();
+  const { mutate } = useUserDelete({ onSuccess: logout });
 
-  return <ButtonSubmit style={styles.buttonDelete} title="EXCLUIR CONTA" mutation={mutation} />;
+  const confirm = () => {
+    Alert.alert('Tem certeza que deseja excluir sua conta?', 'Essa ação é irreversível', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Excluir', onPress: mutate },
+    ]);
+  };
+
+  return (
+    <ButtonBig style={styles.buttonDelete} onPress={confirm}>
+      EXCLUIR CONTA
+    </ButtonBig>
+  );
 }
 
 const stylesPaia = createStyleSheet((theme) => ({

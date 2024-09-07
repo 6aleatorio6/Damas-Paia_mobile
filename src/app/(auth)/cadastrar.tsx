@@ -2,23 +2,20 @@ import FormMolde from '@/components/form/FormMolde';
 import Input from '@/components/form/FormInput';
 import { useForm } from '@/libs/form/formHooks';
 import FormSubmit from '@/components/form/FormSubmit';
-import useApi from '@/libs/apiHooks/reactQuery/useApi';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { router } from 'expo-router';
+import { useUserPostAndLogin } from '@/libs/apiHooks/mutations';
 
 export default function CadastrarAuth() {
+  const { setToken } = useAuth();
   const form = useForm();
 
-  const { setToken } = useAuth();
-  const mutation = useApi('mutate', (axios) => ({
-    async mutationFn(values) {
-      await axios.post('/user', values);
-      const { data } = await axios.post('/auth/login', values);
-
+  const mutation = useUserPostAndLogin({
+    async onSuccess(data) {
       await setToken(data.token);
       router.replace('/(tabs)');
     },
-  }));
+  });
 
   return (
     <FormMolde title="CRIE SUA CONTA">

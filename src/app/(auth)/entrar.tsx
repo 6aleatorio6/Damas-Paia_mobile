@@ -2,22 +2,20 @@ import FormMolde from '@/components/form/FormMolde';
 import Input from '@/components/form/FormInput';
 import { useForm } from '@/libs/form/formHooks';
 import FormSubmit from '@/components/form/FormSubmit';
-import useApi from '@/libs/apiHooks/reactQuery/useApi';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { router } from 'expo-router';
+import { useLoginPost } from '@/libs/apiHooks/mutations';
 
 export default function EntrarAuth() {
+  const { setToken } = useAuth();
   const form = useForm();
 
-  const { setToken } = useAuth();
-  const mutation = useApi('mutate', (axios) => ({
-    async mutationFn(values) {
-      const { data } = await axios.post('/auth/login', values);
-
+  const mutation = useLoginPost({
+    async onSuccess(data) {
       await setToken(data.token);
       router.replace('/(tabs)');
     },
-  }));
+  });
 
   return (
     <FormMolde title="ENTRE NA SUA CONTA">

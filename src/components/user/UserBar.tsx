@@ -8,7 +8,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function UserBar() {
   const { styles, theme } = useStyles(stylesheet);
-  const { data, isLoading, isError } = useGetUser();
+  const { data, isLoading, isError } = useGetUser({});
   const { logout } = useAuth();
 
   if (isLoading) return <Text>Carregando </Text>;

@@ -1,8 +1,6 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import useApi from './reactQuery/useApi';
+import { createQuery } from './reactQuery/createReq';
 
-export const useGetUser = () =>
-  useApi('query', (axios) => ({
-    queryKey: ['user'],
-    queryFn: async () => axios.get<User>('/user').then((res) => res.data),
-  }));
+export const useGetUser = createQuery((axios) => ({
+  queryKey: ['user'],
+  queryFn: () => axios.get<User>('/user').then((res) => res.data),
+}));

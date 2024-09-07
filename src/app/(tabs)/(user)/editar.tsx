@@ -13,7 +13,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function Indextabs() {
   const { styles } = useStyles(stylesPaia);
-  const { data } = useGetUser();
+  const { data } = useGetUser({});
 
   const formSenha = useForm();
   const formName = useForm({

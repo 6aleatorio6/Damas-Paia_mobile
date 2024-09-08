@@ -13,7 +13,7 @@ export default function Input<F extends string>({ form, name, field, defaultValu
   const { setValue, value, ...valid } = useInput(form, field, defaultValue);
 
   const statusEnum = {
-    LOADING: ['warning', 'carregando...'],
+    LOADING: ['warning', '...'],
     VALIDY: ['success', `${name || field} valido`],
     ERROR: ['danger', valid.error],
     OFF: ['bodySec', ''],

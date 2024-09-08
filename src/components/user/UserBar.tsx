@@ -2,33 +2,46 @@ import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import { router } from 'expo-router';
-import { LogOut, UserCircle2 } from 'lucide-react-native';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Frown, LogOut, RotateCcw, UserCircle2 } from 'lucide-react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function UserBar() {
   const { styles, theme } = useStyles(stylesheet);
-  const { data, isLoading, isError } = useGetUser({});
+  const { data, isError, isLoading, isSuccess, refetch } = useGetUser({});
   const { logout } = useAuth();
 
-  if (isLoading) return <Text>Carregando </Text>;
-  if (isError) return <Text>Erro</Text>;
+  const Icon = isSuccess ? UserCircle2 : isLoading ? ActivityIndicator : Frown;
 
   return (
     <View style={styles.containerPerfil}>
-      <UserCircle2 size={65} color={theme.colors.textPri} />
+      <Icon size={65} color={theme.colors.textPri} />
       <View style={styles.meioPerfil}>
-        <Text style={styles.username}>{data?.username}</Text>
-        <ButtonBig style={styles.editButton} onPress={() => router.navigate('/(tabs)/(user)/editar')}>
-          Editar
-        </ButtonBig>
+        {isError && <Text style={styles.username}>{'Erro'}</Text>}
+        {isLoading && <Text style={styles.username}>{'...'}</Text>}
+        {isSuccess && (
+          <>
+            <Text style={styles.username}>{data?.username}</Text>
+            <ButtonBig style={styles.editButton} onPress={() => router.navigate('/(tabs)/(user)/editar')}>
+              Editar
+            </ButtonBig>
+          </>
+        )}
       </View>
-      <TouchableOpacity onPress={() => logout()}>
-        <View style={styles.logoutIcon}>
-          <LogOut size={20} color={theme.colors.danger} />
-        </View>
-        <Text style={styles.logoutText}>SAIR</Text>
-      </TouchableOpacity>
+
+      {!isSuccess && (
+        <TouchableOpacity style={styles.logoutIcon} onPress={() => refetch()}>
+          <RotateCcw size={30} color={theme.colors.danger} />
+        </TouchableOpacity>
+      )}
+      {isSuccess && (
+        <TouchableOpacity onPress={() => logout()}>
+          <View style={styles.logoutIcon}>
+            <LogOut size={20} color={theme.colors.danger} />
+          </View>
+          <Text style={styles.logoutText}>SAIR</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

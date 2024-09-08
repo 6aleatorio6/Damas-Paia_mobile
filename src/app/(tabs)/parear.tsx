@@ -2,11 +2,11 @@ import ButtonBig from '@/components/ButtonBig';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Modal, Text, View, ActivityIndicator } from 'react-native';
+import { Modal, Text, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function Parear() {
-  const { styles, theme } = useStyles(stylePaia);
+  const { styles } = useStyles(stylePaia);
   const [modalVisible, setModalVisible] = useState(true);
 
   const closeModal = () => {

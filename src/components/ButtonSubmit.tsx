@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ButtonBig, { IButtonStyle } from './ButtonBig';
 import { UseMutationResult } from '@tanstack/react-query';
@@ -15,7 +15,7 @@ export interface ButtonSubmitProps<D = unknown> {
 }
 
 export default function ButtonSubmit<D>(props: ButtonSubmitProps<D>) {
-  const { styles } = useStyles(stylesPaia);
+  const { styles, theme } = useStyles(stylesPaia);
   const { isPending, isIdle, error, mutate } = props.mutation;
 
   const isLoading = isPending && !isIdle;
@@ -30,7 +30,7 @@ export default function ButtonSubmit<D>(props: ButtonSubmitProps<D>) {
         disabled={disabled}
         onPress={() => mutate(props.mutateData)}
       >
-        {isLoading ? 'aguarde...' : props.title}
+        {isLoading ? <ActivityIndicator size={'large'} color={theme.colors.textPri} /> : props.title}
       </ButtonBig>
       {error && (
         <Text accessibilityLabel="error" style={styles.text}>

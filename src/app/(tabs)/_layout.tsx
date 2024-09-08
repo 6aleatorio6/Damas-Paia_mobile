@@ -1,3 +1,4 @@
+import TabButtonParear from '@/components/nav/TabButtonParear';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import { Home, UserCircle2Icon } from 'lucide-react-native';
@@ -34,6 +35,14 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: (p) => <Home {...p} /> }} />
+      <Tabs.Screen
+        name="parear"
+        options={{
+          unmountOnBlur: true,
+          tabBarButton: (p) => <TabButtonParear {...p} />,
+          title: '',
+        }}
+      />
       <Tabs.Screen
         name="(user)"
         options={{ title: 'Conta', tabBarIcon: (p) => <UserCircle2Icon {...p} /> }}

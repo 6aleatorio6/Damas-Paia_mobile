@@ -29,7 +29,8 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-unistyles": "^2.8.0",
-    "expo-dev-client": "~4.0.26"
+    "expo-dev-client": "~4.0.26",
+    "expo-image": "~1.12.15"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -36,10 +36,10 @@ export default function TabsLayout() {
     >
       <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: (p) => <Home {...p} /> }} />
       <Tabs.Screen
-        name="parear"
+        name="(game)"
         options={{
           unmountOnBlur: true,
-          tabBarButton: (p) => <TabButtonParear {...p} />,
+          tabBarButton: (p) => <TabButtonParear {...p} to="/(game)/" />,
           title: '',
         }}
       />

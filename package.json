@@ -18,6 +18,8 @@
     "axios": "^1.7.2",
     "expo": "~51.0.31",
     "expo-constants": "~16.0.2",
+    "expo-dev-client": "~4.0.26",
+    "expo-image": "~1.12.15",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.23",
     "expo-splash-screen": "~0.27.5",
@@ -29,8 +31,7 @@
     "react-native-screens": "3.31.1",
     "react-native-svg": "15.2.0",
     "react-native-unistyles": "^2.8.0",
-    "expo-dev-client": "~4.0.26",
-    "expo-image": "~1.12.15"
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -1,13 +1,29 @@
 import ButtonBig from '@/components/ButtonBig';
+import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Text, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function Parear() {
   const { styles } = useStyles(stylePaia);
   const [modalVisible, setModalVisible] = useState(true);
+  const socket = useMatchSocket();
+
+  useEffect(() => {
+    socket.emit('match:queue', 'join');
+    socket.on('match:start', (matchPaiado) => {
+      socket.data = matchPaiado;
+      setModalVisible(false);
+      router.replace('/(game)/match');
+    });
+
+    return () => {
+      socket.emit('match:queue', 'leave');
+      socket.off('match:start');
+    };
+  }, []);
 
   const closeModal = () => {
     setModalVisible(false);

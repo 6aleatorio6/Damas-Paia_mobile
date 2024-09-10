@@ -47,3 +47,18 @@ export function useMatchSocket() {
   if (!socket) throw new Error('useSocket usado fora do SocketProvider');
   return socket;
 }
+
+// ON
+interface ServerToCl {
+  'match:start': (matchPaiado: MatchPaiado) => void;
+  'match:end': (matchPaiado: Match) => void;
+  'match:update': (updatePieces: UpdatePieces, turn: UUID) => void;
+}
+
+// Emit
+interface ClientToSv {
+  'match:queue': (action: 'join' | 'leave') => void;
+  'match:move': (moveDto: MoveDto) => void;
+  'match:paths': (pieceId: number) => Coord[];
+  'match:leave': () => Match;
+}

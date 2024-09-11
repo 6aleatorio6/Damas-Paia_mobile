@@ -8,24 +8,23 @@ export function useValidador(value: string, validacoes: ValidacoesDoCampo) {
   const errorRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!validacoes) return setValidStatus('OFF');
-    if (!value) {
-      errorRef.current = 'Preencha este campo';
+    if (!validacoes) return;
+    const isInitial = validStatus === 'OFF';
 
-      return setValidStatus('ERROR');
-    }
+    if (!isInitial) setValidStatus('LOADING');
+    const timeoutId = setTimeout(
+      async () => {
+        for (const verify of validacoes) {
+          const error = await verify(value);
+          errorRef.current = error || null;
 
-    setValidStatus('LOADING');
-    const timeoutId = setTimeout(async () => {
-      for (const verify of validacoes) {
-        const error = await verify(value);
-        errorRef.current = error || null;
+          if (error) return setValidStatus('ERROR');
 
-        if (error) return setValidStatus('ERROR');
-
-        setValidStatus('VALIDY');
-      }
-    }, +TIMEOUT_VALIDY);
+          setValidStatus('VALIDY');
+        }
+      },
+      isInitial ? 0 : +TIMEOUT_VALIDY,
+    );
 
     return () => clearTimeout(timeoutId);
   }, [value]);

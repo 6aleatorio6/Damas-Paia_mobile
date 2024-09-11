@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStyles } from 'react-native-unistyles';
 import { AuthProvider } from '@/libs/apiHooks/auth/tokenContext';
 import { QueryPaiaProvider } from '@/libs/apiHooks/reactQuery/queryContext';
+import Healthcheck from '@/components/Healthcheck';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,6 +19,7 @@ export default function LayoutRaiz() {
     <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.colors.primary }}>
       <QueryPaiaProvider>
         <AuthProvider>
+          <Healthcheck />
           <Slot initialRouteName="(tabs)" />
         </AuthProvider>
       </QueryPaiaProvider>

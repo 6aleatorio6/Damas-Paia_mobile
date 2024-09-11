@@ -6,14 +6,15 @@ import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
 import { useUserPut } from '@/libs/apiHooks/mutations';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import { useForm } from '@/libs/form/formHooks';
-import { validsPaia } from '@/libs/form/validacoes';
 import { router } from 'expo-router';
 import { Alert, ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { useValidsPaia } from '@/libs/form/validacoes';
 
 export default function Indextabs() {
   const { styles } = useStyles(stylesPaia);
   const { data } = useGetUser({});
+  const validsPaia = useValidsPaia();
 
   const formSenha = useForm();
   const formName = useForm({

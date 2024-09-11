@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useValidador, ValidacoesDoCampo } from './useValidador';
-import { validsPaia } from './validacoes';
-
-type KeysValidsPaia = keyof typeof validsPaia;
+import { useValidsPaia } from './validacoes';
 
 export function useForm<K extends string>(
   valids?: Record<K, ValidacoesDoCampo>,
@@ -11,8 +9,9 @@ export function useForm<K extends string>(
   const valuesRef = useRef({} as Record<K, string>);
   const statusRef = useRef({} as Record<K, boolean>);
   const formValidyState = useState(false);
+  const validsPaia = useValidsPaia();
 
-  let validacoes: Record<K & KeysValidsPaia, ValidacoesDoCampo> = validsPaia;
+  let validacoes: Record<K & keyof typeof validsPaia, ValidacoesDoCampo> = validsPaia;
   if (valids) {
     if (mode === 'merge') validacoes = { ...validsPaia, ...valids };
     if (mode === 'replace') validacoes = valids;

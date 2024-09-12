@@ -16,6 +16,7 @@ export default function Input<F extends string>({ form, name, field, defaultValu
     LOADING: ['warning', '...'],
     VALIDY: ['success', `${name || field} valido`],
     ERROR: ['danger', valid.error],
+    OPTIONAL: ['bodySec', ''],
     OFF: ['bodySec', ''],
   } as const;
 

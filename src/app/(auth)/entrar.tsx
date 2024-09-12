@@ -8,7 +8,7 @@ import { useLoginPost } from '@/libs/apiHooks/mutations';
 
 export default function EntrarAuth() {
   const { setToken } = useAuth();
-  const form = useForm();
+  const form = useForm({ username: { omit: ['verify'] } });
 
   const mutation = useLoginPost({
     async onSuccess(data) {

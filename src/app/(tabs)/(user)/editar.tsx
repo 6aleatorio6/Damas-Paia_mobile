@@ -9,16 +9,14 @@ import { useForm } from '@/libs/form/formHooks';
 import { router } from 'expo-router';
 import { Alert, ScrollView, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
-import { useValidsPaia } from '@/libs/form/validacoes';
 
 export default function Indextabs() {
   const { styles } = useStyles(stylesPaia);
   const { data } = useGetUser({});
-  const validsPaia = useValidsPaia();
 
-  const formSenha = useForm();
+  const formSenha = useForm({ password: { optional: true } });
   const formName = useForm({
-    username: [(t) => t === data?.username && 'altere seu nome', ...validsPaia.username],
+    username: { optional: true, addStart: [(t) => t === data?.username && 'altere seu nome'] },
   });
 
   const onSuccess = () => {
@@ -39,7 +37,7 @@ export default function Indextabs() {
             field="username"
             name="Nome de usuario"
             textContentType="nickname"
-            defaultValue={data?.username}
+            placeholder={`nome atual: ${data?.username}`}
           />
           <FormSubmit
             form={formName}

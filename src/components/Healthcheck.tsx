@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { View, Text, Modal, BackHandler, ActivityIndicator } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ButtonBig from './ButtonBig';
+import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
 
 export default function Healthcheck() {
   const check = useHealthcheck({});
@@ -11,7 +12,11 @@ export default function Healthcheck() {
 
   useEffect(() => {
     if (check.error) setModalVisible(true);
-    if (check.isSuccess) setModalVisible(false);
+    if (check.isSuccess) {
+      queryClientPaia.refetchQueries();
+      queryClientPaia.resumePausedMutations();
+      setModalVisible(false);
+    }
   }, [check.error, check.isSuccess]);
 
   const handleRetry = () => {

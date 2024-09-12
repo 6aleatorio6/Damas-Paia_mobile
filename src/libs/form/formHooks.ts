@@ -1,21 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import { useValidador, ValidacoesDoCampo } from './useValidador';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useValidador, Valid } from './useValidador';
 import { useValidsPaia } from './validacoes';
+type ValidsPaia = ReturnType<typeof useValidsPaia>;
 
-export function useForm<K extends string>(
-  valids?: Record<K, ValidacoesDoCampo>,
-  mode: 'replace' | 'merge' = 'merge',
-) {
-  const valuesRef = useRef({} as Record<K, string>);
-  const statusRef = useRef({} as Record<K, boolean>);
+export function useForm(validsOptions?: ValidOptions) {
+  const valuesRef = useRef({} as Record<keyof ValidsPaia, string>);
+  const statusRef = useRef({} as Record<keyof ValidsPaia, boolean>);
   const formValidyState = useState(false);
-  const validsPaia = useValidsPaia();
+  const valids = useValidsPaia();
 
-  let validacoes: Record<K & keyof typeof validsPaia, ValidacoesDoCampo> = validsPaia;
-  if (valids) {
-    if (mode === 'merge') validacoes = { ...validsPaia, ...valids };
-    if (mode === 'replace') validacoes = valids;
-  }
+  const validacoes = useMemo(() => createValidacoes(valids, validsOptions), [validsOptions]);
 
   return {
     valuesFields: valuesRef.current,
@@ -25,10 +19,43 @@ export function useForm<K extends string>(
   };
 }
 
+type ValidOptions = {
+  [K in keyof ValidsPaia]?: {
+    addStart?: Valid[];
+    addEnd?: Valid[];
+  } & ({ pick?: (keyof ValidsPaia[K])[]; omit?: never } | { omit?: (keyof ValidsPaia[K])[]; pick?: never });
+};
+function createValidacoes(ValidsDefault: ValidsPaia, validsOpts?: ValidOptions) {
+  const validacoesDosCampos = {} as Record<string, Valid[]>;
+
+  let key: keyof ValidsPaia;
+  for (key in ValidsDefault) {
+    const validacoes = [] as Valid[];
+    const validDefaultCampo = ValidsDefault[key] as Record<string, Valid>;
+    const { addStart, addEnd, pick, omit, optional } = validsOpts?.[key] || {};
+
+    if (addStart) validacoes.push(...addStart);
+    validacoes.push(
+      ...(pick
+        ? pick.map((k) => validDefaultCampo[k] as Valid)
+        : omit
+          ? Object.keys(validDefaultCampo)
+              .filter((k) => !(omit as string[]).includes(k))
+              .map((k) => validDefaultCampo[k])
+          : Object.values(validDefaultCampo)),
+    );
+    if (addEnd) validacoes.push(...addEnd);
+
+    validacoesDosCampos[key] = validacoes;
+  }
+
+  return validacoesDosCampos;
+}
+
 export interface UseFormR<Fields extends string> {
   valuesFields: Record<Fields, string>;
   statusFields: Record<Fields, boolean>;
-  validacoes: Record<Fields, ValidacoesDoCampo>;
+  validacoes: Record<Fields, Valid[]>;
   formValidyState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 export function useInput<F extends UseFormR<K>, K extends string>(formData: F, field: K, dValue?: string) {

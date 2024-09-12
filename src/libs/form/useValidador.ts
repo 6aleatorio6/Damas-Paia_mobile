@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const TIMEOUT_VALIDY = process.env.EXPO_PUBLIC_INPUT_VALIDY || 500;
 
-export function useValidador(value: string, validacoes: ValidacoesDoCampo) {
+export function useValidador(value: string, validacoes: Valid[]) {
   const [validStatus, setValidStatus] = useState<StatusValidy>('OFF');
   const errorRef = useRef<string | null>(null);
 
@@ -32,8 +32,6 @@ export function useValidador(value: string, validacoes: ValidacoesDoCampo) {
   return { status: validStatus, error: errorRef.current };
 }
 
-export type ValidacoesDoCampo =
-  | ((v: string) => PromiseLike<string | null | false | undefined> | string | null | false | undefined)[]
-  | null;
+export type Valid<V = string | null | false | undefined> = 'optional' | ((v: string) => PromiseLike<V> | V);
 
 export type StatusValidy = 'VALIDY' | 'ERROR' | 'LOADING' | 'OFF';

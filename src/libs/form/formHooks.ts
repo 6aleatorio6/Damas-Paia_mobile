@@ -21,6 +21,7 @@ export function useForm(validsOptions?: ValidOptions) {
 
 type ValidOptions = {
   [K in keyof ValidsPaia]?: {
+    optional?: boolean;
     addStart?: Valid[];
     addEnd?: Valid[];
   } & ({ pick?: (keyof ValidsPaia[K])[]; omit?: never } | { omit?: (keyof ValidsPaia[K])[]; pick?: never });
@@ -34,6 +35,7 @@ function createValidacoes(ValidsDefault: ValidsPaia, validsOpts?: ValidOptions) 
     const validDefaultCampo = ValidsDefault[key] as Record<string, Valid>;
     const { addStart, addEnd, pick, omit, optional } = validsOpts?.[key] || {};
 
+    if (optional) validacoes.push('OPTIONAL');
     if (addStart) validacoes.push(...addStart);
     validacoes.push(
       ...(pick

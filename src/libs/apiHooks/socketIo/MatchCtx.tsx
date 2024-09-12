@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { io, Socket } from 'socket.io-client';
-import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from 'react';
 import { useAuth } from '../auth/tokenContext';
 import { baseURL, refreshTokenOrLogout } from '../auth/utils';
 
@@ -10,10 +10,12 @@ const SocketContext = createContext<SocketPaia | null>(null);
 export function MatchSocketProvider(props: PropsWithChildren) {
   const auth = useAuth();
 
-  const client = io(`${baseURL}/match`, {
-    autoConnect: false,
-    extraHeaders: { Authorization: `Bearer ${auth.token}` },
-  }) as SocketPaia;
+  const client = useMemo(() => {
+    return io(`${baseURL}/match`, {
+      autoConnect: false,
+      extraHeaders: { Authorization: `Bearer ${auth.token}` },
+    }) as SocketPaia;
+  }, []);
 
   useEffect(() => {
     client.connect();

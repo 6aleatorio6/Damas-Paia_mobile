@@ -1,4 +1,4 @@
-import { useIsInvalid } from '../apiHooks/mutations';
+import { useAxios } from '../apiHooks/auth/useAxios';
 import { Valid } from './useValidador';
 
 /**
@@ -10,7 +10,14 @@ import { Valid } from './useValidador';
  * - Se a validação passar, a função deve retornar false;
  */
 export const useValidsPaia = () => {
-  const { mutateAsync: mutateVerify } = useIsInvalid({});
+  const axios = useAxios();
+
+  async function duplicateCheck(data: Partial<Pick<User, 'username' | 'email'>>) {
+    return axios
+      .get(`user/verify?${new URLSearchParams(data)}`)
+      .then(() => false)
+      .catch((r) => r.response?.data?.message || 'erro de rede');
+  }
 
   return {
     email: {
@@ -19,7 +26,7 @@ export const useValidsPaia = () => {
       invalidStart: (t) => !/^[a-zA-Z0-9._%+-]+/.test(t) && 'Caractere inválido no início',
       invalidFormat: (t) => !/@[a-zA-Z0-9.-]+\./.test(t) && 'Formato de email inválido',
       invalidEnding: (t) => !/[a-zA-Z]{2,}$/.test(t) && 'Terminação inválida',
-      verify: (t) => mutateVerify({ email: t }),
+      exists: (t) => duplicateCheck({ email: t }),
     },
     username: {
       required: (t) => !t && 'Campo obrigatório',
@@ -27,7 +34,7 @@ export const useValidsPaia = () => {
       noSpaces: (t) => /\s/.test(t) && 'Não pode conter espaço',
       startsWithLetter: (t) => !/^[a-zA-Z]/.test(t) && 'Deve começar com uma letra',
       validChars: (t) => !/^[a-zA-Z0-9._-]*$/.test(t) && 'apenas  (.), (_) e (-) são permitido',
-      verify: (t) => mutateVerify({ username: t }),
+      exists: (t) => duplicateCheck({ username: t }),
     },
     password: {
       required: (t) => !t && 'Campo obrigatório',

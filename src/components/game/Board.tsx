@@ -1,23 +1,29 @@
-import { useMemo } from 'react';
+import { PropsWithChildren } from 'react';
 import { View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-export default function Board({ gridSize }: { gridSize: number }) {
+interface Props extends PropsWithChildren {
+  gridSize: number;
+  useSquareSize: [number, (size: number) => void];
+}
+export default function Board({ gridSize, children, useSquareSize }: Props) {
   const { styles } = useStyles(stylesPaia);
+  const [squareSize, setSquareSize] = useSquareSize;
 
-  const squares = useMemo(() => {
-    const squares = [];
-
-    for (let row = 0; row < gridSize; row++) {
-      for (let col = 0; col < gridSize; col++) {
-        const isBlack = (row + col) % 2 === 1;
-        squares.push(<View key={`${row}-${col}`} style={styles.square(isBlack, gridSize)} />);
-      }
+  const squares = [];
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      const isBlack = (row + col) % 2 === 1;
+      squares.push(<View key={`${row}-${col}`} style={styles.square(isBlack, gridSize)} />);
     }
-    return squares;
-  }, [gridSize]);
+  }
 
-  return <View style={styles.board}>{squares}</View>;
+  return (
+    <View onLayout={(e) => setSquareSize(e.nativeEvent.layout.width / gridSize)} style={styles.board}>
+      {squares}
+      {!!squareSize && children}
+    </View>
+  );
 }
 
 const stylesPaia = createStyleSheet((theme) => ({

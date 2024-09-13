@@ -16,8 +16,6 @@ interface Match {
 
 interface Piece {
   id: number;
-  match: Match;
-  player: User;
   x: number;
   y: number;
   queen?: boolean;
@@ -28,7 +26,7 @@ interface Piece {
 // MatchService
 type UUID = string;
 type Coord = { x: number; y: number };
-type PlayerPaiado = User & { pieces: Omit<Piece, 'match' | 'user'>[] };
+type PlayerPaiado = Pick<User, 'username' | 'uuid'> & { pieces: Piece[] };
 type MoveDto = { id: number; to: { x: number; y: number } };
 
 type UpdatePieces = {

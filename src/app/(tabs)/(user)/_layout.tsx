@@ -14,19 +14,27 @@ export default function Layout() {
         presentation: 'fullScreenModal',
         animation: 'fade_from_bottom',
       }}
-      screenListeners={{
-        state({ data: { state } }) {
-          if (state.index === 0) {
+    >
+      <Stack.Screen
+        name="index"
+        listeners={{
+          focus() {
             setOptions({ title: 'Conta', tabBarStyle: { backgroundColor: bodySec }, headerLeft: null });
-          } else {
+          },
+        }}
+      />
+      <Stack.Screen
+        name="editar"
+        listeners={{
+          focus(e) {
             setOptions({
               title: 'Editar Conta',
               tabBarStyle: { display: 'none' },
               headerLeft: () => <ButtonLeftHeader backTo="/(tabs)/(user)" />,
             });
-          }
-        },
-      }}
-    />
+          },
+        }}
+      />
+    </Stack>
   );
 }

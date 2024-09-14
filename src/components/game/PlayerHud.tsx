@@ -7,13 +7,16 @@ import { useEffect, useState } from 'react';
 export default function PlayerHud({ isUser }: { isUser?: boolean }) {
   const { styles } = useStyles(stylesPaia);
   const socket = useMatchSocket();
-  const match = socket.data as MatchPaiado;
+  const match = socket.data;
   const player = isUser ? match.myPlayer : match.playerOponent;
-  const [isMyTurn, setMyTurn] = useState(match.turn === player.uuid);
+  const [isTurn, setTurn] = useState(match.turn === player.uuid);
+  const [pieceLength, setPieceLength] = useState(player.pieces.length);
 
   useEffect(() => {
-    socket.on('match:update', (_, turnoAtual) => {
-      setMyTurn(turnoAtual === player.uuid);
+    socket.on('match:update', (updatePiece, turnoAtual) => {
+      const isTurnAtual = turnoAtual === player.uuid;
+      setTurn(isTurnAtual);
+      if (isTurnAtual) setPieceLength((pl) => pl - updatePiece.deads.length);
     });
 
     return () => {
@@ -24,7 +27,7 @@ export default function PlayerHud({ isUser }: { isUser?: boolean }) {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Play size={24} strokeWidth={9.3} style={styles.icon(isMyTurn)} />
+        <Play size={24} strokeWidth={9.3} style={styles.icon(isTurn)} />
         <Text style={styles.username}>
           {player.username}
           {isUser && <Text style={styles.youText}> (você)</Text>}
@@ -32,7 +35,7 @@ export default function PlayerHud({ isUser }: { isUser?: boolean }) {
       </View>
       <View style={styles.piecesCon}>
         <Text style={styles.piecesText}>PEÇAS:</Text>
-        <Text style={styles.piecesNum}> {player.pieces.length}</Text>
+        <Text style={styles.piecesNum}> {pieceLength}</Text>
       </View>
     </View>
   );

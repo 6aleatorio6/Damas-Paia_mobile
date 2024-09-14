@@ -18,6 +18,7 @@ export function Piece(props: PieceProps) {
   const socket = useMatchSocket();
   const iAmPlayer1 = !!socket.data.myPlayer.pieces.find((p) => p.y === 0);
   const [path, setPath] = useState<Coord[]>([]);
+  const [morreu, setMorreu] = useState(false);
 
   const [clearPath, setClearPath] = props.clearPath || [];
   useEffect(() => {
@@ -28,6 +29,17 @@ export function Piece(props: PieceProps) {
     props.clearPath?.[1]((e) => !e);
     setPath(await socket.emitWithAck('match:paths', +props.id));
   };
+
+  useEffect(() => {
+    const idM = props.morrerPiece.addListener(({ value }) => {
+      if (value === 1) return 'está vivo :C';
+      setMorreu(true);
+      props.morrerPiece.removeListener(idM);
+    });
+
+    return () => props.morrerPiece.removeListener(idM);
+  }, []);
+  if (morreu) return null;
 
   return (
     <>
@@ -49,7 +61,7 @@ export function Piece(props: PieceProps) {
         ]}
       >
         <Pressable onPress={getPaths} style={styles.piece(props.isMyPiece)}>
-          <Animated.View style={{ opacity: props.fadeQueen }}>
+          <Animated.View style={{ opacity: props.fadeQueen, margin: 'auto' }}>
             <Image
               source={
                 props.isMyPiece

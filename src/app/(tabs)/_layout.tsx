@@ -20,9 +20,8 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarActiveTintColor: colors.textPri,
         tabBarInactiveTintColor: colors.textSec,
-        tabBarStyle: { backgroundColor: colors.bodySec },
-        tabBarLabelStyle: { fontSize: 13 },
-
+        tabBarStyle: { backgroundColor: colors.bodySec, flex: 0.09 },
+        tabBarLabelStyle: { fontSize: 13, bottom: '13%' },
         headerStyle: { backgroundColor: colors.bodySec },
         headerTitleAlign: 'center',
         headerTitleStyle: {

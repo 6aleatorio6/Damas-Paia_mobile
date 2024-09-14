@@ -19,7 +19,11 @@ export default function Layout() {
         name="index"
         listeners={{
           focus() {
-            setOptions({ title: 'Conta', tabBarStyle: { backgroundColor: bodySec }, headerLeft: null });
+            setOptions({
+              title: 'Conta',
+              tabBarStyle: { backgroundColor: bodySec, flex: 0.09 },
+              headerLeft: null,
+            });
           },
         }}
       />

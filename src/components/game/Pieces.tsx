@@ -1,28 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/jsx-key */
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
-import { useEffect, useState } from 'react';
-import { Piece } from './Piece';
+import { useEffect, useRef, useState } from 'react';
 import { Animated } from 'react-native';
-
-type MovPiece = UpdatePieces['piece'] & { anima?: Animated.CompositeAnimation[] };
+import { Piece, PieceProps } from './Piece';
 
 export default function Pieces({ squareSize }: { squareSize: number }) {
   const socket = useMatchSocket();
   const match = socket.data as MatchPaiado;
-
-  const [myPieces, setMyPieces] = useState(transformInitial(match.myPlayer.pieces));
-  const [opPieces, setOpPieces] = useState(transformInitial(match.playerOponent.pieces));
+  const myPieces = useRef(createPiecesProps(match.myPlayer.pieces, squareSize)).current;
+  const opPieces = useRef(createPiecesProps(match.playerOponent.pieces, squareSize)).current;
+  const clearPathState = useState(false);
 
   useEffect(() => {
     socket.on('match:update', (pieceUpdate) => {
-      const [lado, index] = getPieceById(pieceUpdate.piece.id, myPieces, opPieces);
-      const setPiece = lado === 'my' ? setMyPieces : setOpPieces;
+      const pieceMov = getPieceById(pieceUpdate.piece.id, myPieces, opPieces);
+      const anima = [] as Animated.CompositeAnimation[];
 
-      setPiece((prev) => {
-        const newPieces = [...prev];
-        newPieces[index] = pieceUpdate.piece;
+      for (const i in pieceUpdate.piece.movs) {
+        const mov = pieceUpdate.piece.movs[i];
+        const deadId = pieceUpdate.deads[i];
+        console.log(mov, deadId);
 
-        return newPieces;
-      });
+        anima.push(
+          Animated.timing(pieceMov.movePiece, {
+            toValue: { x: mov.x * squareSize, y: mov.y * squareSize },
+            duration: 100,
+            useNativeDriver: false,
+          }),
+        );
+
+        if (deadId === undefined) continue;
+        // Animação de morte = opacidade 0
+        const pieceDead = getPieceById(deadId, myPieces, opPieces);
+        anima.push(
+          Animated.timing(pieceDead.morrerPiece, {
+            toValue: 0,
+            duration: 100,
+            useNativeDriver: false,
+          }),
+        );
+      }
+
+      if (pieceUpdate.piece.queen !== pieceMov.isQueen) {
+        pieceMov.isQueen = pieceUpdate.piece.queen;
+        anima.push(
+          Animated.timing(pieceMov.fadeQueen, {
+            toValue: 1,
+            duration: 100,
+            useNativeDriver: false,
+          }),
+        );
+      }
+
+      Animated.sequence(anima).start();
     });
 
     return () => socket.off('match:update') as any;
@@ -30,24 +61,35 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
 
   return (
     <>
-      {myPieces.map((p) => (
-        <Piece key={p.id} isQueen={p.queen} squareSize={squareSize} isMyPiece />
+      {myPieces.map((piece) => (
+        <Piece key={piece.id} {...piece} clearPath={clearPathState} isMyPiece />
       ))}
-      {opPieces.map((p) => (
-        <Piece key={p.id} isQueen={p.queen} squareSize={squareSize} />
+      {opPieces.map((piece) => (
+        <Piece key={piece.id} {...piece} />
       ))}
     </>
   );
 }
 
-const transformInitial = (pieces: Piece[]): MovPiece[] =>
-  pieces.map((e) => ({ id: e.id, movs: [{ x: e.x, y: e.y }], queen: !!e.queen }));
+type PiecePropsPaiado = PieceProps & { isQueen: boolean };
 
-const getPieceById = (id: number, mPieces: MovPiece[], oPieces: MovPiece[]) => {
-  const myPieceIndex = mPieces.findIndex((p) => p.id === id);
-  const opPieceIndex = oPieces.findIndex((p) => p.id === id);
+const createPiecesProps = (pieces: Piece[], squareSize: number) => {
+  return pieces.map((piece) => ({
+    squareSize,
+    isQueen: !!piece.queen,
+    id: piece.id,
+    fadeQueen: new Animated.Value(0),
+    morrerPiece: new Animated.Value(1), // opacidade
+    movePiece: new Animated.ValueXY({ x: piece.x * squareSize, y: piece.y * squareSize }),
+  })) as PiecePropsPaiado[];
+};
 
-  const index = myPieceIndex !== -1 ? myPieceIndex : opPieceIndex;
-  const lado = myPieceIndex !== -1 ? 'my' : 'op';
-  return [lado, index] as const;
+const getPieceById = (id: number, myPieces: PiecePropsPaiado[], opPieces: PiecePropsPaiado[]) => {
+  const opPiece = opPieces.find((piece) => piece.id === id);
+  const myPiece = myPieces.find((piece) => piece.id === id);
+
+  const piece = opPiece || myPiece;
+  if (!piece) throw new Error('Peça não encontrada');
+
+  return piece;
 };

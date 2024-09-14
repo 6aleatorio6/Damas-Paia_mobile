@@ -1,73 +1,93 @@
+import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { Image } from 'expo-image';
-import React, { useRef } from 'react';
-import { Animated, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Animated, Pressable } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-interface PieceProps {
+export interface PieceProps {
   isMyPiece?: boolean;
   squareSize: number;
-  isQueen?: boolean;
-  anima?: Animated.CompositeAnimation[];
-  key: number;
+  id: number;
+  fadeQueen: Animated.Value;
+  movePiece: Animated.ValueXY;
+  morrerPiece: Animated.Value; // fade
+  clearPath?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
-
 export function Piece(props: PieceProps) {
   const { styles } = useStyles(stylesPaia);
-  const pan = useRef(new Animated.ValueXY()).current;
-  const opaQueen = useRef(new Animated.Value(0)).current;
-  const isQueenRef = useRef(props.isQueen); // não precisa de useState
+  const socket = useMatchSocket();
+  const iAmPlayer1 = !!socket.data.myPlayer.pieces.find((p) => p.y === 0);
+  const [path, setPath] = useState<Coord[]>([]);
+  const [clearPath, setClearPath] = props.clearPath || [];
 
-  if (props.anima) {
-    // animação da rainha
-    if (isQueenRef.current !== props.isQueen) {
-      isQueenRef.current = props.isQueen;
-      props.anima.push(
-        Animated.timing(opaQueen, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      );
-    }
+  useEffect(() => {
+    setPath([]);
+  }, [clearPath]);
 
-    Animated.sequence(props.anima).start();
-  }
+  const getPaths = async () => {
+    props.clearPath?.[1]((e) => !e);
+    setPath(await socket.emitWithAck('match:paths', +props.id));
+  };
 
   return (
-    <Animated.View style={[styles.container(props.squareSize), pan.getLayout()]}>
-      <View style={styles.piece(props.isMyPiece)}>
-        {isQueenRef && (
-          <Image
-            source={
-              props.isMyPiece
-                ? require('@/assets/marca-do-rei_black.png')
-                : require('@/assets/marca-do-rei_white.png')
-            }
-            style={styles.image(opaQueen)}
-          />
-        )}
-      </View>
-    </Animated.View>
+    <>
+      {path.map((p) => (
+        <Pressable
+          key={`${p.x}-${p.y}`}
+          style={styles.path(props.squareSize, p.x, p.y)}
+          onPress={() => {
+            socket.emit('match:move', { id: props.id, to: { x: p.x, y: p.y } });
+            setClearPath?.((e) => !e);
+          }}
+        />
+      ))}
+      <Animated.View
+        style={[
+          styles.container(props.squareSize),
+          { opacity: props.morrerPiece },
+          props.movePiece.getLayout(),
+        ]}
+      >
+        <Pressable onPress={getPaths} style={styles.piece(props.isMyPiece)}>
+          <Animated.View style={{ opacity: props.fadeQueen }}>
+            <Image
+              source={
+                props.isMyPiece
+                  ? require('@/assets/marca-do-rei_black.png')
+                  : require('@/assets/marca-do-rei_white.png')
+              }
+              style={styles.image(iAmPlayer1)}
+            />
+          </Animated.View>
+        </Pressable>
+      </Animated.View>
+    </>
   );
 }
 
-const stylesPaia = createStyleSheet((theme) => ({
+const stylesPaia = createStyleSheet((_theme) => ({
+  path: (squareSize: number, left = 0, top = 0) => ({
+    position: 'absolute',
+    width: squareSize,
+    height: squareSize,
+    top: top * squareSize,
+    left: left * squareSize,
+    backgroundColor: 'green',
+  }),
   container: (squareSize: number) => ({
     position: 'absolute',
     width: squareSize,
     height: squareSize,
   }),
-  piece(isMyPiece = false) {
-    return {
-      margin: 'auto',
-      width: '80%',
-      aspectRatio: 1,
-      borderRadius: 25,
-      backgroundColor: isMyPiece ? 'white' : 'black',
-    };
-  },
-  image: (opa: Animated.Value) => ({
-    opacity: opa,
+  piece: (isMyPiece = false) => ({
+    margin: 'auto',
+    width: '80%',
+    aspectRatio: 1,
+    borderRadius: 25,
+    backgroundColor: isMyPiece ? 'white' : 'black',
+  }),
+  image: (rotate = false) => ({
+    transform: rotate ? [{ rotate: '180deg' }] : [],
     margin: 'auto',
     height: '85%',
     aspectRatio: 1,

@@ -4,7 +4,7 @@ import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from
 import { useAuth } from '../auth/tokenContext';
 import { baseURL, refreshTokenOrLogout } from '../auth/utils';
 
-type SocketPaia = Socket<ServerToCl, ClientToSv> & { data: any };
+type SocketPaia = Socket<ServerToCl, ClientToSv> & { data: MatchPaiado };
 const SocketContext = createContext<SocketPaia | null>(null);
 
 export function MatchSocketProvider(props: PropsWithChildren) {
@@ -35,9 +35,12 @@ export function MatchSocketProvider(props: PropsWithChildren) {
       }
     });
 
+    client.on('error', console.log);
+
     return () => {
       client.disconnect();
       client.off('connect_error');
+      client.off('error');
     };
   }, []);
 
@@ -55,12 +58,13 @@ interface ServerToCl {
   'match:start': (matchPaiado: MatchPaiado) => void;
   'match:end': (matchPaiado: Match) => void;
   'match:update': (updatePieces: UpdatePieces, turn: UUID) => void;
+  error: (error: Error) => void;
 }
 
 // Emit
 interface ClientToSv {
   'match:queue': (action: 'join' | 'leave') => void;
   'match:move': (moveDto: MoveDto) => void;
-  'match:paths': (pieceId: number) => Coord[];
+  'match:paths': (pieceId: number, cb: (paths: Coord[]) => void) => void;
   'match:leave': () => Match;
 }

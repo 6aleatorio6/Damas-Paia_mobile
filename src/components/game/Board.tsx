@@ -11,8 +11,8 @@ interface Props extends PropsWithChildren {
 export default function Board({ children, useSquareSize }: Props) {
   const { styles } = useStyles(stylesPaia);
   const [squareSize, setSquareSize] = useSquareSize;
-  const match = useMatchSocket().data as MatchPaiado;
-  const iAmPlayer1 = match.myPlayer.pieces[0].y === 0;
+  const match = useMatchSocket().data;
+  const iAmPlayer1 = !!match.myPlayer.pieces.find((p) => p.y === 0);
 
   const squares = [];
   for (let row = 0; row < gridSize; row++) {
@@ -36,7 +36,7 @@ export default function Board({ children, useSquareSize }: Props) {
 const stylesPaia = createStyleSheet((theme) => ({
   board: (rotate180 = false) => ({
     position: 'relative',
-    transform: rotate180 ? [{ rotate: '180deg' }] : undefined,
+    transform: rotate180 ? [{ rotate: '180deg' }] : [],
     width: '100%',
     aspectRatio: 1,
     flexDirection: 'row',

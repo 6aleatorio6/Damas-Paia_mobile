@@ -20,13 +20,12 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
       for (const i in pieceUpdate.piece.movs) {
         const mov = pieceUpdate.piece.movs[i];
         const deadId = pieceUpdate.deads[i];
-        console.log(mov, deadId);
 
         anima.push(
           Animated.timing(pieceMov.movePiece, {
             toValue: { x: mov.x * squareSize, y: mov.y * squareSize },
             duration: 100,
-            useNativeDriver: false,
+            useNativeDriver: true,
           }),
         );
 
@@ -37,7 +36,7 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
           Animated.timing(pieceDead.morrerPiece, {
             toValue: 0,
             duration: 100,
-            useNativeDriver: false,
+            useNativeDriver: true,
           }),
         );
       }
@@ -48,7 +47,7 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
           Animated.timing(pieceMov.fadeQueen, {
             toValue: 1,
             duration: 100,
-            useNativeDriver: false,
+            useNativeDriver: true,
           }),
         );
       }

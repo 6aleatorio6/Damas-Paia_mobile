@@ -18,8 +18,8 @@ export function Piece(props: PieceProps) {
   const socket = useMatchSocket();
   const iAmPlayer1 = !!socket.data.myPlayer.pieces.find((p) => p.y === 0);
   const [path, setPath] = useState<Coord[]>([]);
-  const [clearPath, setClearPath] = props.clearPath || [];
 
+  const [clearPath, setClearPath] = props.clearPath || [];
   useEffect(() => {
     setPath([]);
   }, [clearPath]);
@@ -45,7 +45,7 @@ export function Piece(props: PieceProps) {
         style={[
           styles.container(props.squareSize),
           { opacity: props.morrerPiece },
-          props.movePiece.getLayout(),
+          { transform: [{ translateX: props.movePiece.x }, { translateY: props.movePiece.y }] },
         ]}
       >
         <Pressable onPress={getPaths} style={styles.piece(props.isMyPiece)}>

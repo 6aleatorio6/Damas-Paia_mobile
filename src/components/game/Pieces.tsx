@@ -8,13 +8,17 @@ import { Piece, PieceProps } from './Piece';
 export default function Pieces({ squareSize }: { squareSize: number }) {
   const socket = useMatchSocket();
   const match = socket.data as MatchPaiado;
-  const myPieces = useRef(createPiecesProps(match.myPlayer.pieces, squareSize)).current;
-  const opPieces = useRef(createPiecesProps(match.playerOponent.pieces, squareSize)).current;
+  const pieces = useRef<{ op: PiecePropsPaiado[]; my: PiecePropsPaiado[] }>({ op: [], my: [] }).current;
   const clearPathState = useState(false);
+
+  if (!pieces.my.length && !pieces.op.length) {
+    pieces.op = createPiecesProps(match.playerOponent.pieces, squareSize);
+    pieces.my = createPiecesProps(match.myPlayer.pieces, squareSize);
+  }
 
   useEffect(() => {
     socket.on('match:update', (pieceUpdate) => {
-      const pieceMov = getPieceById(pieceUpdate.piece.id, myPieces, opPieces);
+      const pieceMov = getPieceById(pieceUpdate.piece.id, pieces.my, pieces.op);
       const anima = [] as Animated.CompositeAnimation[];
 
       for (const i in pieceUpdate.piece.movs) {
@@ -31,7 +35,7 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
 
         if (deadId === undefined) continue;
         // Animação de morte = opacidade 0
-        const pieceDead = getPieceById(deadId, myPieces, opPieces);
+        const pieceDead = getPieceById(deadId, pieces.my, pieces.op);
         anima.push(
           Animated.timing(pieceDead.morrerPiece, {
             toValue: 0,
@@ -60,10 +64,10 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
 
   return (
     <>
-      {myPieces.map((piece) => (
+      {pieces.my.map((piece) => (
         <Piece key={piece.id} {...piece} clearPath={clearPathState} isMyPiece />
       ))}
-      {opPieces.map((piece) => (
+      {pieces.op.map((piece) => (
         <Piece key={piece.id} {...piece} />
       ))}
     </>

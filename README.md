@@ -19,10 +19,33 @@
 
 ## Funcionalidades do Mobile
 
-- [x] **Cadastro e Autenticação:** Cadastro e login de usuários com token JWT.
-- [x] **Gerenciamento de Sessão:** Revalidação de tokens para manter sessões seguras.
-- [x] **Comunicação com Backend:** Integrações para operações de cadastro, login e autenticação.
-- [x] **Edição de Conta:** Alteração de informações de perfil e exclusão de conta.
+- **Cadastro e Edição de Conta**
+
+  - Cadastro e login de usuários com proteção de rotas utilizando React Context.
+  - Edição de perfil, incluindo alterações de nome e senha, além da opção de exclusão de conta.
+
+- **Comunicação com Backend**
+
+  - Revalidação automática de tokens para segurança contínua da sessão e gerenciamento do estado global de autenticação.
+  - Integrações para operações de cadastro, login e autenticação.
+  - Gerenciamento de estado e cache com React Query e hooks personalizados.
+  - Comunicação em tempo real utilizando Socket.io, com proteção via token.
+
+- **Partida de Damas**
+
+  - **HUD do Jogador**
+
+    - Exibição dinâmica do contador de peças e do estado de turno atual.
+    - Destaque visual para o jogador ativo, sincronizado com o estado da partida.
+
+  - **Tabuleiro**
+    - Tabuleiro 8x8 com rotação automática para manter o jogador na parte inferior da tela.
+    - Movimentação, captura e promoção de peças gerenciadas em tempo real via Socket.io.
+    - Animações suaves e sequenciais para movimentação, promoção e captura de peças, utilizando a API Animated.
+
+- **Validações de Formulários**
+  - Biblioteca flexível para validação de formulários, com suporte a validações responsivas e adaptáveis.
+  - Todos os formulários incluem validações configuráveis para garantir a integridade dos dados.
 
 ## Instalação
 

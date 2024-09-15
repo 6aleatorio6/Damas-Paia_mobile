@@ -43,6 +43,12 @@
     - Movimentação, captura e promoção de peças gerenciadas em tempo real via Socket.io.
     - Animações suaves e sequenciais para movimentação, promoção e captura de peças, utilizando a API Animated.
 
+- **Pareamento de Jogadores**
+
+  - Modal de espera com opção de cancelar a busca por oponente.
+  - Saída do modal desconecta automaticamente o jogador da fila de pareamento.
+  - Redirecionamento automático para a tela da partida assim que um oponente é encontrado.
+
 - **Validações de Formulários**
   - Biblioteca flexível para validação de formulários, com suporte a validações responsivas e adaptáveis.
   - Todos os formulários incluem validações configuráveis para garantir a integridade dos dados.

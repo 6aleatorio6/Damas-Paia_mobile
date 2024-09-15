@@ -45,6 +45,6 @@ const stylesPaia = createStyleSheet((theme) => ({
   square: (isBlack: boolean, gridSize: number) => ({
     width: `${100 / gridSize}%`,
     height: `${100 / gridSize}%`,
-    backgroundColor: theme.colors[isBlack ? 'bodySec' : 'textPri'],
+    backgroundColor: theme.colors[isBlack ? 'squareDark' : 'squareLight'],
   }),
 }));

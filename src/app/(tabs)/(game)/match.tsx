@@ -8,7 +8,7 @@ export default function Match() {
   const [squareSize, setSquareSize] = useState(0);
 
   return (
-    <View style={{ width: '80%', alignSelf: 'center' }}>
+    <View style={{ width: '90%', alignSelf: 'center' }}>
       <PlayerHud />
       <Board useSquareSize={[squareSize, setSquareSize]}>
         <Pieces squareSize={squareSize} />

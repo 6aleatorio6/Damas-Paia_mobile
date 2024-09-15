@@ -1,9 +1,9 @@
-import { colorsLight } from './colors';
+import { colorsDark } from './colors';
 import { stylesPaiaGlobal } from './styles';
 
 export const temas = {
-  light: {
-    colors: colorsLight,
+  dark: {
+    colors: colorsDark,
     styles: stylesPaiaGlobal,
   },
 } as const;

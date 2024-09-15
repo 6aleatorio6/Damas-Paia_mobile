@@ -77,14 +77,14 @@ export function Piece(props: PieceProps) {
   );
 }
 
-const stylesPaia = createStyleSheet((_theme) => ({
+const stylesPaia = createStyleSheet(({ colors }) => ({
   path: (squareSize: number, left = 0, top = 0) => ({
     position: 'absolute',
     width: squareSize,
     height: squareSize,
     top: top * squareSize,
     left: left * squareSize,
-    backgroundColor: 'green',
+    backgroundColor: colors.squarePath,
   }),
   container: (squareSize: number) => ({
     position: 'absolute',
@@ -96,12 +96,17 @@ const stylesPaia = createStyleSheet((_theme) => ({
     width: '80%',
     aspectRatio: 1,
     borderRadius: 25,
-    backgroundColor: isMyPiece ? 'white' : 'black',
+    backgroundColor: isMyPiece ? colors.pieceLight : colors.pieceDark,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
   }),
   image: (rotate = false) => ({
     transform: rotate ? [{ rotate: '180deg' }] : [],
     margin: 'auto',
-    height: '85%',
+    height: '97%',
     aspectRatio: 1,
   }),
 }));

@@ -6,18 +6,16 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://localhost:3000",
-        "EXPO_PUBLIC_API_TIMEOUT": "10000",
-        "EXPO_PUBLIC_INPUT_VALIDY": "500"
-      },
       "android": {
         "buildType": "apk",
-        "applicationArchivePath": "android/app/build/outputs/**/*.{apk,aab}"
+        "applicationArchivePath": "android/app/build/outputs/**/*.{apk}"
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
     },
     "production": {}
   },

@@ -1,4 +1,5 @@
 /* eslint-disable no-fallthrough */
+import EndModal from '@/components/game/EndModal';
 import ExitModal from '@/components/game/ExitModal';
 import { MatchSocketProvider } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { Stack, useNavigation } from 'expo-router';
@@ -11,6 +12,7 @@ export default function Layout() {
   return (
     <MatchSocketProvider>
       <ExitModal />
+      <EndModal />
       <Stack
         screenOptions={{
           headerShown: false,

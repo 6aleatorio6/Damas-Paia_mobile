@@ -3,7 +3,6 @@ import { Modal, View, Text } from 'react-native';
 import ButtonBig from '../ButtonBig';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
-import { router } from 'expo-router';
 
 export default function ExitModal() {
   const { styles } = useStyles(stylesPaia);
@@ -18,7 +17,6 @@ export default function ExitModal() {
 
   const onConfirm = async () => {
     socket.emit('match:quit');
-    router.back();
     setVisible(false);
   };
 

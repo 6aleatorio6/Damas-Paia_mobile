@@ -7,11 +7,12 @@ interface User {
 
 interface Match {
   uuid: string;
-  dateInit: Date;
-  dateEnd?: Date;
-  player1: User;
-  player2: User;
-  turn: User;
+  dateInit: string;
+  dateEnd?: string;
+  player1: Pick<User, 'username' | 'uuid'>;
+  player2: Pick<User, 'username' | 'uuid'>;
+  turn: Pick<User, 'username' | 'uuid'>;
+  winner: Pick<User, 'username' | 'uuid'>;
 }
 
 interface Piece {

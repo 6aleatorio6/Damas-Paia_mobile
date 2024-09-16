@@ -1,6 +1,6 @@
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { Image } from 'expo-image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Animated, Pressable } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
@@ -11,48 +11,32 @@ export interface PieceProps {
   fadeQueen: Animated.Value;
   movePiece: Animated.ValueXY;
   morrerPiece: Animated.Value; // fade
-  clearPath?: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  pathState?: ReturnType<typeof useState<[number, Coord[]] | null>>;
 }
 export function Piece(props: PieceProps) {
   const { styles } = useStyles(stylesPaia);
   const socket = useMatchSocket();
   const iAmPlayer1 = !!socket.data.myPlayer.pieces.find((p) => p.y === 0);
-  const [path, setPath] = useState<Coord[]>([]);
-  const [morreu, setMorreu] = useState(false);
-
-  const [clearPath, setClearPath] = props.clearPath || [];
-  useEffect(() => {
-    setPath([]);
-  }, [clearPath]);
+  const [path, setPath] = props.pathState || [];
 
   const getPaths = async () => {
-    props.clearPath?.[1]((e) => !e);
-    setPath(await socket.emitWithAck('match:paths', +props.id));
+    setPath?.([props.id, await socket.emitWithAck('match:paths', +props.id)]);
   };
-
-  useEffect(() => {
-    const idM = props.morrerPiece.addListener(({ value }) => {
-      if (value === 1) return 'está vivo :C';
-      setMorreu(true);
-      props.morrerPiece.removeListener(idM);
-    });
-
-    return () => props.morrerPiece.removeListener(idM);
-  }, []);
-  if (morreu) return null;
 
   return (
     <>
-      {path.map((p) => (
-        <Pressable
-          key={`${p.x}-${p.y}`}
-          style={styles.path(props.squareSize, p.x, p.y)}
-          onPress={() => {
-            socket.emit('match:move', { id: props.id, to: { x: p.x, y: p.y } });
-            setClearPath?.((e) => !e);
-          }}
-        />
-      ))}
+      {path &&
+        path[0] === props.id &&
+        path[1].map((p) => (
+          <Pressable
+            key={`${p.x}-${p.y}`}
+            style={styles.path(props.squareSize, p.x, p.y)}
+            onPress={() => {
+              socket.emit('match:move', { id: props.id, to: { x: p.x, y: p.y } });
+              setPath?.(null);
+            }}
+          />
+        ))}
       <Animated.View
         style={[
           styles.container(props.squareSize),

@@ -1,24 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-key */
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated } from 'react-native';
 import { Piece, PieceProps } from './Piece';
 
 export default function Pieces({ squareSize }: { squareSize: number }) {
   const socket = useMatchSocket();
   const match = socket.data as MatchPaiado;
-  const pieces = useRef<{ op: PiecePropsPaiado[]; my: PiecePropsPaiado[] }>({ op: [], my: [] }).current;
-  const clearPathState = useState(false);
-
-  if (!pieces.my.length && !pieces.op.length) {
-    pieces.op = createPiecesProps(match.playerOponent.pieces, squareSize);
-    pieces.my = createPiecesProps(match.myPlayer.pieces, squareSize);
-  }
+  const [opPieces, setOpPieces] = useState(() => createPiecesProps(match.playerOponent.pieces, squareSize));
+  const [myPieces, setMyPieces] = useState(() => createPiecesProps(match.myPlayer.pieces, squareSize));
 
   useEffect(() => {
     socket.on('match:update', (pieceUpdate) => {
-      const pieceMov = getPieceById(pieceUpdate.piece.id, pieces.my, pieces.op);
+      const pieceMov = getPieceById(pieceUpdate.piece.id, myPieces, opPieces);
       const anima = [] as Animated.CompositeAnimation[];
 
       for (const i in pieceUpdate.piece.movs) {
@@ -35,7 +30,7 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
 
         if (deadId === undefined) continue;
         // Animação de morte = opacidade 0
-        const pieceDead = getPieceById(deadId, pieces.my, pieces.op);
+        const pieceDead = getPieceById(deadId, myPieces, opPieces);
         anima.push(
           Animated.timing(pieceDead.morrerPiece, {
             toValue: 0,
@@ -50,25 +45,33 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
         anima.push(
           Animated.timing(pieceMov.fadeQueen, {
             toValue: 1,
-            duration: 100,
+            duration: 200,
             useNativeDriver: true,
           }),
         );
       }
 
-      Animated.sequence(anima).start();
+      Animated.sequence(anima).start(() => {
+        const setPieces = opPieces.find((piece) => piece.id !== pieceUpdate.piece.id)
+          ? setOpPieces
+          : setMyPieces;
+
+        setPieces((pieces) => pieces.filter((piece) => !pieceUpdate.deads.includes(piece.id)));
+      });
     });
 
     return () => socket.off('match:update') as any;
   }, []);
 
+  const pathState = useState<[number, Coord[]] | null>();
+
   return (
     <>
-      {pieces.my.map((piece) => (
-        <Piece key={piece.id} {...piece} clearPath={clearPathState} isMyPiece />
-      ))}
-      {pieces.op.map((piece) => (
+      {opPieces.map((piece) => (
         <Piece key={piece.id} {...piece} />
+      ))}
+      {myPieces.map((piece) => (
+        <Piece key={piece.id} {...piece} isMyPiece pathState={pathState} />
       ))}
     </>
   );

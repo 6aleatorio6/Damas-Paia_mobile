@@ -1,4 +1,5 @@
 /* eslint-disable no-fallthrough */
+import ExitModal from '@/components/game/ExitModal';
 import { MatchSocketProvider } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { Stack, useNavigation } from 'expo-router';
 import { useStyles } from 'react-native-unistyles';
@@ -9,6 +10,7 @@ export default function Layout() {
 
   return (
     <MatchSocketProvider>
+      <ExitModal />
       <Stack
         screenOptions={{
           headerShown: false,

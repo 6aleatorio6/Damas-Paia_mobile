@@ -4,17 +4,25 @@ import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from
 import { useAuth } from '../auth/tokenContext';
 import { baseURL, refreshTokenOrLogout } from '../auth/utils';
 
-type SocketPaia = Socket<ServerToCl, ClientToSv> & { data: MatchPaiado };
+interface Data extends MatchPaiado {
+  openModalExit: (s: boolean) => void;
+}
+
+type SocketPaia = Socket<ServerToCl, ClientToSv> & {
+  data: Data;
+};
 const SocketContext = createContext<SocketPaia | null>(null);
 
 export function MatchSocketProvider(props: PropsWithChildren) {
   const auth = useAuth();
 
   const client = useMemo(() => {
-    return io(`${baseURL}/match`, {
+    const socket = io(`${baseURL}/match`, {
       autoConnect: false,
       extraHeaders: { Authorization: `Bearer ${auth.token}` },
     }) as SocketPaia;
+    socket.data = {} as any;
+    return socket;
   }, []);
 
   useEffect(() => {
@@ -66,5 +74,5 @@ interface ClientToSv {
   'match:queue': (action: 'join' | 'leave') => void;
   'match:move': (moveDto: MoveDto) => void;
   'match:paths': (pieceId: number, cb: (paths: Coord[]) => void) => void;
-  'match:leave': () => Match;
+  'match:quit': () => void;
 }

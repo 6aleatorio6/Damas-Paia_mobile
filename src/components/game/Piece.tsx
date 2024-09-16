@@ -17,7 +17,7 @@ export interface PieceProps {
 export function Piece(props: PieceProps) {
   const { styles } = useStyles(stylesPaia);
   const socket = useMatchSocket();
-  const iAmPlayer1 = !!socket.data.myPlayer.pieces.find((p) => p.y === 0);
+  const iAmPlayer1 = !!socket.data.matchInitData.myPlayer.pieces.find((p) => p.y === 0);
   const [path, setPath] = props.pathState || [];
 
   const getPaths = async () => {

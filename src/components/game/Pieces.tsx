@@ -9,7 +9,7 @@ interface PiecesProps {
 }
 export default function Pieces({ squareSize }: PiecesProps) {
   const socket = useMatchSocket();
-  const match = socket.data;
+  const match = socket.data.matchInitData;
   const [opPieces, setOpPieces] = useState(() => createPiecesProps(match.playerOponent.pieces, squareSize));
   const [myPieces, setMyPieces] = useState(() => createPiecesProps(match.myPlayer.pieces, squareSize));
 

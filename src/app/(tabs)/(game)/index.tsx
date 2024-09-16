@@ -14,7 +14,7 @@ export default function Parear() {
   useEffect(() => {
     socket.emit('match:queue', 'join');
     socket.on('match:start', (matchPaiado) => {
-      socket.data = matchPaiado;
+      socket.data.matchInitData = matchPaiado;
       setModalVisible(false);
       router.replace('/(game)/match');
     });

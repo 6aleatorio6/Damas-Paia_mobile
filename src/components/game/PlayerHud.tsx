@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 export default function PlayerHud({ isUser }: { isUser?: boolean }) {
   const { styles } = useStyles(stylesPaia);
   const socket = useMatchSocket();
-  const match = socket.data;
+  const match = socket.data.matchInitData;
   const player = isUser ? match.myPlayer : match.playerOponent;
   const [isTurn, setTurn] = useState(match.turn === player.uuid);
   const [pieceLength, setPieceLength] = useState(player.pieces.length);

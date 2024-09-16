@@ -11,7 +11,7 @@ interface Props extends PropsWithChildren {
 export default function Board({ children, useSquareSize }: Props) {
   const { styles } = useStyles(stylesPaia);
   const [squareSize, setSquareSize] = useSquareSize;
-  const match = useMatchSocket().data;
+  const match = useMatchSocket().data.matchInitData;
   const iAmPlayer1 = !!match.myPlayer.pieces.find((p) => p.y === 0);
 
   const squares = [];

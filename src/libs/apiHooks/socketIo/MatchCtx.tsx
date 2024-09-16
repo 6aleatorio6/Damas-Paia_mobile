@@ -4,8 +4,9 @@ import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from
 import { useAuth } from '../auth/tokenContext';
 import { baseURL, refreshTokenOrLogout } from '../auth/utils';
 
-interface Data extends MatchPaiado {
+interface Data {
   openModalExit: (s: boolean) => void;
+  matchInitData: MatchPaiado;
 }
 
 type SocketPaia = Socket<ServerToCl, ClientToSv> & {

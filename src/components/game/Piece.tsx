@@ -6,6 +6,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export interface PieceProps {
   isMyPiece?: boolean;
+  isQueen: boolean;
   squareSize: number;
   id: number;
   fadeQueen: Animated.Value;

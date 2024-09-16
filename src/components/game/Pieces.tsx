@@ -1,13 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/jsx-key */
-import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { useEffect, useState } from 'react';
 import { Animated } from 'react-native';
-import { Piece, PieceProps } from './Piece';
+import { Piece } from './Piece';
+import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
+import { createPiecesProps, getPieceById } from '@/libs/game/helpers';
 
-export default function Pieces({ squareSize }: { squareSize: number }) {
+interface PiecesProps {
+  squareSize: number;
+}
+export default function Pieces({ squareSize }: PiecesProps) {
   const socket = useMatchSocket();
-  const match = socket.data as MatchPaiado;
+  const match = socket.data;
   const [opPieces, setOpPieces] = useState(() => createPiecesProps(match.playerOponent.pieces, squareSize));
   const [myPieces, setMyPieces] = useState(() => createPiecesProps(match.myPlayer.pieces, squareSize));
 
@@ -76,26 +78,3 @@ export default function Pieces({ squareSize }: { squareSize: number }) {
     </>
   );
 }
-
-type PiecePropsPaiado = PieceProps & { isQueen: boolean };
-
-const createPiecesProps = (pieces: Piece[], squareSize: number) => {
-  return pieces.map((piece) => ({
-    squareSize,
-    isQueen: !!piece.queen,
-    id: piece.id,
-    fadeQueen: new Animated.Value(0),
-    morrerPiece: new Animated.Value(1), // opacidade
-    movePiece: new Animated.ValueXY({ x: piece.x * squareSize, y: piece.y * squareSize }),
-  })) as PiecePropsPaiado[];
-};
-
-const getPieceById = (id: number, myPieces: PiecePropsPaiado[], opPieces: PiecePropsPaiado[]) => {
-  const opPiece = opPieces.find((piece) => piece.id === id);
-  const myPiece = myPieces.find((piece) => piece.id === id);
-
-  const piece = opPiece || myPiece;
-  if (!piece) throw new Error('Peça não encontrada');
-
-  return piece;
-};

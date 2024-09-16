@@ -5,13 +5,13 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 export default function Match() {
-  const [squareSize, setSquareSize] = useState(0);
+  const squareSizeState = useState(0);
 
   return (
     <View style={{ width: '90%', alignSelf: 'center' }}>
       <PlayerHud />
-      <Board useSquareSize={[squareSize, setSquareSize]}>
-        <Pieces squareSize={squareSize} />
+      <Board useSquareSize={squareSizeState}>
+        <Pieces squareSize={squareSizeState[0]} />
       </Board>
       <PlayerHud isUser />
     </View>

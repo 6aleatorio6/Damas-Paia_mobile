@@ -54,9 +54,9 @@ export default function Pieces({ squareSize }: PiecesProps) {
       }
 
       Animated.sequence(anima).start(() => {
-        const setPieces = opPieces.find((piece) => piece.id !== pieceUpdate.piece.id)
-          ? setOpPieces
-          : setMyPieces;
+        const setPieces = opPieces.find((piece) => piece.id === pieceUpdate.piece.id)
+          ? setMyPieces
+          : setOpPieces;
 
         setPieces((pieces) => pieces.filter((piece) => !pieceUpdate.deads.includes(piece.id)));
       });

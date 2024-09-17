@@ -39,9 +39,9 @@ jobs:
         run: npm install 
 
       - name: Build Android app
-        run: eas build --platform android --profile preview --local --output ${{ github.workspace }}/app-release.apk
+        run: eas build --platform android --profile preview --local --output ${{ github.workspace }}/damas-paia_${{ github.event.release.tag_name }}.apk
         
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ github.workspace }}/app-release.apk
+          files: ${{ github.workspace }}/damas-paia_${{ github.event.release.tag_name }}.apk

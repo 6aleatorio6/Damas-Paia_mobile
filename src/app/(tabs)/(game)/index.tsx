@@ -16,6 +16,7 @@ export default function Parear() {
     socket.on('match:init', (match, pieces, myPlayer) => {
       socket.data.matchInit = match;
       socket.data.myPlayer = myPlayer;
+      socket.data.opPlayer = myPlayer === 'player1' ? 'player2' : 'player1';
       socket.data.piecesInit = pieces;
       setModalVisible(false);
       router.replace('/(game)/match');

@@ -9,9 +9,9 @@ interface PiecesProps {
 }
 export default function Pieces({ squareSize }: PiecesProps) {
   const socket = useMatchSocket();
-  const { piecesInit } = socket.data;
-  const [opPieces, setOpPieces] = useState(() => createPiecesProps(piecesInit, 'player1', squareSize));
-  const [myPieces, setMyPieces] = useState(() => createPiecesProps(piecesInit, 'player2', squareSize));
+  const { myPlayer, opPlayer, piecesInit } = socket.data;
+  const [opPieces, setOpPieces] = useState(() => createPiecesProps(piecesInit, opPlayer, squareSize));
+  const [myPieces, setMyPieces] = useState(() => createPiecesProps(piecesInit, myPlayer, squareSize));
 
   useEffect(() => {
     socket.on('match:update', ({ chainOfMotion, isQueen, piecesDeads, pieceId }) => {

@@ -50,6 +50,7 @@ interface MatchSocketData {
   matchInit: Match;
   piecesInit: Piece[];
   myPlayer: Players;
+  opPlayer: Players;
 }
 
 // ON

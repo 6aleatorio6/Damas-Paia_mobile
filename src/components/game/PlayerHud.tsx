@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react';
 export default function PlayerHud({ isUser }: { isUser?: boolean }) {
   const { styles } = useStyles(stylesPaia);
   const socket = useMatchSocket();
-  const { matchInit, myPlayer } = socket.data;
-  const player = isUser ? myPlayer : myPlayer === 'player1' ? 'player2' : 'player1';
+  const { matchInit, myPlayer, opPlayer } = socket.data;
+  const player = isUser ? myPlayer : opPlayer;
 
   const [isTurn, setTurn] = useState(matchInit.turn === player);
   const [pieceLength, setPieceLength] = useState(12);

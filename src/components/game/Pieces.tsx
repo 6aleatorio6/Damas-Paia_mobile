@@ -9,18 +9,18 @@ interface PiecesProps {
 }
 export default function Pieces({ squareSize }: PiecesProps) {
   const socket = useMatchSocket();
-  const match = socket.data.matchInitData;
-  const [opPieces, setOpPieces] = useState(() => createPiecesProps(match.playerOponent.pieces, squareSize));
-  const [myPieces, setMyPieces] = useState(() => createPiecesProps(match.myPlayer.pieces, squareSize));
+  const { piecesInit } = socket.data;
+  const [opPieces, setOpPieces] = useState(() => createPiecesProps(piecesInit, 'player1', squareSize));
+  const [myPieces, setMyPieces] = useState(() => createPiecesProps(piecesInit, 'player2', squareSize));
 
   useEffect(() => {
-    socket.on('match:update', (pieceUpdate) => {
-      const pieceMov = getPieceById(pieceUpdate.piece.id, myPieces, opPieces);
+    socket.on('match:update', ({ chainOfMotion, isQueen, piecesDeads, pieceId }) => {
+      const pieceMov = getPieceById(pieceId, myPieces, opPieces);
       const anima = [] as Animated.CompositeAnimation[];
 
-      for (const i in pieceUpdate.piece.movs) {
-        const mov = pieceUpdate.piece.movs[i];
-        const deadId = pieceUpdate.deads[i];
+      for (const i in chainOfMotion) {
+        const mov = chainOfMotion[i];
+        const deadId = piecesDeads[i];
 
         anima.push(
           Animated.timing(pieceMov.movePiece, {
@@ -42,8 +42,8 @@ export default function Pieces({ squareSize }: PiecesProps) {
         );
       }
 
-      if (pieceUpdate.piece.queen !== pieceMov.isQueen) {
-        pieceMov.isQueen = pieceUpdate.piece.queen;
+      if (isQueen !== pieceMov.isQueen) {
+        pieceMov.isQueen = isQueen;
         anima.push(
           Animated.timing(pieceMov.fadeQueen, {
             toValue: 1,
@@ -54,11 +54,9 @@ export default function Pieces({ squareSize }: PiecesProps) {
       }
 
       Animated.sequence(anima).start(() => {
-        const setPieces = opPieces.find((piece) => piece.id === pieceUpdate.piece.id)
-          ? setMyPieces
-          : setOpPieces;
+        const setPieces = opPieces.find((piece) => piece.id === pieceId) ? setMyPieces : setOpPieces;
 
-        setPieces((pieces) => pieces.filter((piece) => !pieceUpdate.deads.includes(piece.id)));
+        setPieces((pieces) => pieces.filter((piece) => !piecesDeads.includes(piece.id)));
       });
     });
 

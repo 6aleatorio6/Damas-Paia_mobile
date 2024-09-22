@@ -4,14 +4,7 @@ import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from
 import { useAuth } from '../auth/tokenContext';
 import { baseURL, refreshTokenOrLogout } from '../auth/utils';
 
-interface Data {
-  openModalExit: (s: boolean) => void;
-  matchInitData: MatchPaiado;
-}
-
-type SocketPaia = Socket<ServerToCl, ClientToSv> & {
-  data: Data;
-};
+type SocketPaia = Socket<ServerToCl, ClientToSv> & { data: MatchSocketData };
 const SocketContext = createContext<SocketPaia | null>(null);
 
 export function MatchSocketProvider(props: PropsWithChildren) {
@@ -60,20 +53,4 @@ export function useMatchSocket() {
   const socket = useContext(SocketContext);
   if (!socket) throw new Error('useSocket usado fora do SocketProvider');
   return socket;
-}
-
-// ON
-interface ServerToCl {
-  'match:start': (matchPaiado: MatchPaiado) => void;
-  'match:end': (matchPaiado: Match) => void;
-  'match:update': (updatePieces: UpdatePieces, turn: UUID) => void;
-  error: (error: Error) => void;
-}
-
-// Emit
-interface ClientToSv {
-  'match:queue': (action: 'join' | 'leave') => void;
-  'match:move': (moveDto: MoveDto) => void;
-  'match:paths': (pieceId: number, cb: (paths: Coord[]) => void) => void;
-  'match:quit': () => void;
 }

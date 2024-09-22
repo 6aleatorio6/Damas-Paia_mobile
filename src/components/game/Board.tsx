@@ -11,8 +11,7 @@ interface Props extends PropsWithChildren {
 export default function Board({ children, useSquareSize }: Props) {
   const { styles } = useStyles(stylesPaia);
   const [squareSize, setSquareSize] = useSquareSize;
-  const match = useMatchSocket().data.matchInitData;
-  const iAmPlayer1 = !!match.myPlayer.pieces.find((p) => p.y === 0);
+  const { myPlayer } = useMatchSocket().data;
 
   const squares = [];
   for (let row = 0; row < gridSize; row++) {
@@ -25,7 +24,7 @@ export default function Board({ children, useSquareSize }: Props) {
   return (
     <View
       onLayout={(e) => setSquareSize(e.nativeEvent.layout.width / gridSize)}
-      style={styles.board(iAmPlayer1)}
+      style={styles.board(myPlayer === 'player1')}
     >
       {squares}
       {!!squareSize && children}

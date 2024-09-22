@@ -7,20 +7,20 @@ import { useEffect, useState } from 'react';
 export default function PlayerHud({ isUser }: { isUser?: boolean }) {
   const { styles } = useStyles(stylesPaia);
   const socket = useMatchSocket();
-  const match = socket.data.matchInitData;
-  const player = isUser ? match.myPlayer : match.playerOponent;
-  const [isTurn, setTurn] = useState(match.turn === player.uuid);
-  const [pieceLength, setPieceLength] = useState(player.pieces.length);
+  const { matchInit, myPlayer } = socket.data;
+  const player = isUser ? myPlayer : myPlayer === 'player1' ? 'player2' : 'player1';
+
+  const [isTurn, setTurn] = useState(matchInit.turn === player);
+  const [pieceLength, setPieceLength] = useState(12);
 
   useEffect(() => {
-    socket.on('match:update', (updatePiece, turnoAtual) => {
-      const isTurnAtual = turnoAtual === player.uuid;
-      setTurn(isTurnAtual);
-      if (isTurnAtual) setPieceLength((pl) => pl - updatePiece.deads.length);
+    socket.on('match:status', (turn, { [player]: pieceLength }) => {
+      setPieceLength(pieceLength);
+      setTurn(turn === player);
     });
 
     return () => {
-      socket.off('match:update');
+      socket.off('match:status');
     };
   }, []);
 
@@ -29,7 +29,7 @@ export default function PlayerHud({ isUser }: { isUser?: boolean }) {
       <View style={styles.infoContainer}>
         <Play size={24} strokeWidth={9.3} style={styles.icon(isTurn)} />
         <Text style={styles.username}>
-          {player.username}
+          {matchInit[player].username}
           {isUser && <Text style={styles.youText}> (você)</Text>}
         </Text>
       </View>

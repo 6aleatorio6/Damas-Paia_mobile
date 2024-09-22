@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, Button } from 'react-native';
+import { Modal, View, Text } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { router } from 'expo-router';
@@ -12,14 +12,16 @@ export default function EndModal() {
   const socket = useMatchSocket();
   const [matchData, setMatchData] = useState<Match | null>(null);
 
+  const winner = matchData && matchData[matchData.winner as Players];
+
   useEffect(() => {
-    socket.on('match:end', (data) => {
+    socket.on('match:finish', (data) => {
       setMatchData(data);
       setVisible(true);
     });
 
     return () => {
-      socket.off('match:end');
+      socket.off('match:finish');
     };
   }, []);
 
@@ -37,7 +39,7 @@ export default function EndModal() {
             <View style={styles.content}>
               <View style={styles.winnerContainer}>
                 <Trophy style={styles.trophyIcon} size={30} />
-                <Text style={styles.winnerText}>{matchData.winner.username} Venceu!</Text>
+                <Text style={styles.winnerText}>{winner?.username} Venceu!</Text>
               </View>
               <Text style={styles.vsText}>
                 {matchData.player1.username} VS {matchData.player2.username}

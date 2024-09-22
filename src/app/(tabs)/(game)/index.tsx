@@ -13,15 +13,17 @@ export default function Parear() {
 
   useEffect(() => {
     socket.emit('match:queue', 'join');
-    socket.on('match:start', (matchPaiado) => {
-      socket.data.matchInitData = matchPaiado;
+    socket.on('match:init', (match, pieces, myPlayer) => {
+      socket.data.matchInit = match;
+      socket.data.myPlayer = myPlayer;
+      socket.data.piecesInit = pieces;
       setModalVisible(false);
       router.replace('/(game)/match');
     });
 
     return () => {
       socket.emit('match:queue', 'leave');
-      socket.off('match:start');
+      socket.off('match:init');
     };
   }, []);
 

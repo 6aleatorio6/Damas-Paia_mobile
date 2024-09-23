@@ -49,10 +49,10 @@ export default function UserBar() {
 const stylesheet = createStyleSheet((theme) => ({
   //
   containerPerfil: {
+    flex: 0.2,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginTop: '10%',
   },
   meioPerfil: {
     flex: 1,

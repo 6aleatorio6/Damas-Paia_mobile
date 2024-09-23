@@ -10,3 +10,8 @@ export const useHealthcheck = createQuery((axios) => ({
   queryFn: () => axios.get<string>('/').then((res) => res.data),
   retry: 1,
 }));
+
+export const useGetUserMatches = createQuery((axios) => ({
+  queryKey: ['userMatches'],
+  queryFn: () => axios.get<(Match & { youAre: Players })[]>('/match/user').then((res) => res.data),
+}));

@@ -5,6 +5,7 @@ import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { router } from 'expo-router';
 import { Trophy } from 'lucide-react-native';
 import ButtonBig from '../ButtonBig';
+import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
 
 export default function EndModal() {
   const { styles } = useStyles(stylesPaia);
@@ -16,6 +17,7 @@ export default function EndModal() {
 
   useEffect(() => {
     socket.on('match:finish', (data) => {
+      queryClientPaia.invalidateQueries({ queryKey: ['userMatches'] });
       setMatchData(data);
       setVisible(true);
     });

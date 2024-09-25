@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Trophy, Frown } from 'lucide-react-native'; // Importando o ícone Frown
+import { calculateDurationInMinutes, stringToDateString } from '@/libs/game/helpers';
 
 interface MatchItemProps {
   item: Match & { youAre: Players };
@@ -20,16 +21,6 @@ export default function MatchItem({ item }: MatchItemProps) {
   const reasonMessage = messageStatusWin[item.winnerStatus!];
   const myPlayer = item[item.youAre];
   const opPlayer = item[item.youAre === 'player1' ? 'player2' : 'player1'];
-  const dataInit = new Date(item.dateInit).toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-  const duration = Math.floor(
-    (new Date(item.dateEnd!).getTime() - new Date(item.dateInit).getTime()) / 60000,
-  );
 
   return (
     <View style={styles.infoContainer}>
@@ -40,8 +31,10 @@ export default function MatchItem({ item }: MatchItemProps) {
         </Text>
 
         <View style={styles.additionalInfo}>
-          <Text style={styles.additionalInfoText}>{`${dataInit}`}</Text>
-          <Text style={styles.additionalInfoText}>{`Durou: ${duration}m`}</Text>
+          <Text style={styles.additionalInfoText}>{stringToDateString(item.dateEnd!)}</Text>
+          <Text
+            style={styles.additionalInfoText}
+          >{`Durou: ${calculateDurationInMinutes(item.dateInit, item.dateEnd!)}`}</Text>
         </View>
       </View>
 

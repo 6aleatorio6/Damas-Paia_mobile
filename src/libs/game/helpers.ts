@@ -29,3 +29,38 @@ export const getPieceById = (id: number, myPieces: PieceProps[], opPieces: Piece
 
   return piece;
 };
+
+/**
+ * Convert a string to a Date object
+ */
+export const stringToDateString = (dateString: string) => {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
+    throw new Error('Data inválida');
+  }
+
+  return date.toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
+
+/**
+ * Calculate the duration in minutes between two date strings
+ */
+export const calculateDurationInMinutes = (startDateString: string, endDateString: string) => {
+  const startDate = new Date(startDateString);
+  const endDate = new Date(endDateString);
+
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Data inválida');
+  }
+
+  const durationInMilliseconds = endDate.getTime() - startDate.getTime();
+  const durationInMinutes = Math.round(durationInMilliseconds / (1000 * 60));
+
+  return `${durationInMinutes} min`;
+};

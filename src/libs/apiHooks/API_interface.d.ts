@@ -15,8 +15,8 @@ interface Match {
   winnerStatus: 'checkmate' | 'resign' | 'timeout' | null;
   winner: Players | null;
   turn: Players;
-  dateInit: Date;
-  dateEnd: Date | null;
+  dateInit: string;
+  dateEnd: string | null;
 }
 
 interface Piece {

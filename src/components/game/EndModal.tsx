@@ -3,9 +3,16 @@ import { Modal, View, Text } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { router } from 'expo-router';
-import { Trophy } from 'lucide-react-native';
+import { Trophy, Frown, Clock, Calendar } from 'lucide-react-native'; // Import the Clock and Calendar icons
 import ButtonBig from '../ButtonBig';
 import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
+import { calculateDurationInMinutes, stringToDateString } from '@/libs/game/helpers';
+
+const messageStatusWin = {
+  resign: 'por desistência',
+  timeout: 'por desconexão',
+  checkmate: '',
+};
 
 export default function EndModal() {
   const { styles } = useStyles(stylesPaia);
@@ -13,7 +20,7 @@ export default function EndModal() {
   const socket = useMatchSocket();
   const [matchData, setMatchData] = useState<Match | null>(null);
 
-  const winner = matchData && matchData[matchData.winner as Players];
+  const isUserWinner = matchData && matchData.winner === socket.data.myPlayer;
 
   useEffect(() => {
     socket.on('match:finish', (data) => {
@@ -35,31 +42,43 @@ export default function EndModal() {
   return (
     <Modal transparent={true} animationType="fade" visible={visible} onRequestClose={onClose}>
       <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.title}>Resultado da Partida</Text>
+        <View style={styles.modalContainer(!!isUserWinner)}>
           {matchData && (
-            <View style={styles.content}>
+            <>
               <View style={styles.winnerContainer}>
-                <Trophy style={styles.trophyIcon} size={30} />
-                <Text style={styles.winnerText}>{winner?.username} Venceu!</Text>
+                {isUserWinner ? (
+                  <>
+                    <Trophy style={styles.statusIcon(true)} size={55} />
+                    <Text style={styles.statusText(true)}>VOCÊ GANHOU!</Text>
+                  </>
+                ) : (
+                  <>
+                    <Frown style={styles.statusIcon()} size={55} />
+                    <Text style={styles.statusText()}>VOCÊ PERDEU!</Text>
+                  </>
+                )}
               </View>
-              <Text style={styles.vsText}>
-                {matchData.player1.username} VS {matchData.player2.username}
-              </Text>
-              <Text style={styles.dateText}>
-                Duração:{' '}
-                {(
-                  (new Date(matchData?.dateEnd || 0).getTime() - new Date(matchData.dateInit).getTime()) /
-                  1000 /
-                  60
-                ).toFixed(2)}
-                m
-              </Text>
-              <Text style={styles.dateText}>Data: {new Date(matchData.dateInit).toLocaleTimeString()}</Text>
+              <View style={styles.vsContainer}>
+                <Text style={styles.vsText}>{matchData.player1.username}</Text>
+                <Text style={styles.vsText}>VS</Text>
+                <Text style={styles.vsText}>{matchData.player2.username}</Text>
+              </View>
+              <View style={styles.rowContainer}>
+                <View style={styles.iconTextContainer}>
+                  <Clock style={styles.infoIcon} size={20} />
+                  <Text style={styles.dateText}>
+                    {calculateDurationInMinutes(matchData.dateInit, matchData.dateEnd!)}
+                  </Text>
+                </View>
+                <View style={styles.iconTextContainer}>
+                  <Calendar style={styles.infoIcon} size={20} />
+                  <Text style={styles.dateText}>{stringToDateString(matchData.dateEnd!)}</Text>
+                </View>
+              </View>
               <ButtonBig style={styles.button} onPress={onClose}>
                 Fechar
               </ButtonBig>
-            </View>
+            </>
           )}
         </View>
       </View>
@@ -72,52 +91,70 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
-  modalContainer: {
+  modalContainer: (isWin: boolean) => ({
     width: '80%',
     backgroundColor: colors.body,
+    borderColor: isWin ? colors.success : colors.danger,
     borderRadius: 10,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: colors.textPri,
-    alignSelf: 'center',
-    marginVertical: 20,
-  },
-  content: {
+    borderWidth: 1,
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    width: '100%',
-  },
+    paddingVertical: 20,
+    paddingHorizontal: '5%',
+  }),
   winnerContainer: {
+    width: '100%',
+    flexDirection: 'column', // Change to column
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  vsContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  vsText: {
+    textAlign: 'center',
+    fontSize: 25,
+    color: colors.textPri,
+    fontWeight: 'bold',
+  },
+  rowContainer: {
+    width: '100%',
+    marginBottom: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  iconTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  vsText: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: colors.textPri,
-  },
-  trophyIcon: {
-    color: colors.success,
-    marginRight: 10,
-  },
-  winnerText: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: colors.textPri,
+  infoIcon: {
+    marginRight: 5,
+    color: colors.textSec,
   },
   dateText: {
     fontSize: 14,
-    marginBottom: 5,
     color: colors.textSec,
   },
+  statusIcon: (isWin = false) => ({
+    color: isWin ? colors.success : colors.danger,
+    marginRight: 10,
+  }),
+  statusText: (isWin = false) => ({
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: isWin ? colors.success : colors.danger,
+  }),
   button: {
-    width: '80%',
+    width: '100%',
     padding: 10,
-    marginVertical: 20,
-    marginHorizontal: 5,
+    marginTop: 20,
     textAlign: 'center',
     backgroundColor: colors.primary,
     borderRadius: 5,

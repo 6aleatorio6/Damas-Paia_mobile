@@ -25,13 +25,13 @@ export default function ExitModal() {
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.title}>Confirmar Saída</Text>
-          <Text style={styles.message}>Você realmente deseja abandonar a partida?</Text>
+          <Text style={styles.message}>Você realmente deseja desistir da partida?</Text>
           <View style={styles.buttonContainer}>
             <ButtonBig style={styles.button('voltar')} onPress={onCancel}>
               VOLTAR
             </ButtonBig>
             <ButtonBig style={styles.button('exit')} onPress={onConfirm}>
-              ABANDONAR
+              DESISTIR
             </ButtonBig>
           </View>
         </View>

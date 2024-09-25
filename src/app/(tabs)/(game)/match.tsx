@@ -1,4 +1,5 @@
 import ButtonBig from '@/components/ButtonBig';
+import AlertError from '@/components/game/AlertError';
 import Board from '@/components/game/Board';
 import Pieces from '@/components/game/Pieces';
 import PlayerHud from '@/components/game/PlayerHud';
@@ -31,8 +32,9 @@ export default function Match() {
         <PlayerHud isUser />
       </View>
       <ButtonBig onPress={() => socket.data.openModalExit(true)} style={styles.button}>
-        ABANDONAR
+        DESISTIR
       </ButtonBig>
+      <AlertError />
     </View>
   );
 }

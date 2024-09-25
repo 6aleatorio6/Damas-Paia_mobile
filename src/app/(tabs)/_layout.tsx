@@ -1,7 +1,6 @@
 import TabButtonParear from '@/components/nav/TabButtonParear';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { useFindMatchesInProgressAndFinish } from '@/libs/apiHooks/mutations';
-import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import { Home, UserCircle2Icon } from 'lucide-react-native';
 import { useEffect } from 'react';

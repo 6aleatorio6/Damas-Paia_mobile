@@ -25,3 +25,7 @@ export const useUserDelete = createMutation((axios) => ({
     await axios.delete('/user');
   },
 }));
+
+export const useFindMatchesInProgressAndFinish = createMutation((axios) => ({
+  mutationFn: () => axios.get('/match/check-and-finish'),
+}));

@@ -1,5 +1,7 @@
 import TabButtonParear from '@/components/nav/TabButtonParear';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
+import { useFindMatchesInProgressAndFinish } from '@/libs/apiHooks/mutations';
+import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import { Home, UserCircle2Icon } from 'lucide-react-native';
 import { useEffect } from 'react';
@@ -8,8 +10,10 @@ import { useStyles } from 'react-native-unistyles';
 export default function TabsLayout() {
   const { colors } = useStyles().theme;
   const { token } = useAuth();
+  const { mutate } = useFindMatchesInProgressAndFinish({});
 
   useEffect(() => {
+    mutate(null); // Verifica se tem partidas em andamento ao abrir o app
     SplashScreen.hideAsync();
   }, []);
   if (!token) return <Redirect href={'/(auth)'} />;

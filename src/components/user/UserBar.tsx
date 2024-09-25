@@ -3,7 +3,7 @@ import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import { router } from 'expo-router';
 import { Frown, LogOut, RotateCcw, UserCircle2 } from 'lucide-react-native';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function UserBar() {
@@ -11,7 +11,7 @@ export default function UserBar() {
   const { data, isError, isLoading, isSuccess, refetch } = useGetUser({});
   const { logout } = useAuth();
 
-  const Icon = isSuccess ? UserCircle2 : isLoading ? ActivityIndicator : Frown;
+  const Icon = isError ? Frown : UserCircle2;
 
   return (
     <View style={styles.containerPerfil}>
@@ -21,7 +21,9 @@ export default function UserBar() {
         {isLoading && <Text style={styles.username}>{'...'}</Text>}
         {isSuccess && (
           <>
-            <Text style={styles.username}>{data?.username}</Text>
+            <Text style={styles.username} numberOfLines={1} ellipsizeMode="tail">
+              {data?.username}
+            </Text>
             <ButtonBig style={styles.editButton} onPress={() => router.navigate('/(tabs)/(user)/editar')}>
               Editar
             </ButtonBig>
@@ -47,7 +49,6 @@ export default function UserBar() {
 }
 
 const stylesheet = createStyleSheet((theme) => ({
-  //
   containerPerfil: {
     flex: 0.2,
     flexDirection: 'row',
@@ -61,7 +62,7 @@ const stylesheet = createStyleSheet((theme) => ({
   },
   username: {
     color: theme.colors.textPri,
-    fontSize: 35,
+    fontSize: 30,
     fontWeight: 'bold',
   },
   editButton: {

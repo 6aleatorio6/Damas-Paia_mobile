@@ -50,8 +50,8 @@ export function Piece(props: PieceProps) {
             <Image
               source={
                 props.isMyPiece
-                  ? require('@/assets/marca-do-rei_black.png')
-                  : require('@/assets/marca-do-rei_white.png')
+                  ? require('@/assets/marca-do-rei_white.png')
+                  : require('@/assets/marca-do-rei_black.png')
               }
               style={styles.image(iAmPlayer1)}
             />
@@ -81,7 +81,7 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
     width: '80%',
     aspectRatio: 1,
     borderRadius: 25,
-    backgroundColor: isMyPiece ? colors.pieceLight : colors.pieceDark,
+    backgroundColor: isMyPiece ? colors.pieceDark : colors.pieceLight,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

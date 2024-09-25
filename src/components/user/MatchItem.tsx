@@ -63,9 +63,9 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   infoContainer: {
     flexDirection: 'column',
     width: '100%',
-    backgroundColor: colors.secondary,
-    borderColor: colors.primary,
-    borderWidth: 2,
+    backgroundColor: colors.bodyTri,
+    borderColor: colors.danger,
+    borderWidth: 1,
     padding: 7,
     marginBottom: 5,
     borderRadius: 5,
@@ -106,9 +106,9 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   },
   username: (win = false) => ({
     textDecorationLine: 'underline',
-    textDecorationColor: win ? colors.success : colors.danger,
+    textDecorationColor: win ? colors.success : '#FF1F3D',
   }),
   iconColor: (win = false) => ({
-    color: win ? colors.success : colors.danger,
+    color: win ? colors.success : '#FF1F3D',
   }),
 }));

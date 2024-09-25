@@ -16,16 +16,16 @@ const messageStatusWin = {
 
 export default function MatchItem({ item }: MatchItemProps) {
   const { styles } = useStyles(stylesPaia);
-  const isIWin = item.winner === item.youAre;
-  const statusMessage = isIWin ? 'Vitória' : 'Derrota';
+  const isWin = item.winner === item.youAre;
+  const statusMessage = isWin ? 'Vitória' : 'Derrota';
   const reasonMessage = messageStatusWin[item.winnerStatus!];
   const myPlayer = item[item.youAre];
   const opPlayer = item[item.youAre === 'player1' ? 'player2' : 'player1'];
 
   return (
-    <View style={styles.infoContainer}>
+    <View style={styles.infoContainer(isWin)}>
       <View style={styles.containerTop}>
-        <Text style={styles.statusMessage(isIWin)}>
+        <Text style={styles.statusMessage(isWin)}>
           {statusMessage.toUpperCase()}
           <Text style={styles.reasonMessage}>{` ${reasonMessage}`.toUpperCase()}</Text>
         </Text>
@@ -39,13 +39,13 @@ export default function MatchItem({ item }: MatchItemProps) {
       </View>
 
       <View style={styles.vsContainer}>
-        {isIWin ? (
-          <Trophy color={styles.iconColor(isIWin).color} size={20} />
+        {isWin ? (
+          <Trophy color={styles.iconColor(isWin).color} size={20} />
         ) : (
-          <Frown color={styles.iconColor(isIWin).color} size={20} />
+          <Frown color={styles.iconColor(isWin).color} size={20} />
         )}
         <Text style={styles.vsText}>
-          <Text style={styles.username(isIWin)}>{myPlayer.username}</Text> VS <Text>{opPlayer.username}</Text>
+          <Text style={styles.username(isWin)}>{myPlayer.username}</Text> VS <Text>{opPlayer.username}</Text>
         </Text>
       </View>
     </View>
@@ -53,16 +53,16 @@ export default function MatchItem({ item }: MatchItemProps) {
 }
 
 const stylesPaia = createStyleSheet(({ colors }) => ({
-  infoContainer: {
+  infoContainer: (isWin = false) => ({
     flexDirection: 'column',
     width: '100%',
     backgroundColor: colors.bodyTri,
-    borderColor: colors.danger,
+    borderColor: isWin ? colors.success : colors.danger,
     borderWidth: 1,
     padding: 7,
     marginBottom: 5,
     borderRadius: 5,
-  },
+  }),
   containerTop: {
     flexDirection: 'row',
     width: '100%',

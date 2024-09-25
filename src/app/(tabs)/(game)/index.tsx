@@ -12,6 +12,16 @@ export default function Parear() {
   const socket = useMatchSocket();
 
   useEffect(() => {
+    socket.on('error', (error) => {
+      alert(`${error.message}`);
+      setModalVisible(false);
+      router.back();
+    });
+
+    return () => {};
+  }, []);
+
+  useEffect(() => {
     socket.emit('match:queue', 'join');
     socket.on('match:init', (match, pieces, myPlayer) => {
       socket.data.matchInit = match;
@@ -24,6 +34,7 @@ export default function Parear() {
 
     return () => {
       socket.emit('match:queue', 'leave');
+      socket.off('error');
       socket.off('match:init');
     };
   }, []);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { Trophy, Frown } from 'lucide-react-native'; // Importando o ícone Frown
 
 interface MatchItemProps {
   item: Match & { youAre: Players };
@@ -31,7 +32,7 @@ export default function MatchItem({ item }: MatchItemProps) {
   );
 
   return (
-    <View style={styles.infoContainer(isIWin)}>
+    <View style={styles.infoContainer}>
       <View style={styles.containerTop}>
         <Text style={styles.statusMessage(isIWin)}>
           {statusMessage.toUpperCase()}
@@ -44,24 +45,31 @@ export default function MatchItem({ item }: MatchItemProps) {
         </View>
       </View>
 
-      <Text style={styles.vsText}>
-        {myPlayer.username} VS {opPlayer.username}
-      </Text>
+      <View style={styles.vsContainer}>
+        {isIWin ? (
+          <Trophy color={styles.iconColor(isIWin).color} size={20} />
+        ) : (
+          <Frown color={styles.iconColor(isIWin).color} size={20} />
+        )}
+        <Text style={styles.vsText}>
+          <Text style={styles.username(isIWin)}>{myPlayer.username}</Text> VS <Text>{opPlayer.username}</Text>
+        </Text>
+      </View>
     </View>
   );
 }
 
 const stylesPaia = createStyleSheet(({ colors }) => ({
-  infoContainer: (win = false) => ({
+  infoContainer: {
     flexDirection: 'column',
     width: '100%',
     backgroundColor: colors.secondary,
-    borderColor: win ? colors.success : colors.danger,
-    borderWidth: 1,
+    borderColor: colors.primary,
+    borderWidth: 2,
     padding: 7,
     marginBottom: 5,
     borderRadius: 5,
-  }),
+  },
   containerTop: {
     flexDirection: 'row',
     width: '100%',
@@ -85,10 +93,22 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
     color: colors.textSec,
     textAlign: 'right',
   },
+  vsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center', // Centraliza verticalmente
+  },
   vsText: {
     fontSize: 20, // Tamanho maior para o VS
     fontWeight: 'bold',
     color: colors.textPri,
     marginBottom: 4,
+    marginLeft: 5, // Adiciona espaço entre o ícone e o texto
   },
+  username: (win = false) => ({
+    textDecorationLine: 'underline',
+    textDecorationColor: win ? colors.success : colors.danger,
+  }),
+  iconColor: (win = false) => ({
+    color: win ? colors.success : colors.danger,
+  }),
 }));

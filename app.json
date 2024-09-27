@@ -14,14 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.damaspaia"
+      "bundleIdentifier": "com.leonardolf.damaspaia"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icon.png",
         "backgroundColor": "#1E1E1E"
       },
-      "package": "com.damaspaia"
+      "package": "com.leonardolf.damaspaia"
     },
     "web": {
       "favicon": "./src/assets/icon.png"
@@ -29,9 +29,7 @@
     "experiments": {
       "typedRoutes": true
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "extra": {
       "router": {
         "origin": false

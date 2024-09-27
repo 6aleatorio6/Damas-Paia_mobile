@@ -46,10 +46,18 @@ rm $PATH_TOOLS_ZIP
 # instalando o sdk
 echo Y | sdkmanager --licenses  > /dev/null 
 echo Y | sdkmanager --verbose --no_https "emulator" \
-    "system-images;android-${API_LEVEL};default;x86_64" "platforms;android-${API_LEVEL}" "platform-tools"
+    "system-images;android-${API_LEVEL};google_apis;x86_64" "platforms;android-${API_LEVEL}" "platform-tools"
 
 
-echo no | avdmanager create avd -n AndroidPaia -k "system-images;android-${API_LEVEL};default;x86_64" -d $DEVICE_ID --force
+echo no | avdmanager create avd -n AndroidPaia -k "system-images;android-${API_LEVEL};google_apis;x86_64" -d $DEVICE_ID --force
+
+# Configurando o teclado
+CONFIG_FILE="$HOME/.android/avd/AndroidPaia.avd/config.ini"
+if grep -q "hw.keyboard" "$CONFIG_FILE"; then
+    sed -i  's/^hw.keyboard=.*/hw.keyboard=yes/' "$CONFIG_FILE"
+else
+    echo "hw.keyboard=yes" >> "$CONFIG_FILE"
+fi
 
 npm install
 

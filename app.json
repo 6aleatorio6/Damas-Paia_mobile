@@ -29,7 +29,7 @@
     "experiments": {
       "typedRoutes": true
     },
-    "plugins": ["expo-router"],
+    "plugins": ["expo-router", "react-native-fbsdk-next"],
     "extra": {
       "router": {
         "origin": false

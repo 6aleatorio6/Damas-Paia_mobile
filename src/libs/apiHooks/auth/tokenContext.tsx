@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
 import { queryClientPaia } from '../reactQuery/queryContext';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 interface ITokenContext {
   refresh: () => void;
@@ -45,6 +46,7 @@ export function useAuth() {
     token: authState.tokenRef.val,
     async logout() {
       tokenRef.val = null;
+      await GoogleSignin.signOut();
       await AsyncStorage.removeItem('token');
       queryClientPaia.clear();
       refresh();

@@ -28,7 +28,21 @@ export default ({ config }) => ({
   experiments: {
     typedRoutes: true,
   },
-  plugins: ['expo-router', 'react-native-fbsdk-next'],
+  plugins: [
+    'expo-router',
+    [
+      'react-native-fbsdk-next',
+      {
+        appID: process.env.FACEBOOK_APP_ID || '123456789',
+        clientToken: process.env.FACEBOOK_CLIENT_TOKEN || '123456789',
+        displayName: 'Damas Paia',
+        scheme: 'damaspaia',
+        advertiserIDCollectionEnabled: false,
+        autoLogAppEventsEnabled: false,
+        isAutoInitEnabled: true,
+      },
+    ],
+  ],
   extra: {
     router: {
       origin: false,

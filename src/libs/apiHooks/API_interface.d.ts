@@ -1,6 +1,7 @@
 interface User {
   uuid: string;
   username: string;
+  avatar?: string;
   email: string;
   password: string;
 }

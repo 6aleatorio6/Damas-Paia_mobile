@@ -1,9 +1,9 @@
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import { router } from 'expo-router';
 import { Frown, LogOut, RotateCcw, UserCircle2 } from 'lucide-react-native';
-import { Text, TouchableOpacity, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 export default function UserBar() {
@@ -15,7 +15,11 @@ export default function UserBar() {
 
   return (
     <View style={styles.containerPerfil}>
-      <Icon size={65} color={theme.colors.textPri} />
+      {isSuccess && data?.avatar ? (
+        <Image source={{ uri: data.avatar }} style={styles.avatar} />
+      ) : (
+        <Icon size={65} color={theme.colors.textPri} />
+      )}
       <View style={styles.meioPerfil}>
         {isError && <Text style={styles.username}>{'Erro'}</Text>}
         {isLoading && <Text style={styles.username}>{'...'}</Text>}
@@ -83,5 +87,10 @@ const stylesheet = createStyleSheet((theme) => ({
     fontWeight: 'bold',
     textAlign: 'center',
     paddingTop: 2,
+  },
+  avatar: {
+    width: 65,
+    height: 65,
+    borderRadius: 32.5,
   },
 }));

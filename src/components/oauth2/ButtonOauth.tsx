@@ -39,8 +39,8 @@ const stylesPaia = createStyleSheet((theme) => ({
   button: {
     flexGrow: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     height: 50,
-    padding: 6,
     backgroundColor: theme.colors.bodyTri,
     borderColor: theme.colors.textSec,
     borderRadius: 5,

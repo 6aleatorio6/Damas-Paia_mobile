@@ -1,6 +1,5 @@
 import { AccessToken, LoginManager } from 'react-native-fbsdk-next';
 import ButtonOauth from './ButtonOauth';
-import { Image } from 'expo-image';
 import Entypo from '@expo/vector-icons/Entypo';
 
 export default function ButtonFacebook() {

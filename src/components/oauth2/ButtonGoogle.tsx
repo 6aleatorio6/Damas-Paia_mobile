@@ -26,7 +26,7 @@ export default function ButtonGoogle() {
 
   return (
     <ButtonOauth provider="google" fetchOAuthToken={handleGoogle}>
-      <Image source={require('@/assets/google-logo.png')} style={{ aspectRatio: 1, height: '100%' }} />
+      <Image source={require('@/assets/google-logo.png')} style={{ aspectRatio: 1, height: '70%' }} />
     </ButtonOauth>
   );
 }

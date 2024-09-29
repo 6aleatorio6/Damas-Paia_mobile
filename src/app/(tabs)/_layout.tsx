@@ -12,9 +12,13 @@ export default function TabsLayout() {
   const { mutate } = useFindMatchesInProgressAndFinish({});
 
   useEffect(() => {
-    mutate(null); // Verifica se tem partidas em andamento ao abrir o app
     SplashScreen.hideAsync();
   }, []);
+
+  useEffect(() => {
+    if (token) mutate(null); // Verifica se tem partidas em andamento ao logar
+  }, [token]);
+
   if (!token) return <Redirect href={'/(auth)'} />;
 
   return (

@@ -17,8 +17,8 @@ export default function ButtonOauth({ fetchOAuthToken, provider, children }: But
 
   const handleOAuthLogin = async () => {
     try {
-      const idToken = await fetchOAuthToken();
-      const { data } = await axios.get(`/oauth2/${provider}/${encodeURIComponent(idToken)}`);
+      const tokenOrCode = await fetchOAuthToken();
+      const { data } = await axios.post(`/oauth2/${provider}`, { tokenOrCode });
 
       await setToken(data.token);
       router.replace('/(tabs)');

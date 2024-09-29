@@ -1,14 +1,18 @@
 name: Build APK and Upload to GitHub Release
 
 on:
- release:
+  release:
     types: [published]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      EXPO_PUBLIC_API_URL: ${{ vars.API_URL }} 
+      EXPO_PUBLIC_API_URL: ${{ vars.API_URL }}
+      EXPO_PUBLIC_GOOGLE_CLIENT_ID: ${{vars.GOOGLE_CLIENT_ID}}
+      EXPO_PUBLIC_DISCORD_CLIENT_ID: ${{vars.DISCORD_CLIENT_ID}}
+      FACEBOOK_CLIENT_TOKEN: ${{vars.FACEBOOK_CLIENT_TOKEN}}
+      FACEBOOK_APP_ID: ${{vars.FACEBOOK_APP_ID}}
     steps:
       - name: Setup repo
         uses: actions/checkout@v4
@@ -17,13 +21,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 21.x
-          cache: "npm"
+          cache: 'npm'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: "17"
-          distribution: "temurin"
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -36,12 +40,12 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
-        run: npm install 
+        run: npm install
 
       - name: Build Android app
-        run: eas build --platform android --profile preview --local --output ${{ github.workspace }}/damas-paia_${{ github.event.release.tag_name }}.apk
-        
+        run: eas build --platform android --profile preview --local --output ${{ github.workspace }}/damas-paia_release.apk
+
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ github.workspace }}/damas-paia_${{ github.event.release.tag_name }}.apk
+          files: ${{ github.workspace }}/damas-paia_release.apk

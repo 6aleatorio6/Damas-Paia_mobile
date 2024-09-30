@@ -9,6 +9,7 @@ export const queryClientPaia = new QueryClient({
     queries: {
       staleTime: 1000 * 60 * +API_STALE_MINUTES,
       throwOnError: OnErrorVerifyHealth,
+      refetchOnMount: false,
       retry: 2,
     },
     mutations: { throwOnError: OnErrorVerifyHealth },

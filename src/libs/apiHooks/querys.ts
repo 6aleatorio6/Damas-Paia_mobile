@@ -8,7 +8,7 @@ export const useGetUser = createQuery((axios) => ({
 export const useHealthcheck = createQuery((axios) => ({
   queryKey: ['healthcheck'],
   queryFn: () => axios.get<string>('/').then((res) => res.data),
-  retry: 1,
+  retry: 0,
 }));
 
 export const useGetUserMatches = createQuery((axios) => ({

@@ -1,9 +1,13 @@
 import ButtonBig from '@/components/ButtonBig';
 import AlertError from '@/components/game/AlertError';
 import Board from '@/components/game/Board';
+import EndModal from '@/components/game/EndModal';
+import ExitModal from '@/components/game/ExitModal';
+import FailReconnectModal from '@/components/game/FailReconnectInGameModal';
 import Pieces from '@/components/game/Pieces';
 import PlayerHud from '@/components/game/PlayerHud';
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { BackHandler, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
@@ -23,19 +27,24 @@ export default function Match() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.CBoard}>
-        <PlayerHud />
-        <Board useSquareSize={squareSizeState}>
-          <Pieces squareSize={squareSizeState[0]} />
-        </Board>
-        <PlayerHud isUser />
+    <>
+      <ExitModal />
+      <FailReconnectModal />
+      <EndModal />
+      <View style={styles.container}>
+        <View style={styles.CBoard}>
+          <PlayerHud />
+          <Board useSquareSize={squareSizeState}>
+            <Pieces squareSize={squareSizeState[0]} />
+          </Board>
+          <PlayerHud isUser />
+        </View>
+        <ButtonBig onPress={() => socket.data.openModalExit(true)} style={styles.button}>
+          DESISTIR
+        </ButtonBig>
+        <AlertError />
       </View>
-      <ButtonBig onPress={() => socket.data.openModalExit(true)} style={styles.button}>
-        DESISTIR
-      </ButtonBig>
-      <AlertError />
-    </View>
+    </>
   );
 }
 

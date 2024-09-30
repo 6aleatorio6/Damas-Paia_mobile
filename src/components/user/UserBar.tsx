@@ -1,25 +1,20 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import { router } from 'expo-router';
-import { Frown, LogOut, RotateCcw, UserCircle2 } from 'lucide-react-native';
+import { LogOut, RotateCcw } from 'lucide-react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import Avatar from '../Avatar';
 
 export default function UserBar() {
   const { styles, theme } = useStyles(stylesheet);
   const { data, isError, isLoading, isSuccess, refetch } = useGetUser({});
   const { logout } = useAuth();
 
-  const Icon = isError ? Frown : UserCircle2;
-
   return (
     <View style={styles.containerPerfil}>
-      {isSuccess && data?.avatar ? (
-        <Image source={{ uri: data.avatar }} style={styles.avatar} />
-      ) : (
-        <Icon size={65} color={theme.colors.textPri} />
-      )}
+      {isSuccess && <Avatar url={data.avatar} size={68} />}
       <View style={styles.meioPerfil}>
         {isError && <Text style={styles.username}>{'Erro'}</Text>}
         {isLoading && <Text style={styles.username}>{'...'}</Text>}

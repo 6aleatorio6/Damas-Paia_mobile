@@ -1,0 +1,23 @@
+{
+  "molde de componente": {
+    "scope": "typescriptreact",
+    "prefix": "moldcomp",
+    "body": [
+      "import { View } from 'react-native';",
+      "import { createStyleSheet, useStyles } from 'react-native-unistyles';",
+      "",
+      "interface SomeComponentProps {}",
+      "",
+      "export default function SomeComponent(props:SomeComponentProps) {",
+      "  const { styles } = useStyles(stylesPaia);",
+      "",
+      "  return <View style={styles.container}></View>;",
+      "}",
+      "",
+      "const stylesPaia = createStyleSheet(({ colors }) => ({",
+      "  container: {},",
+      "}));",
+    ],
+    "description": "criar um novo componente com unistyles",
+  },
+}

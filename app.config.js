@@ -1,7 +1,8 @@
 export default ({ config }) => ({
+  ...config,
   name: 'Damas Paia',
   slug: 'Damas-Paia',
-  version: '2.0.0',
+  version: (process.env.EXPO_APP_VERSION || 'v0.0.0').replace('v', ''),
   scheme: 'damaspaia',
   orientation: 'portrait',
   icon: './src/assets/icon.png',

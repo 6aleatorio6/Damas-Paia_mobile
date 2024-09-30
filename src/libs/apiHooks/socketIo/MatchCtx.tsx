@@ -14,6 +14,9 @@ export function MatchSocketProvider(props: PropsWithChildren) {
     const socket = io(`${baseURL}/match`, {
       autoConnect: false,
       extraHeaders: { Authorization: `Bearer ${auth.token}` },
+      reconnectionAttempts: Number(process.env.EXPO_PUBLIC_SOCKET_RECONNECTION_MAX_SECONDS) || 5,
+      reconnectionDelayMax: 1000, // Tempo máximo entre tentativas de reconexão
+      reconnectionDelay: 1000, // Tempo base entre tentativas de reconexão
     }) as SocketPaia;
     socket.data = {} as any;
     return socket;
@@ -22,7 +25,7 @@ export function MatchSocketProvider(props: PropsWithChildren) {
   useEffect(() => {
     client.connect();
 
-    client.on('connect_error', async (e: any) => {
+    const cbConnectError = async (e: any) => {
       try {
         // se disparar algum erro, quer dizer que não recebeu a mensagem que sinaliza que o token é inválido
         const { message } = JSON.parse(e?.context?.responseText);
@@ -33,16 +36,18 @@ export function MatchSocketProvider(props: PropsWithChildren) {
         client.io.opts.extraHeaders = { Authorization: `Bearer ${tokenNovo}` };
         client.disconnect().connect();
       } catch {
-        console.log('Erro ao conectar com o socket', e);
+        console.log('Erro ao conectar com o socket:', e);
       }
-    });
+    };
+
+    client.on('connect_error', cbConnectError);
 
     client.on('error', console.log);
 
     return () => {
       client.disconnect();
-      client.off('connect_error');
-      client.off('error');
+      client.off('connect_error', cbConnectError);
+      client.off('error', console.log);
     };
   }, []);
 

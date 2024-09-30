@@ -2,7 +2,7 @@ import TabButtonParear from '@/components/nav/TabButtonParear';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { useFindMatchesInProgressAndFinish } from '@/libs/apiHooks/mutations';
 import { Redirect, SplashScreen, Tabs } from 'expo-router';
-import { Home, UserCircle2Icon } from 'lucide-react-native';
+import { Trophy, UserCircle2Icon } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { useStyles } from 'react-native-unistyles';
 
@@ -40,7 +40,7 @@ export default function TabsLayout() {
         headerStatusBarHeight: 0,
       }}
     >
-      <Tabs.Screen name="index" options={{ title: 'Home', tabBarIcon: (p) => <Home {...p} /> }} />
+      <Tabs.Screen name="index" options={{ title: 'Ranking', tabBarIcon: (p) => <Trophy {...p} /> }} />
       <Tabs.Screen
         name="(game)"
         options={{

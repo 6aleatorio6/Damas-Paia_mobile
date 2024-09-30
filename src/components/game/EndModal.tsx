@@ -8,12 +8,6 @@ import ButtonBig from '../ButtonBig';
 import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
 import { calculateDurationInMinutes, stringToDateString } from '@/libs/game/helpers';
 
-const messageStatusWin = {
-  resign: 'por desistência',
-  timeout: 'por desconexão',
-  checkmate: '',
-};
-
 export default function EndModal() {
   const { styles } = useStyles(stylesPaia);
   const [visible, setVisible] = useState(false);
@@ -25,6 +19,7 @@ export default function EndModal() {
   useEffect(() => {
     socket.on('match:finish', (data) => {
       queryClientPaia.invalidateQueries({ queryKey: ['userMatches'] });
+      queryClientPaia.invalidateQueries({ queryKey: ['ranking'] });
       setMatchData(data);
       setVisible(true);
     });

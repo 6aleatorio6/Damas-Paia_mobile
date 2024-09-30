@@ -8,6 +8,7 @@ interface User {
 
 //
 type Players = 'player1' | 'player2';
+type UserRank = { avatar: string | null; username: string; wins: string };
 
 interface Match {
   uuid: UUID;

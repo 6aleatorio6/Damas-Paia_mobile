@@ -15,3 +15,8 @@ export const useGetUserMatches = createQuery((axios) => ({
   queryKey: ['userMatches'],
   queryFn: () => axios.get<(Match & { youAre: Players })[]>('/match/user').then((res) => res.data),
 }));
+
+export const useGetRanking = createQuery((axios) => ({
+  queryKey: ['ranking'],
+  queryFn: () => axios.get<UserRank[]>('/match/ranking').then((res) => res.data),
+}));

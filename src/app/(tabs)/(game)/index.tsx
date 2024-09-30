@@ -1,4 +1,5 @@
 import ButtonBig from '@/components/ButtonBig';
+import { queryClientPaia } from '@/libs/apiHooks/reactQuery/queryContext';
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
@@ -11,14 +12,36 @@ export default function Parear() {
   const [modalVisible, setModalVisible] = useState(true);
   const socket = useMatchSocket();
 
-  useEffect(() => {
-    socket.on('error', (error) => {
-      alert(`${error.message}`);
-      setModalVisible(false);
-      router.back();
-    });
+  const closeModal = () => {
+    setModalVisible(false);
+    router.back();
+  };
 
-    return () => {};
+  // adiciona um evento que é disparado quando falha em se reconectar ao servidor, a tela match tem um evento parecido
+  useEffect(() => {
+    const failConnectFunction = () => {
+      // volta para a tela de menu
+      closeModal();
+      // faz uma query para verificar se o servidor está online, se não estiver, abre o modal de healthcheck
+      queryClientPaia.refetchQueries({ queryKey: ['healthcheck'] }, { cancelRefetch: false }); // check if the server is down and open the modal again
+    };
+
+    socket.io.on('reconnect_failed', failConnectFunction);
+    return () => {
+      socket.io.off('reconnect_failed', failConnectFunction);
+    };
+  }, []);
+
+  useEffect(() => {
+    const cb = (error: Error) => {
+      closeModal();
+      alert(`${error.message}`);
+    };
+
+    socket.on('error', cb);
+    return () => {
+      socket.off('error', cb);
+    };
   }, []);
 
   useEffect(() => {
@@ -38,11 +61,6 @@ export default function Parear() {
       socket.off('match:init');
     };
   }, []);
-
-  const closeModal = () => {
-    setModalVisible(false);
-    router.back();
-  };
 
   return (
     <Modal

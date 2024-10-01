@@ -1,16 +1,15 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import ButtonBig, { IButtonStyle } from '@/components/ButtonBig';
-import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { useGetUser } from '@/libs/apiHooks/querys';
 import { router } from 'expo-router';
-import { LogOut, RotateCcw } from 'lucide-react-native';
+import { RotateCcw } from 'lucide-react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import Avatar from '../Avatar';
+import ButtonLogout from './ButtonLogout';
 
 export default function UserBar() {
   const { styles, theme } = useStyles(stylesheet);
   const { data, isError, isLoading, isSuccess, refetch } = useGetUser({});
-  const { logout } = useAuth();
 
   return (
     <View style={styles.containerPerfil}>
@@ -35,14 +34,7 @@ export default function UserBar() {
           <RotateCcw size={30} color={theme.colors.danger} />
         </TouchableOpacity>
       )}
-      {isSuccess && (
-        <TouchableOpacity onPress={() => logout()}>
-          <View style={styles.logoutIcon}>
-            <LogOut size={20} color={theme.colors.danger} />
-          </View>
-          <Text style={styles.logoutText}>SAIR</Text>
-        </TouchableOpacity>
-      )}
+      {isSuccess && <ButtonLogout />}
     </View>
   );
 }
@@ -75,13 +67,6 @@ const stylesheet = createStyleSheet((theme) => ({
     backgroundColor: theme.colors.bodySec,
     borderRadius: 6,
     padding: 7,
-  },
-  logoutText: {
-    color: theme.colors.danger,
-    fontSize: 9,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingTop: 2,
   },
   avatar: {
     width: 65,

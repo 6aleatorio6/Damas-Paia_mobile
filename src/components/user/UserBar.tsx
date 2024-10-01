@@ -14,7 +14,7 @@ export default function UserBar() {
 
   return (
     <View style={styles.containerPerfil}>
-      {isSuccess && <Avatar url={data.avatar} size={68} />}
+      <Avatar url={data?.avatar} size={68} />
       <View style={styles.meioPerfil}>
         {isError && <Text style={styles.username}>{'Erro'}</Text>}
         {isLoading && <Text style={styles.username}>{'...'}</Text>}

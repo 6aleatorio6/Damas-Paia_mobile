@@ -14,14 +14,16 @@ export default function TopRank({ position, data }: TopRankProps) {
 
   return (
     <View style={styles.container}>
-      <Avatar url={avatar} size={70} />
       <View style={styles.infoContainer}>
-        <Text style={styles.username}>{username}</Text>
+        <Avatar url={avatar} size={70} />
+        <Text style={styles.username} numberOfLines={1} ellipsizeMode="tail">
+          {username || '.............'}
+        </Text>
       </View>
       <View style={styles.rectangleContainer}>
         <View style={styles.rectangle(position)}>
-          <Text style={styles.positionAndWins(false, position === '1')}>{position}º</Text>
-          <Text style={styles.positionAndWins(true, position === '1')}>{wins} vitórias</Text>
+          <Text style={styles.positionAndWins(false, position === '1')}>{position || 0}º</Text>
+          <Text style={styles.positionAndWins(true, position === '1')}>{wins || '0'} vitórias</Text>
         </View>
       </View>
     </View>
@@ -47,13 +49,16 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   },
   infoContainer: {
     alignItems: 'center', // Centraliza o conteúdo horizontalmente
+    gap: 6, // Adiciona espaço entre o avatar e o nome
   },
   positionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   username: {
+    textAlign: 'center',
     fontSize: 16,
+    width: 80,
     color: colors.textPri,
   },
   rectangleContainer: {

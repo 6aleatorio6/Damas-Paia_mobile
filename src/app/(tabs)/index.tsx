@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { useGetRanking } from '@/libs/apiHooks/querys';
 import TopRank from '@/components/rank/TopRank';
 import RankItem from '@/components/rank/RankItem';
 
 export default function Ranking() {
-  const { styles } = useStyles(stylesheet);
-  const { data = [] } = useGetRanking({});
+  const { styles, theme } = useStyles(stylesheet);
+  const { data = [], isLoading } = useGetRanking({});
 
   return (
     <View style={styles.container}>
@@ -17,7 +17,17 @@ export default function Ranking() {
         <TopRank position="3" data={data[2]} />
       </View>
       <View style={styles.line} />
-      <FlatList data={data.slice(3)} renderItem={(i) => <RankItem {...i} />} style={styles.list} />
+      {isLoading ? (
+        <View style={styles.list}>
+          <ActivityIndicator size={'large'} style={{ margin: 'auto' }} color={theme.colors.warning} />
+        </View>
+      ) : (
+        <FlatList
+          data={data.slice(3)}
+          renderItem={(i) => <RankItem key={i.item.username} {...i} />}
+          style={styles.list}
+        />
+      )}
     </View>
   );
 }

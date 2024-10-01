@@ -2,10 +2,11 @@ import { View, Text, Modal } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
 interface ModalTemplateProps {
-  children: React.ReactNode;
-  title: string;
+  children?: React.ReactNode;
+  title?: string;
   modalVisible: boolean;
-  onRequestClose: () => void;
+  onRequestClose?: () => void;
+  width?: string;
 }
 export default function ModalTemplate(props: ModalTemplateProps) {
   const { styles } = useStyles(stylesPaia);
@@ -19,7 +20,7 @@ export default function ModalTemplate(props: ModalTemplateProps) {
       onRequestClose={props.onRequestClose}
     >
       <View style={styles.backdrop}>
-        <View style={styles.modalView}>
+        <View style={styles.modalView(props.width)}>
           <Text style={styles.modalText}>{props.title}</Text>
           <View style={styles.buttonContainer}>{props.children}</View>
         </View>
@@ -35,8 +36,8 @@ const stylesPaia = createStyleSheet((theme) => ({
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
-  modalView: {
-    width: '80%',
+  modalView: (width = '80%') => ({
+    width,
     backgroundColor: theme.colors.body,
     borderRadius: 10,
     padding: 20,
@@ -49,7 +50,7 @@ const stylesPaia = createStyleSheet((theme) => ({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
+  }),
   modalText: {
     marginBottom: 20,
     textAlign: 'center',
@@ -61,5 +62,6 @@ const stylesPaia = createStyleSheet((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
+    gap: 10,
   },
 }));

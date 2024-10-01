@@ -46,7 +46,6 @@ const stylesPaia = createStyleSheet((theme) => ({
     backgroundColor: theme.colors[type === 'exit' ? 'danger' : 'primary'],
     borderRadius: 5,
     padding: 5,
-    marginHorizontal: 5,
     alignItems: 'center',
     fontSize: type === 'exit' ? 20 : 16,
     fontWeight: 'bold',

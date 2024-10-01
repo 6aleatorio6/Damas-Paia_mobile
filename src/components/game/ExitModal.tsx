@@ -74,7 +74,6 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   button: (mode: 'exit' | 'voltar') => ({
     flex: 1,
     padding: 10,
-    marginHorizontal: 5,
     textAlign: 'center',
     backgroundColor: mode === 'exit' ? colors.bodySec : colors.success,
     borderRadius: 5,

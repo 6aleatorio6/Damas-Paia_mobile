@@ -22,8 +22,8 @@ export default function TopRank({ position, data }: TopRankProps) {
       </View>
       <View style={styles.rectangleContainer}>
         <View style={styles.rectangle(position)}>
-          <Text style={styles.positionAndWins(false, position === '1')}>{position || 0}º</Text>
-          <Text style={styles.positionAndWins(true, position === '1')}>{wins || '0'} vitórias</Text>
+          <Text style={styles.position}>{position || 0}º</Text>
+          <Text style={styles.wins}>{wins || '0'} vitórias</Text>
         </View>
       </View>
     </View>
@@ -68,15 +68,20 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   },
   rectangle: (position: '1' | '2' | '3') => ({
     width: '100%',
-    height: 100 - 15 * +position, // Altura maior para o primeiro colocado
-    backgroundColor: position === '1' ? colors.textPri : colors.secondary,
+    height: 110 - 13 * +position, // Altura maior para o primeiro colocado
+    backgroundColor: position === '1' ? colors.primary : colors.secondary,
     justifyContent: 'center', // Centraliza o texto verticalmente
     alignItems: 'center', // Centraliza o texto horizontalmente
     gap: 1, // Adiciona espaço entre os textos
   }),
-  positionAndWins: (isWins = false, isFirst = false) => ({
-    fontSize: isWins ? 16 : 18, // Aumenta a fonte se não for wins
-    color: isFirst ? colors.body : colors.textPri,
-    fontWeight: 'bold', // Deixa em destaque se não for wins
-  }),
+  position: {
+    fontSize: 25, // Tamanho da fonte para a posição
+    paddingLeft: 12, // Adiciona espaço à esquerda
+    fontWeight: 'bold', // Deixa em destaque
+    color: colors.textPri,
+  },
+  wins: {
+    fontSize: 17, // Tamanho da fonte para as vitórias
+    color: colors.textPri,
+  },
 }));

@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { UserCircle2, Trophy } from 'lucide-react-native';
+import { View, Text } from 'react-native';
+import { Trophy } from 'lucide-react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import Avatar from '../Avatar';
 
@@ -18,11 +18,13 @@ export default function RankItem(props: RankItemProps) {
   return (
     <View style={styles.container}>
       <View style={styles.indexContainer}>
-        <Text style={styles.index}>{index + 4}</Text>
+        <Text style={styles.index}>{index + 4}°</Text>
       </View>
       <View style={styles.avatarContainer}>
-        <Avatar size={30} url={item.avatar} />
-        <Text style={styles.username}>{item.username}</Text>
+        <Avatar size={50} url={item.avatar} />
+        <Text style={styles.username} numberOfLines={1} ellipsizeMode="tail">
+          {item.username}
+        </Text>
       </View>
       <View style={styles.winsContainer}>
         <Text style={styles.wins}>{item.wins}</Text>
@@ -36,30 +38,32 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+    backgroundColor: colors.bodyTri,
+    borderColor: colors.textPri,
+    borderBottomWidth: 1,
     height: 60,
   },
   indexContainer: {
     height: '100%',
     width: '18%',
-    borderColor: colors.warning,
+    borderColor: colors.textPri,
     borderRightWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   index: {
-    fontSize: 20,
+    fontSize: 25,
     color: colors.textPri,
   },
   avatarContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginLeft: 20,
   },
   username: {
     marginLeft: 10,
     fontSize: 19,
     color: colors.textPri,
-    textAlignVertical: 'bottom',
   },
   winsContainer: {
     flexDirection: 'row',

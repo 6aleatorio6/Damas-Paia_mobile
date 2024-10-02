@@ -17,7 +17,8 @@ export default function EndModal() {
   const isUserWinner = matchData && matchData.winner === socket.data.myPlayer;
 
   useEffect(() => {
-    socket.on('match:finish', (data) => {
+    socket.on('match:finish', async (data) => {
+      await new Promise((r) => setTimeout(r, 150)); // atraso para não abrir enquanto as peças ainda estão se movimentando
       queryClientPaia.invalidateQueries({ queryKey: ['userMatches'] });
       queryClientPaia.invalidateQueries({ queryKey: ['ranking'] });
       setMatchData(data);

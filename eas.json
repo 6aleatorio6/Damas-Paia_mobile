@@ -9,15 +9,19 @@
       "android": {
         "buildType": "apk",
         "applicationArchivePath": "android/app/build/outputs/**/*.{apk}"
-      }
+      },
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      }
+      },
+      "channel": "preview"
     },
-    "production": {}
+    "production": {
+      "channel": "production"
+    }
   },
   "submit": {
     "production": {}

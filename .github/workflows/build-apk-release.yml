@@ -50,3 +50,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ${{ github.workspace }}/damas-paia_release.apk
+
+      - name: publish update OTA
+        run: eas update --channel preview -p android --message "Update to ${{ github.event.release.tag_name }}"

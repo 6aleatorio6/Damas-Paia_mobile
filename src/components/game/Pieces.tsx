@@ -18,29 +18,36 @@ export default function Pieces({ squareSize }: PiecesProps) {
       const pieceMov = getPieceById(pieceId, myPieces, opPieces);
       const anima = [] as Animated.CompositeAnimation[];
 
-      for (const i in chainOfMotion) {
-        const mov = chainOfMotion[i];
-        const deadId = piecesDeads[i];
+      // monto o array ao contrario para o caso de uma dama capturar uma peça a distancia.
+      // quando isso acontece a captura/captura_em_cadeia sempre nos movimentos finais, e no começo tem as casas vazias que a dama se movimentou.
+      for (let i = chainOfMotion.length - 1; i >= 0; i--) {
+        // verifico e adiciono as animações em ordem descrecente
+        const deadId = piecesDeads[piecesDeads.length - (chainOfMotion.length - i)];
+        if (deadId) {
+          const pieceDead = getPieceById(deadId, myPieces, opPieces);
+          anima.push(
+            Animated.timing(pieceDead.morrerPiece, {
+              toValue: 0,
+              duration: 100,
+              useNativeDriver: true,
+            }),
+          );
+        }
 
+        // adiciono as animações em ordem descrecente
+        const mov = chainOfMotion[i];
         anima.push(
           Animated.timing(pieceMov.movePiece, {
             toValue: { x: mov.x * squareSize, y: mov.y * squareSize },
-            duration: 100,
-            useNativeDriver: true,
-          }),
-        );
-
-        if (deadId === undefined) continue;
-        // Animação de morte = opacidade 0
-        const pieceDead = getPieceById(deadId, myPieces, opPieces);
-        anima.push(
-          Animated.timing(pieceDead.morrerPiece, {
-            toValue: 0,
-            duration: 100,
+            duration: Math.max(130 - chainOfMotion.length * 3, 30),
+            delay: 30,
             useNativeDriver: true,
           }),
         );
       }
+
+      // reverto para ordem crescente
+      anima.reverse();
 
       if (isQueen !== pieceMov.isQueen) {
         pieceMov.isQueen = isQueen;

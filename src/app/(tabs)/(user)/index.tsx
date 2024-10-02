@@ -17,7 +17,7 @@ export default function Indextabs() {
 const stylesheet = createStyleSheet((theme) => ({
   container: {
     flex: 1,
-    width: '85%',
+    width: '90%',
     alignSelf: 'center',
     justifyContent: 'center',
   },

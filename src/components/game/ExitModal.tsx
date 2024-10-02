@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Modal, View, Text } from 'react-native';
 import ButtonBig from '../ButtonBig';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
+import ModalTemplate from '../ModalTemplate';
 
 export default function ExitModal() {
   const { styles } = useStyles(stylesPaia);
@@ -21,56 +21,23 @@ export default function ExitModal() {
   };
 
   return (
-    <Modal transparent={true} animationType="fade" visible={visible} onRequestClose={onCancel}>
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.title}>Confirmar Saída</Text>
-          <Text style={styles.message}>Você realmente deseja desistir da partida?</Text>
-          <View style={styles.buttonContainer}>
-            <ButtonBig style={styles.button('voltar')} onPress={onCancel}>
-              VOLTAR
-            </ButtonBig>
-            <ButtonBig style={styles.button('exit')} onPress={onConfirm}>
-              DESISTIR
-            </ButtonBig>
-          </View>
-        </View>
-      </View>
-    </Modal>
+    <ModalTemplate
+      modalVisible={visible}
+      onRequestClose={onCancel}
+      title="Desistir da partida"
+      subtitle="Você realmente deseja desistir da partida?"
+    >
+      <ButtonBig style={styles.button('voltar')} onPress={onCancel}>
+        VOLTAR
+      </ButtonBig>
+      <ButtonBig style={styles.button('exit')} onPress={onConfirm}>
+        DESISTIR
+      </ButtonBig>
+    </ModalTemplate>
   );
 }
 
 const stylesPaia = createStyleSheet(({ colors }) => ({
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContainer: {
-    width: 300,
-    padding: 20,
-    backgroundColor: colors.body,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: colors.textPri,
-  },
-  message: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-    color: colors.textSec,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
   button: (mode: 'exit' | 'voltar') => ({
     flex: 1,
     padding: 10,

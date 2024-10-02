@@ -47,7 +47,8 @@ export default function ButtonLogout() {
         <Text style={styles.logoutText}>SAIR</Text>
       </TouchableOpacity>
       <ModalTemplate
-        title="Você tem certeza que quer sair?"
+        title="Sair da conta"
+        subtitle="Você tem certeza que quer sair?"
         modalVisible={isConfirmModalVisible}
         onRequestClose={handleCancelLogout}
       >

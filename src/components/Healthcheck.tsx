@@ -27,7 +27,8 @@ export default function Healthcheck() {
     <ModalTemplate
       modalVisible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
-      title="Não foi possível conectar ao servidor. Verifique sua conexão com a internet e tente novamente."
+      title="Sem conexão"
+      subtitle="Não foi possível conectar ao servidor. Verifique sua conexão com a internet e tente novamente."
     >
       <ButtonBig onPress={handleRetry} style={styles.button('retry')}>
         {check.isFetching && <ActivityIndicator size={'large'} color={theme.colors.textPri} />}

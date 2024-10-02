@@ -22,8 +22,8 @@ export default function TopRank({ position, data }: TopRankProps) {
       </View>
       <View style={styles.rectangleContainer}>
         <View style={styles.rectangle(position)}>
-          <Text style={styles.position}>{position || 0}º</Text>
-          <Text style={styles.wins}>{wins || '0'} vitórias</Text>
+          <Text style={styles.position}>{position}º</Text>
+          <Text style={styles.wins}>{wins || '-'} vitórias</Text>
         </View>
       </View>
     </View>
@@ -58,7 +58,7 @@ const stylesPaia = createStyleSheet(({ colors }) => ({
   username: {
     textAlign: 'center',
     fontSize: 16,
-    width: 80,
+    width: 85,
     color: colors.textPri,
   },
   rectangleContainer: {

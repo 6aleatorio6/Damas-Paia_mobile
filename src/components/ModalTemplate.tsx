@@ -4,10 +4,12 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 interface ModalTemplateProps {
   children?: React.ReactNode;
   title?: string;
+  subtitle?: string;
   modalVisible: boolean;
   onRequestClose?: () => void;
   width?: string;
 }
+
 export default function ModalTemplate(props: ModalTemplateProps) {
   const { styles } = useStyles(stylesPaia);
 
@@ -21,7 +23,8 @@ export default function ModalTemplate(props: ModalTemplateProps) {
     >
       <View style={styles.backdrop}>
         <View style={styles.modalView(props.width)}>
-          <Text style={styles.modalText}>{props.title}</Text>
+          {props.title && <Text style={styles.modalTitle}>{props.title}</Text>}
+          {props.subtitle && <Text style={styles.modalSubtitle}>{props.subtitle}</Text>}
           <View style={styles.buttonContainer}>{props.children}</View>
         </View>
       </View>
@@ -51,12 +54,19 @@ const stylesPaia = createStyleSheet((theme) => ({
     shadowRadius: 4,
     elevation: 5,
   }),
-  modalText: {
+  modalTitle: {
+    marginBottom: 10,
+    textAlign: 'center',
+    fontSize: 19,
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    color: theme.colors.textPri,
+  },
+  modalSubtitle: {
     marginBottom: 20,
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: 'bold',
-    color: theme.colors.textPri,
+    color: theme.colors.textSec,
   },
   buttonContainer: {
     flexDirection: 'row',

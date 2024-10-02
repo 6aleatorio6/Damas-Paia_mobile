@@ -13,10 +13,8 @@ export default function Avatar({ url, size }: AvatarProps) {
   const opacityOcult = useRef(new Animated.Value(1)).current;
   const [isFinalized, setIsFinalized] = useState(false);
 
-  const animaStart = () => {
-    if (isFinalized) return;
-
-    Animated.sequence([
+  const anima = useMemo(() => {
+    return Animated.sequence([
       Animated.timing(opacityOcult, {
         toValue: 0,
         duration: 250,
@@ -27,16 +25,21 @@ export default function Avatar({ url, size }: AvatarProps) {
         duration: 250,
         useNativeDriver: true,
       }),
-    ]).start(() => {
-      setIsFinalized(true);
-    });
-  };
+    ]);
+  }, []);
+
+  const onloadImage = () => !isFinalized && anima.start(() => setIsFinalized(true));
+
+  useEffect(() => {
+    setIsFinalized(false);
+    anima.reset();
+  }, [url]);
 
   return (
     <View style={[styles.container, { width: size, height: size }]}>
       {url && (
         <Animated.Image
-          onLoad={() => animaStart()}
+          onLoad={onloadImage}
           source={{ uri: url }}
           style={[styles.image(size), { opacity: opacityShow }]}
         />

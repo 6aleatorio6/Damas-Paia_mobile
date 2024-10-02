@@ -6,6 +6,7 @@ import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import ModalTemplate from '../ModalTemplate';
 import ButtonBig from '../ButtonBig';
 import { Colors } from '@/constants/colors';
+import { router } from 'expo-router';
 
 export default function ButtonLogout() {
   const { styles, theme } = useStyles(stylesPaia);
@@ -16,8 +17,9 @@ export default function ButtonLogout() {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 400));
       await logout();
+      router.replace('/');
     } finally {
       setIsLoggingOut(false);
     }

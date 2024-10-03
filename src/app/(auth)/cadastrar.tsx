@@ -3,12 +3,27 @@ import Input from '@/components/form/FormInput';
 import { useForm } from '@/libs/form/formHooks';
 import FormSubmit from '@/components/form/FormSubmit';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useUserPostAndLogin } from '@/libs/apiHooks/mutations';
+import { useCallback } from 'react';
+import { AvoidSoftInput } from 'react-native-avoid-softinput';
 
 export default function CadastrarAuth() {
   const { setToken } = useAuth();
   const form = useForm();
+
+  const onFocusEffect = useCallback(() => {
+    // This should be run when screen gains focus - enable the module where it's needed
+    AvoidSoftInput.setShouldMimicIOSBehavior(true);
+    AvoidSoftInput.setEnabled(true);
+    return () => {
+      // This should be run when screen loses focus - disable the module where it's not needed, to make a cleanup
+      AvoidSoftInput.setEnabled(false);
+      AvoidSoftInput.setShouldMimicIOSBehavior(false);
+    };
+  }, []);
+
+  useFocusEffect(onFocusEffect); // register callback to focus events
 
   const mutation = useUserPostAndLogin({
     async onSuccess(data) {

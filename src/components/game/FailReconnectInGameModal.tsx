@@ -24,7 +24,8 @@ export default function FailReconnectModal() {
     <ModalTemplate
       modalVisible={modalVisible}
       onRequestClose={() => null}
-      title="Conexão perdida. Não foi possível se reconectar ao servidor."
+      title="Conexão perdida"
+      subtitle="Não foi possível se reconectar ao servidor. A partida será encerrada com sua derrota."
     >
       <ButtonBig
         onPress={() => {

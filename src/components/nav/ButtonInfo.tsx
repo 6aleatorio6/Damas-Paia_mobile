@@ -27,7 +27,9 @@ export default function ButtonInfo() {
             </ButtonBig>
           </View>
           <View style={styles.modalBody}>
-            <TextCol label="Versão instalada">{currentlyRunning.manifest?.version || '---'}</TextCol>
+            <TextCol label="Versão instalada">
+              {process.env.EXPO_PUBLIC_APP_VERSION || '---'}
+            </TextCol>
             <TextCol label="Canal de atualização">{currentlyRunning.channel || '---'}</TextCol>
             <TextCol label="Ultima Atualização">
               {currentlyRunning.createdAt?.toLocaleString('pt-br') || '---'}
@@ -35,7 +37,7 @@ export default function ButtonInfo() {
             <TextCol label="URL do backend atual" link={baseURL}>
               {baseURL}
             </TextCol>
-            <TextCol label="Desenvolvido por" link="https://github.com/6aleatorio6">
+            <TextCol label="Desenvolvido por" link="https://www.github.com/6aleatorio6">
               Leonardo (6aleatorio6)
             </TextCol>
           </View>

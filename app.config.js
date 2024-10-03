@@ -3,7 +3,7 @@ export default ({ config }) => ({
   name: 'Damas Paia',
   slug: 'Damas-Paia',
   scheme: 'damaspaia',
-  version: (process.env.EXPO_APP_VERSION || 'v0.0.0').replace('v', ''),
+  version: (process.env.EXPO_PUBLIC_APP_VERSION || 'v0.0.0').replace('v', ''),
   updates: { url: 'https://u.expo.dev/fffe2c4d-7aae-46cf-95bf-cea2dfa97a40' },
   runtimeVersion: '1.3.0',
   orientation: 'portrait',

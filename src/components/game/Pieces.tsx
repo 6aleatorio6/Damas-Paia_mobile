@@ -3,20 +3,25 @@ import { Animated } from 'react-native';
 import { Piece } from './Piece';
 import { useMatchSocket } from '@/libs/apiHooks/socketIo/MatchCtx';
 import { createPiecesProps, getPieceById } from '@/libs/game/helpers';
+import { useSoundsFromGame } from '@/libs/game/useSoundsFromGame';
 
 interface PiecesProps {
   squareSize: number;
 }
 export default function Pieces({ squareSize }: PiecesProps) {
+  const playSounds = useSoundsFromGame();
   const socket = useMatchSocket();
   const { myPlayer, opPlayer, piecesInit } = socket.data;
   const [opPieces, setOpPieces] = useState(() => createPiecesProps(piecesInit, opPlayer, squareSize));
   const [myPieces, setMyPieces] = useState(() => createPiecesProps(piecesInit, myPlayer, squareSize));
 
   useEffect(() => {
-    socket.on('match:update', ({ chainOfMotion, isQueen, piecesDeads, pieceId }) => {
+    socket.on('match:update', async ({ chainOfMotion, isQueen, piecesDeads, pieceId }) => {
       const pieceMov = getPieceById(pieceId, myPieces, opPieces);
       const anima = [] as Animated.CompositeAnimation[];
+
+      // toca o som de movimento ou captura
+      if (piecesDeads.length) await playSounds('capture');
 
       // monto o array ao contrario para o caso de uma dama capturar uma peça a distancia.
       // quando isso acontece a captura/captura_em_cadeia sempre nos movimentos finais, e no começo tem as casas vazias que a dama se movimentou.

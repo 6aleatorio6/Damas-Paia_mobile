@@ -19,7 +19,7 @@ export default function ButtonLogout() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 400));
       await logout();
-      router.replace('/');
+      router.replace('/(auth)');
     } finally {
       setIsLoggingOut(false);
     }
@@ -59,7 +59,7 @@ export default function ButtonLogout() {
           Confirmar
         </ButtonBig>
       </ModalTemplate>
-      <ModalTemplate width="30%" title="saindo..." modalVisible={isLoggingOut}>
+      <ModalTemplate width="33%" title="saindo..." modalVisible={isLoggingOut}>
         <ActivityIndicator size={40} color={theme.colors.danger} style={styles.spinner} />
       </ModalTemplate>
     </>

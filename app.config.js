@@ -5,7 +5,7 @@ export default ({ config }) => ({
   scheme: 'damaspaia',
   version: (process.env.EXPO_PUBLIC_APP_VERSION || 'v0.0.0').replace('v', ''),
   updates: { url: 'https://u.expo.dev/fffe2c4d-7aae-46cf-95bf-cea2dfa97a40' },
-  runtimeVersion: '1.4.0',
+  runtimeVersion: '1.5.0',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   userInterfaceStyle: 'automatic',
@@ -38,6 +38,7 @@ export default ({ config }) => ({
         isAutoInitEnabled: true,
       },
     ],
+    ['expo-build-properties', { android: { kotlinVersion: '1.8.0' } }],
   ],
   extra: {
     router: {

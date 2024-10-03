@@ -3,55 +3,24 @@
 </p>
 
 <p>
-    <p align="center">Jogo de Damas online multiplataforma em desenvolvimento</p>
+    <p align="center">Jogo de Damas online multiplataforma</p>
 </p>
 
 ## Descrição
 
-**DamasPaia Mobile** é o frontend mobile de um jogo de damas online, integrado a um backend em NestJS e uma futura interface web. Desenvolvido com React Native, Unistyles 2.0 e TypeScript, oferece uma interface nativa e moderna.
+Este é o repositório frontend mobile do projeto **Damas Paia**. Desenvolvido com React Native, Unistyles 2.0, Socket.io e TypeScript, oferece uma interface nativa e moderna.
+
+## Status do Projeto
 
 | Plataforma                                                   | Tecnologia   | Status       |
 | ------------------------------------------------------------ | ------------ | ------------ |
 | [Backend](https://github.com/6aleatorio6/Damas-Paia_backend) | NestJS       | Em andamento |
 | [Mobile](https://github.com/6aleatorio6/Damas-Paia_mobile)   | React Native | Em andamento |
 | Web                                                          | React        | Não iniciado |
-| Desktop                                                      | Não definido | Não iniciado |
 
 ## Funcionalidades do Mobile
 
-- **Cadastro e Edição de Conta**
-
-  - Cadastro e login de usuários com proteção de rotas utilizando React Context.
-  - Edição de perfil, incluindo alterações de nome e senha, além da opção de exclusão de conta.
-
-- **Comunicação com Backend**
-
-  - Revalidação automática de tokens para segurança contínua da sessão e gerenciamento do estado global de autenticação.
-  - Integrações para operações de cadastro, login e autenticação.
-  - Gerenciamento de estado e cache com React Query e hooks personalizados.
-  - Comunicação em tempo real utilizando Socket.io, com proteção via token.
-
-- **Partida de Damas**
-
-  - **HUD do Jogador**
-
-    - Exibição dinâmica do contador de peças e do estado de turno atual.
-    - Destaque visual para o jogador ativo, sincronizado com o estado da partida.
-
-  - **Tabuleiro**
-    - Tabuleiro 8x8 com rotação automática para manter o jogador na parte inferior da tela.
-    - Movimentação, captura e promoção de peças gerenciadas em tempo real via Socket.io.
-    - Animações suaves e sequenciais para movimentação, promoção e captura de peças, utilizando a API Animated.
-
-- **Pareamento de Jogadores**
-
-  - Modal de espera com opção de cancelar a busca por oponente.
-  - Saída do modal desconecta automaticamente o jogador da fila de pareamento.
-  - Redirecionamento automático para a tela da partida assim que um oponente é encontrado.
-
-- **Validações de Formulários**
-  - Biblioteca flexível para validação de formulários, com suporte a validações responsivas e adaptáveis.
-  - Todos os formulários incluem validações configuráveis para garantir a integridade dos dados.
+Ele se integra perfeitamente com todas as [funcionalidades que o backend oferece](https://github.com/6aleatorio6/Damas-Paia_backend?tab=readme-ov-file#funcionalidades).
 
 ## Instalação
 
@@ -89,27 +58,39 @@
 
 ## Executando a Aplicação
 
-Devido ao uso do **Unistyles**, o Expo funciona apenas em modo `development build`.
+Para executar o aplicativo localmente, siga os passos abaixo:
 
-- Se instalou o emulador pelo script `installEmu.sh`, você pode usar o comando abaixo para desenvolver pelo emulador Android:
+1. Inicialize o [backend](https://github.com/6aleatorio6/Damas-Paia_backend) localmente e ajuste a variável `EXPO_PUBLIC_API_URL` para apontar para ele.
 
-  ```bash
-  npm run android
-  ```
+   > **Nota:** Se o backend estiver rodando em `localhost`, utilize esse comando para redirecionar a porta do emulador para escutar a porta do seu PC:
+   >
+   > ```bash
+   > adb reverse tcp:xxxx tcp:xxxx
+   > ```
+   >
+   > Por exemplo, se o backend estiver em `http://localhost:3000`, use:
+   >
+   > ```bash
+   > adb reverse tcp:3000 tcp:3000
+   > ```
+   >
+   > Isso permitirá que o emulador acesse o backend em execução na sua máquina local.
 
-## Testes de integração
+2. Devido ao uso do **Unistyles**, o Expo deve ser executado apenas em modo `development build`.
 
-Para executar os testes de integração, utilize o comando abaixo:
+3. Inicie o Expo. Observe que a primeira execução pode demorar mais.
 
-```bash
-npm run test
-```
+   - Se você instalou o emulador pelo script `installEmu.sh`, utilize o comando abaixo para abrir no emulador Android:
 
-### Resultados dos Testes
+     ```bash
+     npm run android
+     ```
 
-Abaixo está uma captura de tela dos testes do projeto:
+   - Se você instalou o emulador por outros meios, utilize:
 
-![Captura de tela dos testes](tests.print.png)
+     ```bash
+     npx expo run:android
+     ```
 
 ## Criador
 

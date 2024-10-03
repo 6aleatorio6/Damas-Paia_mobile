@@ -1,10 +1,11 @@
-import { Alert, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { formatError } from '@/libs/apiHooks/auth/utils';
 import { useAxios } from '@/libs/apiHooks/auth/useAxios';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import ModalTemplate from '../ModalTemplate';
 
 export interface ButtonOauthProps {
   fetchOAuthToken: () => Promise<string>;
@@ -12,13 +13,13 @@ export interface ButtonOauthProps {
   children?: React.ReactNode;
 }
 export default function ButtonOauth({ fetchOAuthToken, provider, children }: ButtonOauthProps) {
-  const { styles } = useStyles(stylesPaia);
+  const { styles, theme } = useStyles(stylesPaia);
   const { setToken } = useAuth();
   const axios = useAxios();
-  const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleOAuthLogin = async () => {
-    setDisabled(true);
+    setLoading(true);
     try {
       const tokenOrCode = await fetchOAuthToken();
       const { data } = await axios.post(`/oauth2/${provider}`, { tokenOrCode });
@@ -29,14 +30,19 @@ export default function ButtonOauth({ fetchOAuthToken, provider, children }: But
       console.error(error);
       Alert.alert('Erro ao fazer login', formatError(error as Error));
     } finally {
-      setDisabled(false);
+      setLoading(false);
     }
   };
 
   return (
-    <TouchableOpacity disabled={disabled} onPress={handleOAuthLogin} style={styles.button}>
-      {children}
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity disabled={loading} onPress={handleOAuthLogin} style={styles.button}>
+        {children}
+      </TouchableOpacity>
+      <ModalTemplate width="20%" modalVisible={loading}>
+        <ActivityIndicator size={40} color={theme.colors.success} style={{ margin: 'auto' }} />
+      </ModalTemplate>
+    </>
   );
 }
 

@@ -4,6 +4,7 @@ import { formatError } from '@/libs/apiHooks/auth/utils';
 import { useAxios } from '@/libs/apiHooks/auth/useAxios';
 import { useAuth } from '@/libs/apiHooks/auth/tokenContext';
 import { router } from 'expo-router';
+import { useState } from 'react';
 
 export interface ButtonOauthProps {
   fetchOAuthToken: () => Promise<string>;
@@ -14,8 +15,10 @@ export default function ButtonOauth({ fetchOAuthToken, provider, children }: But
   const { styles } = useStyles(stylesPaia);
   const { setToken } = useAuth();
   const axios = useAxios();
+  const [disabled, setDisabled] = useState(false);
 
   const handleOAuthLogin = async () => {
+    setDisabled(true);
     try {
       const tokenOrCode = await fetchOAuthToken();
       const { data } = await axios.post(`/oauth2/${provider}`, { tokenOrCode });
@@ -25,11 +28,13 @@ export default function ButtonOauth({ fetchOAuthToken, provider, children }: But
     } catch (error) {
       console.error(error);
       Alert.alert('Erro ao fazer login', formatError(error as Error));
+    } finally {
+      setDisabled(false);
     }
   };
 
   return (
-    <TouchableOpacity onPress={handleOAuthLogin} style={styles.button}>
+    <TouchableOpacity disabled={disabled} onPress={handleOAuthLogin} style={styles.button}>
       {children}
     </TouchableOpacity>
   );

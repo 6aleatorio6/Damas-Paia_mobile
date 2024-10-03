@@ -16,13 +16,13 @@ export default function LayoutRaiz() {
   const { theme } = useStyles();
 
   return (
-    <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.colors.primary }}>
-      <QueryPaiaProvider>
-        <AuthProvider>
+    <AuthProvider>
+      <SafeAreaView edges={['top']} style={{ flex: 1, backgroundColor: theme.colors.primary }}>
+        <QueryPaiaProvider>
           <Healthcheck />
           <Slot initialRouteName="(tabs)" />
-        </AuthProvider>
-      </QueryPaiaProvider>
-    </SafeAreaView>
+        </QueryPaiaProvider>
+      </SafeAreaView>
+    </AuthProvider>
   );
 }

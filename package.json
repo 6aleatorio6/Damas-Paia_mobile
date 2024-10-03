@@ -36,7 +36,8 @@
     "socket.io-client": "^4.7.5",
     "expo-auth-session": "~5.5.2",
     "expo-crypto": "~13.0.2",
-    "expo-updates": "~0.25.25"
+    "expo-updates": "~0.25.25",
+    "expo-av": "~14.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

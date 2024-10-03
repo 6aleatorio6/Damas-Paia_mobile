@@ -46,7 +46,7 @@ export function useAuth() {
     token: authState.tokenRef.val,
     async logout() {
       tokenRef.val = null;
-      await GoogleSignin.signOut();
+      await GoogleSignin.signOut().catch(console.error);
       await AsyncStorage.removeItem('token');
       queryClientPaia.clear();
       refresh();

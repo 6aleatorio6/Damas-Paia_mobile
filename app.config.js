@@ -8,7 +8,7 @@ export default ({ config }) => ({
   runtimeVersion: '1.5.0',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
-  userInterfaceStyle: 'automatic',
+  userInterfaceStyle: 'dark',
   splash: {
     image: './src/assets/splash.png',
     resizeMode: 'cover',

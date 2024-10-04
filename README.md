@@ -21,7 +21,7 @@ Este é o repositório frontend mobile do projeto **Damas Paia**. Desenvolvido c
 
 Baixe a última versão do app: [damas-paia_release](https://github.com/6aleatorio6/Damas-Paia_mobile/releases/latest/download/damas-paia_release.apk)
 
-> **Observação:** O backend está hospedado no Heroku através do plano de estudante, e pretendo mantê-lo online até **01/06/2025**.
+> **Observação:** O backend está hospedado no Heroku através do plano de estudante, e pretendo mantê-lo online até **01/04/2025**.
 
 ## Funcionalidades do Mobile
 
@@ -57,9 +57,29 @@ Os usuários têm total controle sobre suas contas, podendo facilmente sair, edi
   <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/editarSenha.gif" alt="Editar Senha" width="200" />
 </p>
 
-### Pareamento e Jogo de Damas
+### 4. Pareamento e Jogo de Damas
 
-<img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7258f0b052824b803a8265bd2f57ffefeedbba81/pareamentoEjogo.gif" alt="Pareamento e uma partida de damas" width="800" />
+Os usuários podem encontrar partidas facilmente na fila de pareamento. As partidas são compostas por dois jogadores que se alternam em turnos, com a possibilidade de capturar peças do adversário e promover peças para damas. A partida termina quando um jogador fica sem peças, desiste ou se desconecta.
+
+<p>
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7258f0b052824b803a8265bd2f57ffefeedbba81/pareamentoEjogo.gif" alt="Pareamento e uma partida de damas" width="776" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7212e1febe5e9ae5abf83fcb227d938fafc9c97a/promocaoDamaEfimDejogo.gif" alt="Promoção para dama e fim de jogo por um jogador não ter mais peças" width="224" />
+</p>
+
+> **Nota:** O GIF à direita mostra uma versão antiga do jogo. As animações de movimentação e captura foram melhoradas, e um áudio foi adicionado ao capturar uma peça.
+
+### 5. Atualização OTA e Build a Cada Release pelo GitHub Actions
+
+Este recurso automatiza o processo de atualização do aplicativo usando **EAS Update** e GitHub Actions. A cada nova release publicada, o workflow realiza as seguintes etapas:
+
+- **Build do APK**: Gera um arquivo APK do aplicativo.
+- **Upload do APK**: Anexa o APK à release no GitHub.
+- **Atualização OTA**: Publica a nova versão para os usuários.
+
+**Modal com as informações da versão instalada:**
+<p >
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/015b3bec893e5b4198c0b21159d6c728fc3bfc7c/infoApp.gif" alt="Abrindo modal com as informações do app" width="200" />
+</p>
 
 ## Instalação
 

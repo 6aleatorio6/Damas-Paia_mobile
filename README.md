@@ -32,8 +32,8 @@ O **DamasPaia Mobile** se integra perfeitamente com todas as [funcionalidades qu
 A autenticação convencional permite que os usuários criem suas contas e façam login utilizando um nome de usuário e senha. 
 
 <p>
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/cadastrar.gif" alt="Cadastrar" width="200" />
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/entrar.gif" alt="Entrar" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/cadastrar.gif" alt="Cadastrar" width="180" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/entrar.gif" alt="Entrar" width="180" />
 </p>
 
 ### 2. Login por OAuth2
@@ -41,9 +41,9 @@ A autenticação convencional permite que os usuários criem suas contas e faça
 Para uma experiência de autenticação ainda mais rápida e conveniente, o **DamasPaia Mobile** oferece a opção de login e cadastro através de provedores de OAuth2, como Google, Facebook e Discord.
 
 <p>
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/google.gif" alt="Login com Google" width="200" />
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/facebook.gif" alt="Login com Facebook" width="200" />
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/discord.gif" alt="Login com Discord" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/google.gif" alt="Login com Google" width="180" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/facebook.gif" alt="Login com Facebook" width="180" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/discord.gif" alt="Login com Discord" width="180" />
 </p>
 
 ### 3. Manipulação da Conta
@@ -51,10 +51,10 @@ Para uma experiência de autenticação ainda mais rápida e conveniente, o **Da
 Os usuários têm total controle sobre suas contas, podendo facilmente sair, editar informações pessoais ou deletar suas contas.
 
 <p>
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/sair.gif" alt="Sair" width="200" />
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/deletar.gif" alt="Deletar Conta" width="200" />
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/editarNome.gif" alt="Editar Nome" width="200" />
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/editarSenha.gif" alt="Editar Senha" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/sair.gif" alt="Sair" width="180" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/deletar.gif" alt="Deletar Conta" width="180" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/editarNome.gif" alt="Editar Nome" width="180" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/editarSenha.gif" alt="Editar Senha" width="180" />
 </p>
 
 ### 4. Pareamento e Jogo de Damas
@@ -62,8 +62,8 @@ Os usuários têm total controle sobre suas contas, podendo facilmente sair, edi
 Os usuários podem encontrar partidas facilmente na fila de pareamento. As partidas são compostas por dois jogadores que se alternam em turnos, com a possibilidade de capturar peças do adversário e promover peças para damas. A partida termina quando um jogador fica sem peças, desiste ou se desconecta.
 
 <p>
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7258f0b052824b803a8265bd2f57ffefeedbba81/pareamentoEjogo.gif" alt="Pareamento e uma partida de damas" width="776" />
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7212e1febe5e9ae5abf83fcb227d938fafc9c97a/promocaoDamaEfimDejogo.gif" alt="Promoção para dama e fim de jogo por um jogador não ter mais peças" width="224" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7258f0b052824b803a8265bd2f57ffefeedbba81/pareamentoEjogo.gif" alt="Pareamento e uma partida de damas" width="624" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7212e1febe5e9ae5abf83fcb227d938fafc9c97a/promocaoDamaEfimDejogo.gif" alt="Promoção para dama e fim de jogo por um jogador não ter mais peças" width="180" />
 </p>
 
 > **Nota:** O GIF à direita mostra uma versão antiga do jogo. As animações de movimentação e captura foram melhoradas, e um áudio foi adicionado ao capturar uma peça.
@@ -78,7 +78,7 @@ Este recurso automatiza o processo de atualização do aplicativo usando **EAS U
 
 **Modal com as informações da versão instalada:**
 <p >
-  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/015b3bec893e5b4198c0b21159d6c728fc3bfc7c/infoApp.gif" alt="Abrindo modal com as informações do app" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/015b3bec893e5b4198c0b21159d6c728fc3bfc7c/infoApp.gif" alt="Abrindo modal com as informações do app" width="180" />
 </p>
 
 ## Instalação

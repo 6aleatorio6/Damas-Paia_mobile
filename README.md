@@ -10,17 +10,56 @@
 
 Este é o repositório frontend mobile do projeto **Damas Paia**. Desenvolvido com React Native, Unistyles 2.0, Socket.io e TypeScript, oferece uma interface nativa e moderna.
 
-## Status do Projeto
-
 | Plataforma                                                   | Tecnologia   | Status       |
 | ------------------------------------------------------------ | ------------ | ------------ |
 | [Backend](https://github.com/6aleatorio6/Damas-Paia_backend) | NestJS       | Em andamento |
 | [Mobile](https://github.com/6aleatorio6/Damas-Paia_mobile)   | React Native | Em andamento |
 | Web                                                          | React        | Não iniciado |
 
+
+## Downloads
+
+Baixe a última versão do app: [damas-paia_release](https://github.com/6aleatorio6/Damas-Paia_mobile/releases/latest/download/damas-paia_release.apk)
+
+> **Observação:** O backend está hospedado no Heroku através do plano de estudante, e pretendo mantê-lo online até **01/06/2025**.
+
 ## Funcionalidades do Mobile
 
-Ele se integra perfeitamente com todas as [funcionalidades que o backend oferece](https://github.com/6aleatorio6/Damas-Paia_backend?tab=readme-ov-file#funcionalidades).
+O **DamasPaia Mobile** se integra perfeitamente com todas as [funcionalidades que o backend oferece](https://github.com/6aleatorio6/Damas-Paia_backend?tab=readme-ov-file#funcionalidades).
+
+### 1. Autenticação Convencional
+
+A autenticação convencional permite que os usuários criem suas contas e façam login utilizando um nome de usuário e senha. 
+
+<p>
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/cadastrar.gif" alt="Cadastrar" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/entrar.gif" alt="Entrar" width="200" />
+</p>
+
+### 2. Login por OAuth2
+
+Para uma experiência de autenticação ainda mais rápida e conveniente, o **DamasPaia Mobile** oferece a opção de login e cadastro através de provedores de OAuth2, como Google, Facebook e Discord.
+
+<p>
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/google.gif" alt="Login com Google" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/facebook.gif" alt="Login com Facebook" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/577237b4ff2a2dd8244ccfd1c2c5c8e27441fcd2/discord.gif" alt="Login com Discord" width="200" />
+</p>
+
+### 3. Manipulação da Conta
+
+Os usuários têm total controle sobre suas contas, podendo facilmente sair, editar informações pessoais ou deletar suas contas.
+
+<p>
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/sair.gif" alt="Sair" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/deletar.gif" alt="Deletar Conta" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/editarNome.gif" alt="Editar Nome" width="200" />
+  <img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/3abe65caf625c3460a10deae3bbb599a958ec0ef/editarSenha.gif" alt="Editar Senha" width="200" />
+</p>
+
+### Pareamento e Jogo de Damas
+
+<img src="https://gist.githubusercontent.com/6aleatorio6/ed8cc379ee1ad319cca1dd8604f006de/raw/7258f0b052824b803a8265bd2f57ffefeedbba81/pareamentoEjogo.gif" alt="Pareamento e uma partida de damas" width="800" />
 
 ## Instalação
 
